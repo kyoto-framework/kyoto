@@ -5,7 +5,7 @@
 
 # GoFR (Go Frontend, or Go Framework)
 
-Micro framework, that brings frontend-like components experience to the server side with native `html/template`. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
+Micro framework concept, that brings frontend-like components experience to the server side with native `html/template`. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
 
 **Under heavy development, not stable (!!!)**
 
