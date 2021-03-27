@@ -1,6 +1,4 @@
 
-***I'm not Golang "rockstar"**, I'm just a regular developer. If you see any problems in the project - feel free to open new Issue. And if you would like to see features you want or just support our bright feature, please, support me with [Patreon](https://www.patreon.com/yuriizinets) or Bitcoin (39extGa1qoaGx2kpZ6RHPVkenNP9RGzVEB)*
-
 ![Gofry](https://i.imgur.com/YplISTr.jpg)
 
 # GoFR (Go Frontend, or Go Framework)
@@ -8,6 +6,9 @@
 Micro framework concept, that brings frontend-like components experience to the server side with native `html/template`. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
 
 **Under heavy development, not stable (!!!)**
+
+**Disclaimer**  
+***I'm not Golang "rockstar"**, I'm just a regular developer. If you see any problems in the project - feel free to open new Issue. And if you would like to see features you want or just support our bright feature, please, support me with [Patreon](https://www.patreon.com/yuriizinets) or Bitcoin (39extGa1qoaGx2kpZ6RHPVkenNP9RGzVEB)*
 
 ## TOC
 
