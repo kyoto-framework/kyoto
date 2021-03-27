@@ -127,6 +127,8 @@ func (c *ComponentHttpbinUUID) Async() error {
 
 // You can use AfterAsync to finalize data operations or whatever you want
 func (c *ComponentHttpbinUUID) AfterAsync() {}
+// Use init to initialize nested components
+func (c *ComponentHttpbinUUID) Init() {}
 
 // Use gofr.Component for components
 type PageIndex struct {
@@ -187,9 +189,10 @@ Page's lifecycle is hidden under render functions and looks like this:
 - [x] Basic components interface
 - [x] Render pages
 - [x] Components lifecycle
+- [x] Components nesting
 - [x] Basic Meta processing
-- [ ] Separate RenderComponent
-- [ ] Separate RenderComponentString
+- [x] Separate RenderComponent
+- [x] Separate RenderComponentString
 - [ ] Advanced Meta processing
 - [ ] Separate examples projects
 - [ ] Better documentation

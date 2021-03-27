@@ -18,13 +18,18 @@ type Meta struct {
 }
 
 type Page interface {
+	// Template builder
 	Template() *template.Template
+	// Meta info
 	Meta() Meta
+	// Entrypoint for registering components
 	Init()
 }
 
 type Component interface {
-	Definition() string
+	// Parts of component lifecycle
 	Async() error
 	AfterAsync()
+	// Entrypoint for registering nested components
+	Init()
 }
