@@ -198,3 +198,4 @@ Page's lifecycle is hidden under render functions and looks like this:
 - [ ] Separate examples projects
 - [ ] Better documentation
 - [ ] Dynamic Components
+- [ ] Dynamic Components State
