@@ -3,10 +3,11 @@
 
 Micro framework concept, that brings frontend-like components experience to the server side with native `html/template`. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
 
-**Under heavy development, not stable (!!!)**
+**Disclaimer 1**  
+> Under heavy development, not stable **(!!!)**
 
-**Disclaimer**  
-***I'm not Golang "rockstar"**, I'm just a regular developer. If you see any problems in the project - feel free to open new Issue.*
+**Disclaimer 2**  
+> **I'm not Golang "rockstar"**, I'm just a regular developer. If you see any problems in the project - feel free to open new Issue.
 
 ## TOC
 
