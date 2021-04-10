@@ -1,9 +1,11 @@
-package gofr
+package ssc
 
 import (
 	"bytes"
+	"encoding/json"
 	"html/template"
 	"io"
+	"log"
 	"reflect"
 	"sync"
 )
@@ -94,4 +96,29 @@ func RenderComponentString(c Component, t *template.Template, d string) string {
 	var b bytes.Buffer
 	RenderComponent(&b, c, t, d)
 	return b.String()
+}
+
+func HandleSSA(w io.Writer, t *template.Template, componentname string, state string, action string, argsstr string, clist []Component) {
+	// Find component
+	var component Component
+	for _, c := range clist {
+		if reflect.ValueOf(c).Elem().Type().Name() == componentname {
+			component = c
+		}
+	}
+	// Init component with state
+	if err := json.Unmarshal([]byte(state), &component); err != nil {
+		log.Println(state)
+		panic(err)
+	}
+	// Extract arguments
+	var args map[string]interface{}
+	json.Unmarshal([]byte(argsstr), &args)
+	// Call action
+	component.Actions()[action](args)
+	// Render component
+	err := t.Execute(w, reflect.ValueOf(component).Elem())
+	if err != nil {
+		panic(err)
+	}
 }

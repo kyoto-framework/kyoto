@@ -1,3 +1,3 @@
-module github.com/yuriizinets/gofr
+module github.com/yuriizinets/go-ssc
 
 go 1.16
