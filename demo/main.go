@@ -38,5 +38,5 @@ func main() {
 		)
 	})
 
-	g.Run("localhost:25025")
+	g.Run(":80")
 }
