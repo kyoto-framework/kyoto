@@ -61,7 +61,7 @@ function Bind(self, field) {
 		}
 	}
 	// Load state
-	let state = JSON.parse(root.getAttribute('state'))
+	let state = JSON.parse(decodeURIComponent(root.getAttribute('state')))
 	console.log(state)
 	// Set value
 	state[field] = self.value
