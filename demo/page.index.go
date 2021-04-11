@@ -14,9 +14,7 @@ type PageIndex struct {
 }
 
 func (*PageIndex) Template() *template.Template {
-	fmap := funcmap()
-	tmpl, _ := template.New("page.index.html").Funcs(fmap).ParseGlob("*.html")
-	return tmpl
+	return template.Must(template.New("page.index.html").Funcs(funcmap()).ParseGlob("*.html"))
 }
 
 func (p *PageIndex) Init() {
