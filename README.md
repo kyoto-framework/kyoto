@@ -1,5 +1,7 @@
 
-<img src="https://raw.githubusercontent.com/yuriizinets/go-ssc/master/demo/static/ssclogo.png" width="250">
+<p align="center">
+    <img src="https://raw.githubusercontent.com/yuriizinets/go-ssc/master/demo/static/ssclogo.png" width="250">
+</p>
 
 # Go SSC (Go Server Side Components)
 
