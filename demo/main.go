@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/yuriizinets/go-ssc"
 )
@@ -17,6 +18,8 @@ func main() {
 	g.GET("/", func(c *gin.Context) {
 		ssc.RenderPage(c.Writer, &PageIndex{})
 	})
+
+	g.Use(static.Serve("/static/", static.LocalFile("./static", true)))
 
 	g.POST("/SSA/:Component/:Action", func(c *gin.Context) {
 		ssc.HandleSSA(

@@ -10,7 +10,10 @@
 </head>
 <body>
     <div class="pt-24"></div>
-    <h1 class="text-5xl text-center">Go SSC Demo Page</h1>
+    <div>
+        <img src="/static/ssclogo.png" alt="Logo" width="400" class="m-auto">
+    </div>
+    <h1 class="mt-4 text-5xl text-center">Go SSC Demo Page</h1>
     <div class="pt-16"></div>
     <h2 class="text-3xl text-center">Httpbin UUID</h2>
     <p class="text-center">UUID, fetched on the server side, asynchronously, from httpbin.org</p>
@@ -19,7 +22,7 @@
     </div>
     <div class="pt-16"></div>
     <h2 class="text-3xl text-center">Counter</h2>
-    <p class="text-center">Counter, fully implemented on server side (Server Side Actions)</p>
+    <p class="text-center">Counter, fully implemented on server side (Server Side Actions, SSA)</p>
     <div class="mt-2 text-center">
         {{ template "ComponentCounter" .ComponentCounter }}
     </div>
@@ -31,9 +34,10 @@
     </div>
     <div class="pt-16"></div>
     <h2 class="text-3xl text-center">Parent Component Communication</h2>
-    <p class="text-center">Type of component communication</p>
+    <p class="text-center">SSA, triggered from child component</p>
     <div class="mt-2 text-center">
         {{ template "ComponentSampleParent" .ComponentSampleParent }}
     </div>
+    <div class="pt-16"></div>
 </body>
 </html>
