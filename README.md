@@ -4,7 +4,7 @@
 </p>
 <h1 align="center">Go SSC (Go Server Side Components)</h1>
 
-Micro framework concept, that brings frontend-like components experience to the server side with native `html/template`. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
+Micro framework concept, that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
 
 **Disclaimer 1**  
 > Under heavy development, not stable **(!!!)**
@@ -18,6 +18,7 @@ Micro framework concept, that brings frontend-like components experience to the 
 - [Why?](#why)
 - [What problems it solves? Why not plain GoKit?](#what-problems-it-solves-why-not-plain-gokit)
 - [Basic concepts (Zen)](#basic-concepts-zen)
+- [Features](#features)
 - [Quick start (simple page)](#quick-start-simple-page)
 - [Server Side Components](#server-side-components)
 - [Server Side Actions](#server-side-actions)
@@ -25,7 +26,8 @@ Micro framework concept, that brings frontend-like components experience to the 
 
 ## Why?
 
-Because "website" is not the same as "web application". But nowadays trends are saying otherwise. I'm trying to minimize usage of popular SPA/PWA frameworks where it's not needed at all because it adds a lot of complexity and overhead. I don't want to bring large runtime, VirtualDOM and webpack into small landing project.  
+I'm trying to minimize usage of popular SPA/PWA frameworks where it's not needed at all because it adds a lot of complexity and overhead. I don't want to bring large runtime, VirtualDOM and webpack into small landing project with minimal dynamic behavior.  
+This project proves posibility to keep most of the logic on the server side.
 
 ## What problems it solves? Why not plain GoKit?
 
@@ -34,6 +36,7 @@ While developing website's frontend with Go I realised some downsides of such ap
 - With plain `html/template` your're starting to repeat yourself. It's harder to define reusable parts
 - You must to repeat DTO calls for each page, where you're using reusable parts
 - With Go's routines approach it's hard to make async-like DTO calls in the handlers
+- For dynamic things, you still need to use JS and client-side DOM modification
 
 Complexity is much higher when all of them combined.
 
@@ -44,6 +47,14 @@ This micro framework tries to bring components and async experience to the tradi
 - Don't replace Golang's features, that already exist
 - Don't do work that's already done
 - Don't bind developer with specific solutions (Gin/Chi/GORM/sqlx/etc), let developer choose
+- Use server for rendering, no JS specifics or client-side only behavior
+
+## Features
+
+- Component approach with `html/template`
+- Asynchronous operations
+- Component methods, that can be called from client side (Server Side Actions, SSA)
+- Different types of components communication (parent, cross)
 
 ## Quick start (simple page)
 
@@ -91,11 +102,11 @@ func main() {
 
 ## Server Side Components
 
-...
+Documentation not ready yet. Try to explore [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for features.
 
 ## Server Side Actions
 
-...
+Documentation not ready yet. Try to explore [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for features.
 
 ## Lifecycle
 
