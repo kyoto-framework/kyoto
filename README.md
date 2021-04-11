@@ -1,4 +1,6 @@
 
+![Logo](/demo/static/ssclogo.png)
+
 # Go SSC (Go Server Side Components)
 
 Micro framework concept, that brings frontend-like components experience to the server side with native `html/template`. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
