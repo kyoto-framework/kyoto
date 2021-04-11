@@ -1,0 +1,12 @@
+{{ define "ComponentModal" }}
+{{ if .Show }}
+<div
+    class="fixed z-10 inset-0 overflow-hidden modal-cover flex items-center justify-center"
+    style="background-color: rgba(0,0,0,0.4);"
+>
+    <div class="p-10">
+        <button onclick="{{ action `Close` `{}` }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Close</button>
+    </div>
+</div>
+{{ end }}
+{{ end }}
