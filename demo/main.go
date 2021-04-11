@@ -2,6 +2,7 @@ package main
 
 import (
 	"html/template"
+	"os"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -38,5 +39,9 @@ func main() {
 		)
 	})
 
-	g.Run(":80")
+	addr := "localhost:25025"
+	if os.Getenv("PORT") != "" {
+		addr = ":" + os.Getenv("PORT")
+	}
+	g.Run(addr)
 }
