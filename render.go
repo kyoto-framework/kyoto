@@ -5,23 +5,41 @@ import (
 	"encoding/json"
 	"html/template"
 	"io"
-	"log"
+	"net/url"
 	"reflect"
 	"sync"
 )
 
 // Components store
-var cstore = map[interface{}][]Component{}
+var cstore = map[Page][]Component{}
+
+// Dummy page for rendering component
+type DummyPage struct {
+	DTemplate  *template.Template
+	DComponent Component
+}
+
+func (p *DummyPage) Template() *template.Template {
+	return p.DTemplate
+}
+
+func (p *DummyPage) Init() {
+	p.DComponent = RegC(p, p.DComponent)
+}
+
+func (*DummyPage) Meta() Meta {
+	return Meta{}
+}
 
 // RegisterComponent is used while defining components in the Init() section
-func RegisterComponent(p interface{}, c Component) Component {
+func RegisterComponent(p Page, c Component) Component {
 	// Save to store
 	if _, ok := cstore[p]; !ok {
 		cstore[p] = []Component{}
 	}
 	cstore[p] = append(cstore[p], c)
 	// Trigger component init
-	c.Init()
+	c.Init(p)
 	// Return component for external assignment
 	return c
 }
@@ -63,33 +81,14 @@ func RenderPage(w io.Writer, p Page) {
 
 // RenderComponent is a minor entrypoint of rendering.
 func RenderComponent(w io.Writer, c Component, t *template.Template, d string) {
-	// Async specific state
-	var wg sync.WaitGroup
-	var err = make(chan error, 1000)
-	// Trigger init
-	c.Init()
-	// Trigger async in goroutines
-	for _, component := range cstore[c] {
-		wg.Add(1)
-		go func(wg *sync.WaitGroup, err chan error, c Component) {
-			defer wg.Done()
-			_err := c.Async()
-			if _err != nil {
-				err <- _err
-			}
-		}(&wg, err, component)
-	}
-	// Wait for async completion
-	wg.Wait()
-	// Trigger aftersync
-	for _, component := range cstore[c] {
-		component.AfterAsync()
-	}
-	// Clear components store (not needed more)
-	delete(cstore, c)
-	// Render component
+	// Init dummy page for rendering
 	t, _ = t.Parse(`{{ template "` + d + `" . }}`)
-	t.Execute(w, reflect.ValueOf(c).Elem())
+	page := &DummyPage{
+		DTemplate:  t,
+		DComponent: c,
+	}
+	// Dender dummy page with component
+	RenderPage(w, page)
 }
 
 func RenderComponentString(c Component, t *template.Template, d string) string {
@@ -100,15 +99,22 @@ func RenderComponentString(c Component, t *template.Template, d string) string {
 
 func HandleSSA(w io.Writer, t *template.Template, componentname string, state string, action string, argsstr string, clist []Component) {
 	// Find component
+	var found bool = false
 	var component Component
 	for _, c := range clist {
 		if reflect.ValueOf(c).Elem().Type().Name() == componentname {
 			component = c
+			found = true
 		}
 	}
+	if !found {
+		panic("Can't find component. Perhaps, you forgot to register it while calling HandleSSA")
+	}
+	// Init
+	component.Init(&DummyPage{})
 	// Init component with state
+	state, _ = url.QueryUnescape(state)
 	if err := json.Unmarshal([]byte(state), &component); err != nil {
-		log.Println(state)
 		panic(err)
 	}
 	// Extract arguments

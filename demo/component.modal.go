@@ -6,7 +6,7 @@ type ComponentModal struct {
 	Show bool
 }
 
-func (*ComponentModal) Init() {}
+func (*ComponentModal) Init(p ssc.Page) {}
 
 func (c *ComponentModal) Async() error { return nil }
 

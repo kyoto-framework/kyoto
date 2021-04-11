@@ -12,7 +12,7 @@ type ComponentSampleBinding struct {
 	Result      string
 }
 
-func (c *ComponentSampleBinding) Init() {
+func (c *ComponentSampleBinding) Init(p ssc.Page) {
 	c.FirstValue = "5"
 	c.SecondValue = "5"
 	c.Result = "10"

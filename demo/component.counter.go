@@ -6,7 +6,7 @@ type ComponentCounter struct {
 	Count int
 }
 
-func (*ComponentCounter) Init() {
+func (*ComponentCounter) Init(p ssc.Page) {
 
 }
 

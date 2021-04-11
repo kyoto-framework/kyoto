@@ -11,7 +11,7 @@ type ComponentHttpbinUUID struct {
 	UUID string
 }
 
-func (*ComponentHttpbinUUID) Init() {
+func (*ComponentHttpbinUUID) Init(p ssc.Page) {
 
 }
 

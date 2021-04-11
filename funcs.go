@@ -4,20 +4,33 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"net/url"
 	"reflect"
 )
 
 // Code, responsible for dynamics, like Server Side Actions, bindings, etc.
 var dynamics = `
 <script>
+
 function Action(self, action, args) {
+	// Determine depth
+	let depth = (action.split('').filter(x => x === '$') || []).length
+	action = action.replaceAll('$', '')
 	// Find component root
 	let root = self
+	let dcount = 0
 	while (true) {
 		if (!root.getAttribute('state')) {
 			root = root.parentElement
 		} else {
-			break
+			if (dcount != depth) {
+				console.log('Skipping root ', root)
+				root = root.parentElement
+				dcount++
+			} else {
+				console.log('Breaking on ', root)
+				break
+			}
 		}
 	}
 	// Prepare form data
@@ -88,8 +101,9 @@ func Funcs() template.FuncMap {
 			name := reflect.ValueOf(c).Elem().Type().Name()
 			statebytes, _ := json.Marshal(c)
 			state := string(statebytes)
+			state = url.QueryEscape(state)
 			// Build attributes
-			builder := fmt.Sprintf(`name=%s state=%s`, name, state)
+			builder := fmt.Sprintf(`name='%s' state='%s'`, name, state)
 			return template.HTMLAttr(builder)
 		},
 		"action": func(action string, args string) template.JS {

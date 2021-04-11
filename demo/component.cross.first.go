@@ -4,7 +4,7 @@ import "github.com/yuriizinets/go-ssc"
 
 type ComponentCrossFirst struct{}
 
-func (*ComponentCrossFirst) Init() {
+func (*ComponentCrossFirst) Init(p ssc.Page) {
 
 }
 

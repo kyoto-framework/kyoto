@@ -32,7 +32,7 @@ type Page interface {
 
 type Component interface {
 	// Entrypoint for registering nested components
-	Init()
+	Init(p Page)
 	// Parts of component lifecycle
 	Async() error
 	AfterAsync()

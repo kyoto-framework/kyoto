@@ -29,6 +29,8 @@ func main() {
 			[]ssc.Component{
 				&ComponentCounter{},
 				&ComponentSampleBinding{},
+				&ComponentSampleParent{},
+				&ComponentSampleChild{},
 			},
 		)
 	})
