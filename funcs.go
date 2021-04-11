@@ -24,11 +24,9 @@ function Action(self, action, args) {
 			root = root.parentElement
 		} else {
 			if (dcount != depth) {
-				console.log('Skipping root ', root)
 				root = root.parentElement
 				dcount++
 			} else {
-				console.log('Breaking on ', root)
 				break
 			}
 		}
