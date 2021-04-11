@@ -2,8 +2,7 @@
 <p align="center">
     <img src="https://raw.githubusercontent.com/yuriizinets/go-ssc/master/demo/static/ssclogo.png" width="250">
 </p>
-
-# Go SSC (Go Server Side Components)
+<h1 align="center">Go SSC (Go Server Side Components)</h1>
 
 Micro framework concept, that brings frontend-like components experience to the server side with native `html/template`. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
 
@@ -15,15 +14,14 @@ Micro framework concept, that brings frontend-like components experience to the 
 
 ## TOC
 
-- [Go SSC (Go Server Side Components)](#go-ssc-go-server-side-components)
-  - [TOC](#toc)
-  - [Why?](#why)
-  - [What problems it solves? Why not plain GoKit?](#what-problems-it-solves-why-not-plain-gokit)
-  - [Basic concepts (Zen)](#basic-concepts-zen)
-  - [Quick start (simple page)](#quick-start-simple-page)
-  - [Server Side Components](#server-side-components)
-  - [Server Side Actions](#server-side-actions)
-  - [Lifecycle](#lifecycle)
+- [TOC](#toc)
+- [Why?](#why)
+- [What problems it solves? Why not plain GoKit?](#what-problems-it-solves-why-not-plain-gokit)
+- [Basic concepts (Zen)](#basic-concepts-zen)
+- [Quick start (simple page)](#quick-start-simple-page)
+- [Server Side Components](#server-side-components)
+- [Server Side Actions](#server-side-actions)
+- [Lifecycle](#lifecycle)
 
 ## Why?
 
