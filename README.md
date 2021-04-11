@@ -102,7 +102,115 @@ func main() {
 
 ## Server Side Components
 
-Documentation not ready yet. Try to explore [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for features.
+*Reference component is [here](https://github.com/yuriizinets/go-ssc/blob/master/demo/component.httpbin.uuid.go). Check [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) for full review.*  
+
+To create new component, you need to do next steps:
+
+- Create new struct. It will implement `ssc.Component` interface
+- Define all needed methods (for implementing `ssc.Component`), even if it's not needed. Just leave it empty
+- Create new template with `{{ define "{name}" }} ... {{ end }}` inside. You need to use same name as struct name
+
+To attach created component to the page, do this:
+
+- Create component field in the page struct with `ssc.Component` type
+- Register component and assign it to the page struct field
+- Use it in the template with passing Go component as template parameter
+
+Example of component, that fetch and display UUID response from httpbin.org  
+
+```go
+package main
+
+import (
+    "io/ioutil"
+    "net/http"
+
+    "github.com/yuriizinets/go-ssc"
+)
+
+type ComponentHttpbinUUID struct {
+    UUID string
+}
+
+func (*ComponentHttpbinUUID) Init(p ssc.Page) {}
+
+func (c *ComponentHttpbinUUID) Async() error {
+    resp, err := http.Get("http://httpbin.org/uuid")
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+    data, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return err
+    }
+    c.UUID = string(data)
+    return nil
+}
+
+func (*ComponentHttpbinUUID) AfterAsync() {}
+
+func (c *ComponentHttpbinUUID) Actions() ssc.ActionsMap {
+    return ssc.ActionsMap{}
+}
+```
+
+```html
+{{ define "ComponentHttpbinUUID" }}
+<div>
+    <div>{{ .UUID }}</div>
+</div>
+{{ end }}
+```
+
+And that's how it can be attached to the index page  
+
+```go
+package main
+
+import (
+    "html/template"
+
+    "github.com/yuriizinets/go-ssc"
+)
+
+type PageIndex struct {
+    ComponentHttpbinUUID   ssc.Component
+}
+
+func (*PageIndex) Template() *template.Template {
+    tmpl, _ := template.New("index.html").Funcs(ssc.Funcs()).ParseGlob("*.html")
+    return tmpl
+}
+
+func (p *PageIndex) Init() {
+    p.ComponentHttpbinUUID = ssc.RegC(p, &ComponentHttpbinUUID{})
+}
+
+func (*PageIndex) Meta() ssc.Meta {
+    return ssc.Meta{
+        Title: "SSC Example",
+    }
+}
+
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ meta . }}
+</head>
+<body>
+    <h1>UUID Example</h1>
+    {{ template "ComponentHttpbinUUID" .ComponentHttpbinUUID }}
+</body>
+</html>
+
+```
 
 ## Server Side Actions
 
