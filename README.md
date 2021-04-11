@@ -4,7 +4,7 @@
 </p>
 <h1 align="center">Go SSC (Go Server Side Components)</h1>
 
-Micro framework concept, that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
+HTML render engine concept, that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
 
 **Disclaimer 1**  
 > Under heavy development, not stable **(!!!)**
@@ -40,7 +40,7 @@ While developing website's frontend with Go I realised some downsides of such ap
 
 Complexity is much higher when all of them combined.
 
-This micro framework tries to bring components and async experience to the traditional server side rendering.
+This engine tries to bring components and async experience to the traditional server side rendering.
 
 ## Basic concepts (Zen)
 
