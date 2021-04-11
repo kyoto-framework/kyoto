@@ -1,5 +1,5 @@
 
-![Logo](/demo/static/ssclogo.png | width=200)
+<img src="https://raw.githubusercontent.com/yuriizinets/go-ssc/master/demo/static/ssclogo.png" width="250">
 
 # Go SSC (Go Server Side Components)
 
