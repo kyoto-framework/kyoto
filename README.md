@@ -1,5 +1,5 @@
 
-![Logo](/demo/static/ssclogo.png)
+![Logo](/demo/static/ssclogo.png | width=200)
 
 # Go SSC (Go Server Side Components)
 
