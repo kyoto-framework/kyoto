@@ -1,0 +1,1 @@
+git subtree push --prefix demo/ https://github.com/yuriizinets/go-ssc.git heroku
