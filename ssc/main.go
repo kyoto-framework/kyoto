@@ -122,6 +122,7 @@ func fallback() {
 	fmt.Println("")
 	fmt.Println(
 		"Command is required. Supported commands:\n",
+		"- new:page",
 		"- new:component",
 	)
 	fmt.Println("")
