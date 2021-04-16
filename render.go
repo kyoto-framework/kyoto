@@ -76,7 +76,10 @@ func RenderPage(w io.Writer, p Page) {
 	// Clear components store (not needed more)
 	delete(cstore, p)
 	// Execute template
-	p.Template().Execute(w, reflect.ValueOf(p).Elem())
+	terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
+	if terr != nil {
+		panic(terr)
+	}
 }
 
 // RenderComponent is a minor entrypoint of rendering.
