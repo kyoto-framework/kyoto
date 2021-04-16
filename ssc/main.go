@@ -18,7 +18,7 @@ import (
 type {name} struct{}
 
 func (*{name}) Template() *template.Template {
-	return template.Must(template.New("{htmlfile}").Funcs(funcmap()).ParseGlob("*.html"))
+	return template.Must(template.New("{htmlfile}").Funcs(ssc.Funcs()).ParseGlob("*.html"))
 }
 
 func (p *{name}) Init() {}
@@ -70,13 +70,13 @@ var cmhtmltemplate = `{{ define "{name}" }}
 func main() {
 	fsnewpage := flag.NewFlagSet("new:page", flag.ExitOnError)
 	fsnpname := fsnewpage.String("name", "", "Page name (required)")
-	fsnpgofile := fsnewpage.String("gofile", "", "Go file path (required)")
-	fsnphtmlfile := fsnewpage.String("htmlfile", "", "HTML file path (required)")
+	fsnpgofile := fsnewpage.String("go", "", "Go file path (required)")
+	fsnphtmlfile := fsnewpage.String("html", "", "HTML file path (required)")
 
 	fsnewcomponent := flag.NewFlagSet("new:component", flag.ExitOnError)
 	fsncname := fsnewcomponent.String("name", "", "Component name (required)")
-	fsncgofile := fsnewcomponent.String("gofile", "", "Go file path (required)")
-	fsnchtmlfile := fsnewcomponent.String("htmlfile", "", "HTML file path (required)")
+	fsncgofile := fsnewcomponent.String("go", "", "Go file path (required)")
+	fsnchtmlfile := fsnewcomponent.String("html", "", "HTML file path (required)")
 
 	if len(os.Args) < 2 {
 		fallback()
@@ -132,10 +132,10 @@ func fallback() {
 func newpage(name, gofile, htmlfile string) {
 	// Compile and save Go template
 	gotemplate := strings.ReplaceAll(cpgotemplate, "{name}", name)
+	gotemplate = strings.ReplaceAll(gotemplate, "{htmlfile}", htmlfile)
 	ioutil.WriteFile(gofile, []byte(gotemplate), 0644)
 	// Compile and save HTML tempalte
 	htmltemplate := strings.ReplaceAll(cphtmltemplate, "{name}", name)
-	htmltemplate = strings.ReplaceAll(htmltemplate, "{htmlfile}", htmlfile)
 	ioutil.WriteFile(htmlfile, []byte(htmltemplate), 0644)
 }
 
