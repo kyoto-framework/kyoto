@@ -42,6 +42,10 @@ github.com/yuriizinets/go-ssc v0.0.0-20210411130747-c8795f4f899d h1:rp3VDfjT2crx
 github.com/yuriizinets/go-ssc v0.0.0-20210411130747-c8795f4f899d/go.mod h1:8izsw3dMvCrC2ugN2lbIiUBblwgVvf0WsxU0KLR1xB4=
 github.com/yuriizinets/go-ssc v0.0.0-20210411133939-87021af5b1d3 h1:W/jpijs35V1Hi4tlS/BGFFBuhBlxyYZ4EF1ZyeQ3P8Y=
 github.com/yuriizinets/go-ssc v0.0.0-20210411133939-87021af5b1d3/go.mod h1:8izsw3dMvCrC2ugN2lbIiUBblwgVvf0WsxU0KLR1xB4=
+github.com/yuriizinets/go-ssc v0.0.0-20210423203623-71f159090130 h1:zImMYA5D0+XH9potJ1vlUd55FUuByYFEUtBJWJMI5c4=
+github.com/yuriizinets/go-ssc v0.0.0-20210423203623-71f159090130/go.mod h1:8izsw3dMvCrC2ugN2lbIiUBblwgVvf0WsxU0KLR1xB4=
+github.com/yuriizinets/go-ssc v0.0.0-20210423212213-1e5632da7f89 h1:aml4n7M3sYxQl896QTVu20HFydIlzbl9qzf/wjUnRrI=
+github.com/yuriizinets/go-ssc v0.0.0-20210423212213-1e5632da7f89/go.mod h1:8izsw3dMvCrC2ugN2lbIiUBblwgVvf0WsxU0KLR1xB4=
 golang.org/x/sys v0.0.0-20200116001909-b77594299b42 h1:vEOn+mP2zCOVzKckCZy6YsCtDblrpj/w7B9nxGNELpg=
 golang.org/x/sys v0.0.0-20200116001909-b77594299b42/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.2/go.mod h1:bEr9sfX3Q8Zfm5fL9x+3itogRgK3+ptLWKqgva+5dAk=
