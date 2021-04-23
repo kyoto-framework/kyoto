@@ -18,10 +18,6 @@ func (c *ComponentSampleBinding) Init(p ssc.Page) {
 	c.Result = "10"
 }
 
-func (*ComponentSampleBinding) Async() error { return nil }
-
-func (*ComponentSampleBinding) AfterAsync() {}
-
 func (c *ComponentSampleBinding) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
 		"Calculate": func(args ...interface{}) {

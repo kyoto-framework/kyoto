@@ -39,7 +39,9 @@ func RegisterComponent(p Page, c Component) Component {
 	}
 	cstore[p] = append(cstore[p], c)
 	// Trigger component init
-	c.Init(p)
+	if c, ok := c.(ComponentInit); ok {
+		c.Init(p)
+	}
 	// Return component for external assignment
 	return c
 }
@@ -55,23 +57,29 @@ func RenderPage(w io.Writer, p Page) {
 	var wg sync.WaitGroup
 	var err = make(chan error, 1000)
 	// Trigger init
-	p.Init()
+	if p, ok := p.(PageInit); ok {
+		p.Init()
+	}
 	// Trigger async in goroutines
 	for _, component := range cstore[p] {
-		wg.Add(1)
-		go func(wg *sync.WaitGroup, err chan error, c Component) {
-			defer wg.Done()
-			_err := c.Async()
-			if _err != nil {
-				err <- _err
-			}
-		}(&wg, err, component)
+		if component, ok := component.(ComponentAsync); ok {
+			wg.Add(1)
+			go func(wg *sync.WaitGroup, err chan error, c ComponentAsync) {
+				defer wg.Done()
+				_err := c.Async()
+				if _err != nil {
+					err <- _err
+				}
+			}(&wg, err, component)
+		}
 	}
 	// Wait for async completion
 	wg.Wait()
 	// Trigger aftersync
 	for _, component := range cstore[p] {
-		component.AfterAsync()
+		if component, ok := component.(ComponentAfterAsync); ok {
+			component.AfterAsync()
+		}
 	}
 	// Clear components store (not needed more)
 	delete(cstore, p)
@@ -114,7 +122,9 @@ func HandleSSA(w io.Writer, t *template.Template, componentname string, state st
 		panic("Can't find component. Perhaps, you forgot to register it while calling HandleSSA")
 	}
 	// Init
-	component.Init(&DummyPage{})
+	if component, ok := component.(ComponentInit); ok {
+		component.Init(&DummyPage{})
+	}
 	// Init component with state
 	state, _ = url.QueryUnescape(state)
 	if err := json.Unmarshal([]byte(state), &component); err != nil {
@@ -124,9 +134,11 @@ func HandleSSA(w io.Writer, t *template.Template, componentname string, state st
 	var args []interface{}
 	json.Unmarshal([]byte(argsstr), &args)
 	// Call action
-	component.Actions()[action](args...)
+	if component, ok := component.(ComponentActions); ok {
+		component.Actions()[action](args...)
+	}
 	// Render component
-	err := t.Execute(w, reflect.ValueOf(component).Elem())
+	err := t.Execute(w, component)
 	if err != nil {
 		panic(err)
 	}

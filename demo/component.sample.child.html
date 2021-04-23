@@ -1,6 +1,6 @@
 {{ define "ComponentSampleChild" }}
 <div {{ componentattrs . }}>
     <div class="italic">I'm child component. Press button to change parent value</div>
-    <button onclick="{{ action `$SetValue` `Child's component value` `Second value` }}" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Press Me</button>
+    <button onclick="{{ action `$SetValue` .Value }}" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Press Me</button>
 </div>
 {{ end }}

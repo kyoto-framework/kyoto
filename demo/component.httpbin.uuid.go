@@ -11,10 +11,6 @@ type ComponentHttpbinUUID struct {
 	UUID string
 }
 
-func (*ComponentHttpbinUUID) Init(p ssc.Page) {
-
-}
-
 func (c *ComponentHttpbinUUID) Async() error {
 	resp, err := http.Get("http://httpbin.org/uuid")
 	if err != nil {
@@ -27,10 +23,6 @@ func (c *ComponentHttpbinUUID) Async() error {
 	}
 	c.UUID = string(data)
 	return nil
-}
-
-func (*ComponentHttpbinUUID) AfterAsync() {
-
 }
 
 func (c *ComponentHttpbinUUID) Actions() ssc.ActionsMap {

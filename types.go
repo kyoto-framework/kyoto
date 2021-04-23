@@ -21,21 +21,41 @@ type Meta struct {
 	Additional  []map[string]string
 }
 
+// Basic page, only must-have methods
 type Page interface {
 	// Template builder
 	Template() *template.Template
-	// Entrypoint for registering components
+}
+
+// Page initialization extension
+type PageInit interface {
 	Init()
-	// Meta info
+}
+
+// Page meta extension
+type PageMeta interface {
 	Meta() Meta
 }
 
-type Component interface {
-	// Entrypoint for registering nested components
-	Init(p Page)
-	// Parts of component lifecycle
+// Basic component, only must-have methods
+type Component interface{}
+
+// Component initialization extension
+type ComponentInit interface {
+	Init(Page)
+}
+
+// Component lifecycle extension
+type ComponentAsync interface {
 	Async() error
+}
+
+// Component lifecycle extension
+type ComponentAfterAsync interface {
 	AfterAsync()
-	// Dynamic actions
+}
+
+// Component SSA extension
+type ComponentActions interface {
 	Actions() ActionsMap
 }

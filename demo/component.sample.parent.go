@@ -12,10 +12,6 @@ func (c *ComponentSampleParent) Init(p ssc.Page) {
 	c.ComponentSampleChild = ssc.RegC(p, &ComponentSampleChild{})
 }
 
-func (*ComponentSampleParent) Async() error { return nil }
-
-func (*ComponentSampleParent) AfterAsync() {}
-
 func (c *ComponentSampleParent) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
 		"SetValue": func(args ...interface{}) {

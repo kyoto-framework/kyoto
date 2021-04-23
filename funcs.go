@@ -74,7 +74,10 @@ func Funcs() template.FuncMap {
 	return template.FuncMap{
 		"meta": func(p Page) template.HTML {
 			builder := ""
-			meta := p.Meta()
+			meta := Meta{}
+			if p, ok := p.(PageMeta); ok {
+				meta = p.Meta()
+			}
 			if meta.Title != "" {
 				builder += "<title>" + meta.Title + "</title>\n"
 			}
