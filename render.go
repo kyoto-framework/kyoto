@@ -39,7 +39,7 @@ func RegisterComponent(p Page, c Component) Component {
 	}
 	cstore[p] = append(cstore[p], c)
 	// Trigger component init
-	if c, ok := c.(ComponentInit); ok {
+	if c, ok := c.(ImplementsNestedInit); ok {
 		c.Init(p)
 	}
 	// Return component for external assignment
@@ -57,14 +57,14 @@ func RenderPage(w io.Writer, p Page) {
 	var wg sync.WaitGroup
 	var err = make(chan error, 1000)
 	// Trigger init
-	if p, ok := p.(PageInit); ok {
+	if p, ok := p.(ImplementsInit); ok {
 		p.Init()
 	}
 	// Trigger async in goroutines
 	for _, component := range cstore[p] {
-		if component, ok := component.(ComponentAsync); ok {
+		if component, ok := component.(ImplementsAsync); ok {
 			wg.Add(1)
-			go func(wg *sync.WaitGroup, err chan error, c ComponentAsync) {
+			go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
 				defer wg.Done()
 				_err := c.Async()
 				if _err != nil {
@@ -77,7 +77,7 @@ func RenderPage(w io.Writer, p Page) {
 	wg.Wait()
 	// Trigger aftersync
 	for _, component := range cstore[p] {
-		if component, ok := component.(ComponentAfterAsync); ok {
+		if component, ok := component.(ImplementsAfterAsync); ok {
 			component.AfterAsync()
 		}
 	}
@@ -122,7 +122,7 @@ func HandleSSA(w io.Writer, t *template.Template, componentname string, state st
 		panic("Can't find component. Perhaps, you forgot to register it while calling HandleSSA")
 	}
 	// Init
-	if component, ok := component.(ComponentInit); ok {
+	if component, ok := component.(ImplementsNestedInit); ok {
 		component.Init(&DummyPage{})
 	}
 	// Init component with state
@@ -134,7 +134,7 @@ func HandleSSA(w io.Writer, t *template.Template, componentname string, state st
 	var args []interface{}
 	json.Unmarshal([]byte(argsstr), &args)
 	// Call action
-	if component, ok := component.(ComponentActions); ok {
+	if component, ok := component.(ImplementsActions); ok {
 		component.Actions()[action](args...)
 	}
 	// Render component

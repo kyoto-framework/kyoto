@@ -27,35 +27,31 @@ type Page interface {
 	Template() *template.Template
 }
 
-// Page initialization extension
-type PageInit interface {
-	Init()
-}
-
-// Page meta extension
-type PageMeta interface {
-	Meta() Meta
-}
-
 // Basic component, only must-have methods
 type Component interface{}
 
-// Component initialization extension
-type ComponentInit interface {
+// Extensions
+
+type ImplementsInit interface {
+	Init()
+}
+
+type ImplementsNestedInit interface {
 	Init(Page)
 }
 
-// Component lifecycle extension
-type ComponentAsync interface {
+type ImplementsAsync interface {
 	Async() error
 }
 
-// Component lifecycle extension
-type ComponentAfterAsync interface {
+type ImplementsAfterAsync interface {
 	AfterAsync()
 }
 
-// Component SSA extension
-type ComponentActions interface {
+type ImplementsActions interface {
 	Actions() ActionsMap
+}
+
+type ImplementsMeta interface {
+	Meta() Meta
 }
