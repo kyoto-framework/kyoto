@@ -17,10 +17,12 @@ HTML render engine concept, that brings frontend-like components experience to t
 - [TOC](#toc)
 - [Why?](#why)
 - [What problems it solves? Why not plain GoKit?](#what-problems-it-solves-why-not-plain-gokit)
-- [Basic concepts (Zen)](#basic-concepts-zen)
+- [Zen](#zen)
 - [Features](#features)
 - [Quick start (simple page)](#quick-start-simple-page)
-- [Server Side Components](#server-side-components)
+- [Basic concepts](#basic-concepts)
+- [Pages](#pages)
+- [Components](#components)
 - [Server Side Actions](#server-side-actions)
 - [Lifecycle](#lifecycle)
 
@@ -42,7 +44,7 @@ Complexity is much higher when all of them combined.
 
 This engine tries to bring components and async experience to the traditional server side rendering.
 
-## Basic concepts (Zen)
+## Zen
 
 - Don't replace Golang's features, that already exist
 - Don't do work that's already done
@@ -51,7 +53,7 @@ This engine tries to bring components and async experience to the traditional se
 
 ## Features
 
-- Component approach with `html/template`
+- Component approach in mix with `html/template`
 - Asynchronous operations
 - Component methods, that can be called from client side (Server Side Actions, SSA)
 - Different types of components communication (parent, cross)
@@ -71,9 +73,9 @@ import(
 )
 
 // PageIndex is an implementation of ssc.Page interface
-// and must to implement all required methods (even if not needed)
 type PageIndex struct{}
 
+// Template is required method. It tells about template configuration
 func (*PageIndex) Template() *template.Template {
     // Template body is located in index.html
     // <html>
@@ -82,12 +84,6 @@ func (*PageIndex) Template() *template.Template {
     tmpl, _ := template.New("index.html").ParseGlob("*.html")
     return tmpl
 }
-
-func (*PageIndex) Meta() ssc.Meta {
-    return ssc.Meta{}
-}
-
-func (p *PageIndex) Init() {}
 
 func main() {
     g := gin.Default()
@@ -100,23 +96,30 @@ func main() {
 }
 ```
 
-## Server Side Components
+## Basic concepts
+
+Documentation not ready yet. Try to explore [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for features.
+
+## Pages
+
+Documentation not ready yet. Try to explore [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for features.
+
+## Components
 
 *Reference component is [here](https://github.com/yuriizinets/go-ssc/blob/master/demo/component.httpbin.uuid.go). Check [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) for full review.*  
 
 To create new component, you need to do next steps:
 
-- Create new struct. It will implement `ssc.Component` interface
-- Define all needed methods (for implementing `ssc.Component`), even if it's not needed. Just leave it empty
+- Create new struct with decided component name (f.e. ComponentCounter)
 - Create new template with `{{ define "{name}" }} ... {{ end }}` inside. You need to use same name as struct name
 
-To attach created component to the page, do this:
+To attach created component to the page, follow this steps:
 
 - Create component field in the page struct with `ssc.Component` type
-- Register component and assign it to the page struct field
-- Use it in the template with passing Go component as template parameter
+- Register component in the `Init()` method and assign it to the page struct field
+- Use it in the template with passing Go component as template parameter  
 
-Example of component, that fetch and display UUID response from httpbin.org  
+Example of component, that fetches and displays UUID response from httpbin.org  
 
 ```go
 package main
@@ -132,8 +135,8 @@ type ComponentHttpbinUUID struct {
     UUID string
 }
 
-func (*ComponentHttpbinUUID) Init(p ssc.Page) {}
-
+// Async method is handled by library under the hood
+// Each async method is called asynchronously with goroutines and processed concurrently
 func (c *ComponentHttpbinUUID) Async() error {
     resp, err := http.Get("http://httpbin.org/uuid")
     if err != nil {
@@ -146,12 +149,6 @@ func (c *ComponentHttpbinUUID) Async() error {
     }
     c.UUID = string(data)
     return nil
-}
-
-func (*ComponentHttpbinUUID) AfterAsync() {}
-
-func (c *ComponentHttpbinUUID) Actions() ssc.ActionsMap {
-    return ssc.ActionsMap{}
 }
 ```
 
