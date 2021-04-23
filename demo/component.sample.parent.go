@@ -18,8 +18,8 @@ func (*ComponentSampleParent) AfterAsync() {}
 
 func (c *ComponentSampleParent) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
-		"SetValue": func(args map[string]interface{}) {
-			c.Value = args["Value"].(string)
+		"SetValue": func(args ...interface{}) {
+			c.Value = args[0].(string)
 		},
 	}
 }

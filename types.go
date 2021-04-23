@@ -5,7 +5,7 @@ import (
 )
 
 // Aliases
-type Action func(args map[string]interface{})
+type Action func(args ...interface{})
 type ActionsMap map[string]Action
 
 type Hreflang struct {

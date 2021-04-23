@@ -20,7 +20,7 @@ func (*ComponentCounter) AfterAsync() {
 
 func (c *ComponentCounter) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
-		"Increment": func(args map[string]interface{}) {
+		"Increment": func(args ...interface{}) {
 			c.Count++
 		},
 	}

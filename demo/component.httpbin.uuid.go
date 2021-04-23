@@ -35,7 +35,7 @@ func (*ComponentHttpbinUUID) AfterAsync() {
 
 func (c *ComponentHttpbinUUID) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
-		"Reload": func(args map[string]interface{}) {
+		"Reload": func(args ...interface{}) {
 			c.Async()
 		},
 	}

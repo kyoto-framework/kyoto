@@ -14,10 +14,10 @@ func (*ComponentModal) AfterAsync() {}
 
 func (c *ComponentModal) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
-		"Open": func(args map[string]interface{}) {
+		"Open": func(args ...interface{}) {
 			c.Show = true
 		},
-		"Close": func(args map[string]interface{}) {
+		"Close": func(args ...interface{}) {
 			c.Show = false
 		},
 	}

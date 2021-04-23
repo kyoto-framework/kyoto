@@ -24,7 +24,7 @@ func (*ComponentSampleBinding) AfterAsync() {}
 
 func (c *ComponentSampleBinding) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
-		"Calculate": func(args map[string]interface{}) {
+		"Calculate": func(args ...interface{}) {
 			fv, err := strconv.Atoi(c.FirstValue)
 			if err != nil {
 				c.Result = "Can't calculate"

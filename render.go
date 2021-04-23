@@ -118,10 +118,10 @@ func HandleSSA(w io.Writer, t *template.Template, componentname string, state st
 		panic(err)
 	}
 	// Extract arguments
-	var args map[string]interface{}
+	var args []interface{}
 	json.Unmarshal([]byte(argsstr), &args)
 	// Call action
-	component.Actions()[action](args)
+	component.Actions()[action](args...)
 	// Render component
 	err := t.Execute(w, reflect.ValueOf(component).Elem())
 	if err != nil {

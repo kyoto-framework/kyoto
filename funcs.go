@@ -6,13 +6,14 @@ import (
 	"html/template"
 	"net/url"
 	"reflect"
+	"strings"
 )
 
 // Code, responsible for dynamics, like Server Side Actions, bindings, etc.
 var dynamics = `
 <script>
 
-function Action(self, action, args) {
+function Action(self, action, ...args) {
 	// Determine depth
 	let depth = (action.split('').filter(x => x === '$') || []).length
 	action = action.replaceAll('$', '')
@@ -104,8 +105,14 @@ func Funcs() template.FuncMap {
 			builder := fmt.Sprintf(`name='%s' state='%s'`, name, state)
 			return template.HTMLAttr(builder)
 		},
-		"action": func(action string, args string) template.JS {
-			return template.JS(fmt.Sprintf("Action(this, '%s', %s)", action, args))
+		"action": func(action string, args ...interface{}) template.JS {
+			formattedargs := []string{}
+			for _, arg := range args {
+				b, _ := json.Marshal(arg)
+				formattedargs = append(formattedargs, string(b))
+			}
+
+			return template.JS(fmt.Sprintf("Action(this, '%s', %s)", action, strings.Join(formattedargs, ", ")))
 		},
 		"bind": func(field string) template.JS {
 			return template.JS(fmt.Sprintf("Bind(this, '%s')", field))
