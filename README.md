@@ -4,7 +4,7 @@
 </p>
 <h1 align="center">Go SSC (Go Server Side Components)</h1>
 
-HTML render engine concept, that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` for response.  
+An HTML render engine concept that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` in response.  
 
 **Disclaimer 1**  
 > Under heavy development, not stable **(!!!)**
@@ -30,39 +30,40 @@ HTML render engine concept, that brings frontend-like components experience to t
 
 ## Why?
 
-I'm trying to minimize usage of popular SPA/PWA frameworks where it's not needed at all because it adds a lot of complexity and overhead. I don't want to bring large runtime, VirtualDOM and webpack into project with minimal dynamic frontend behavior.  
-This project proves posibility to keep most of the logic on the server side.
+I am trying to minimize the usage of popular SPA/PWA frameworks where it's not needed because it adds a lot of complexity and overhead. I don't want to bring significant runtime, VirtualDOM, and Webpack into the project with minimal dynamic frontend behavior. 
 
-## What problems it solves? Why not plain GoKit?
+This project proves the possibility of keeping most of the logic on the server's side.
 
-While developing website's frontend with Go I realised some downsides of such approach:  
+## What problems does it solve? Why not using plain GoKit?
 
-- With plain `html/template` your're starting to repeat yourself. It's harder to define reusable parts
-- You must to repeat DTO calls for each page, where you're using reusable parts
-- With Go's routines approach it's hard to make async-like DTO calls in the handlers
-- For dynamic things, you still need to use JS and client-side DOM modification
+While developing the website's frontend with Go, I discovered some of the downsides of this approach:
 
-Complexity is much higher when all of them combined.
+- With plain html/template you're starting to repeat yourself. It's harder to define reusable parts.
+- You must repeat DTO calls for each page, where you're using reusable parts.
+- With Go's routines approach it's hard to make async-like DTO calls in the handlers.
+- For dynamic things, you still need to use JS and client-side DOM modification.
 
-This engine tries to bring components and async experience to the traditional server side rendering.
+Complexity is much higher when all of them get combined.
+
+This engine tries to bring components and async experience to the traditional server-side rendering.
 
 ## Zen
 
-- Don't replace Golang's features, that already exist
+- Don't replace Go features that exist already.
 - Don't do work that's already done
-- Don't bind developer with specific solutions (Gin/Chi/GORM/sqlx/etc), let developer choose
-- Use server for rendering, no JS specifics or client-side only behavior
+- Don't force developers to use a specific solution (Gin/Chi/GORM/sqlx/etc). Let them choose
+- Rely on the server to do the rendering, no JS specifics or client-side only behavior
 
 ## Features
 
 - Component approach in mix with `html/template`
 - Asynchronous operations
-- Component methods, that can be called from client side (Server Side Actions, SSA)
-- Different types of components communication (parent, cross)
+- Component methods that can be called from the client side (Server Side Actions, SSA)
+- Different types of component communication (parent, cross)
 
 ## Quick start (simple page)
 
-Basic page (on Gin basis)  
+Basic page (based on Gin)  
   
 ```go
 package main
@@ -100,26 +101,26 @@ func main() {
 
 ## Basic concepts
 
-Each page or component is represented by own-declared structure. For implementing specific functionality, you can use structure's methods with predefined declaration (f.e. `Init(p ssc.Page)`). You need to follow declaration rules to match needed interfaces (you can find all interfaces in `types.go`).  
-Before implementing any method, you need to understand rendering lifecycle.
+Each page or component is represented by its own structure. For implementing specific functionality, you can use structure's methods with a predefined declaration (f.e. `Init(p ssc.Page)`). You need to follow declaration rules to match the interfaces required (you can find all interfaces in `types.go`).  
+Before implementing any method, you need to understand the rendering lifecycle.
 
 ### Lifecycle
 
-Page's lifecycle is hidden under render function and follows this steps:
+Each page's lifecycle is hidden under the render function and follows this steps:
 
 - Defining shared variables (waitgroup, errors channel)
-- Triggering page's `Init()` to initialize and register components
+- Triggering the page's `Init()` to initialize and register components
 - Running all component's `Async()` functions in separate goroutines
-- Wait till all asynchronous operations will be completed
-- Call `AfterAsync()` for each component
+- Waiting untill all asynchronous operations are completed
+- Calling `AfterAsync()` for each component
 - Cleaning up registered components (not needed more for internal usage)
 - Getting page's template and render
 
-> Even if methods like `Init()` or `Async()` may handle your business logic like forms processing, please, try to avoid that. Keep business logic in handlers and use this library only for page rendering.
+> Even though methods like `Init()` or `Async()` can handle your business logic like forms processing, please, try to avoid that. Keep your app's business logic inside tje handlers, and use this library only for page rendering.
 
 ## Pages
 
-To implement page, you need to declare structure with `Template() *template.Template` method. It's minimal requirements for page. Also, page has optional methods:
+To implement a page, you need to declare its structure with `Template() *template.Template` method. This is the only requirements. Also, each page has these optional methods:
 
 - `Init()` - used to initialize page, f.e. components registering or providing default values
 - `Meta() ssc.Meta` - used to provide advanced page meta, like title, description, hreflangs, etc.
@@ -212,7 +213,7 @@ func (*PageIndex) Meta() ssc.Meta {
 
 ## Components
 
-To implement component, you just need to declare structure. There are no minimal requirements for component. Also, component has optional methods:
+To implement a component, you just need to declare its structure. There are no requirements for declaring a component. Also, each component has these optional methods:
 
 - `Init(p ssc.Page)` - used to initialize component, f.e. nested components registering or providing default values
 - `Async() error` - method is called asynchronously with goroutines and processed concurrently during lifecycle. You can use it for fetching information from DB or API
@@ -223,7 +224,7 @@ To implement component, you just need to declare structure. There are no minimal
 
 *Reference component is [here](https://github.com/yuriizinets/go-ssc/blob/master/demo/component.httpbin.uuid.go). Check [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) for full review.*  
 
-Example of component, that fetches and displays UUID response from httpbin.org  
+Example of a component that fetches and displays UUID response from httpbin.org  
 
 ```go
 package main
@@ -260,4 +261,4 @@ For component usage you can check [example of page](#example-of-page).
 
 ## Server Side Actions
 
-Documentation not ready yet. Try to explore [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for features.
+The documentation is not ready yet. Try to explore [the demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for gettting familiar with all the features.
