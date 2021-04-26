@@ -101,7 +101,10 @@ func Funcs() template.FuncMap {
 		"componentattrs": func(c Component) template.HTMLAttr {
 			// Extract component data
 			name := reflect.ValueOf(c).Elem().Type().Name()
-			statebytes, _ := json.Marshal(c)
+			statebytes, err := json.Marshal(c)
+			if err != nil {
+				panic(err)
+			}
 			state := string(statebytes)
 			state = url.QueryEscape(state)
 			// Build attributes
