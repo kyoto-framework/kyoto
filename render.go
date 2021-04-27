@@ -1,17 +1,28 @@
 package ssc
 
 import (
-	"bytes"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"io"
+	"net/http"
 	"net/url"
 	"reflect"
+	"strings"
 	"sync"
 )
 
-// Components store
+// Temporary components store. Will be cleared in the end of lifecycle
 var cstore = map[Page][]Component{}
+
+// Persistent components store, used by SSA. Components are stored in pair with page template
+var ssastore = map[string]ssacomponentstore{}
+
+// Part of persistent components store
+type ssacomponentstore struct {
+	TemplateBuilder func() *template.Template
+	ComponentType   reflect.Type
+}
 
 // Dummy page for rendering component
 type DummyPage struct {
@@ -33,9 +44,18 @@ func (*DummyPage) Meta() Meta {
 
 // RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
-	// Save to store
+	// Save to stores
 	if _, ok := cstore[p]; !ok {
 		cstore[p] = []Component{}
+	}
+	if _, ok := ssastore[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
+		// Extract component type
+		ctype := reflect.ValueOf(c).Elem().Type()
+		// Save to store
+		ssastore[reflect.ValueOf(c).Elem().Type().Name()] = ssacomponentstore{
+			TemplateBuilder: p.Template,
+			ComponentType:   ctype,
+		}
 	}
 	cstore[p] = append(cstore[p], c)
 	// Trigger component init
@@ -90,56 +110,43 @@ func RenderPage(w io.Writer, p Page) {
 	}
 }
 
-// RenderComponent is a minor entrypoint of rendering.
-func RenderComponent(w io.Writer, c Component, t *template.Template, d string) {
-	// Init dummy page for rendering
-	t, _ = t.Parse(`{{ template "` + d + `" . }}`)
-	page := &DummyPage{
-		DTemplate:  t,
-		DComponent: c,
-	}
-	// Dender dummy page with component
-	RenderPage(w, page)
-}
-
-func RenderComponentString(c Component, t *template.Template, d string) string {
-	var b bytes.Buffer
-	RenderComponent(&b, c, t, d)
-	return b.String()
-}
-
-func HandleSSA(w io.Writer, t *template.Template, componentname string, state string, action string, argsstr string, clist []Component) {
-	// Find component
-	var found bool = false
-	var component Component
-	for _, c := range clist {
-		if reflect.ValueOf(c).Elem().Type().Name() == componentname {
-			component = c
-			found = true
-		}
-	}
+func SSAHandler(rw http.ResponseWriter, r *http.Request) {
+	// Extract component action and name from route
+	tokens := strings.Split(r.URL.Path, "/")
+	cname := tokens[2]
+	aname := tokens[3]
+	// Find ssacomponentstore
+	ssacs, found := ssastore[cname]
+	// Panic, if not found
 	if !found {
-		panic("Can't find component. Perhaps, you forgot to register it while calling HandleSSA")
+		panic("Can't find component. Seems like it's not registered")
 	}
+	// Create component
+	component := reflect.New(ssacs.ComponentType).Interface().(Component)
 	// Init
 	if component, ok := component.(ImplementsNestedInit); ok {
 		component.Init(&DummyPage{})
 	}
-	// Init component with state
-	state, _ = url.QueryUnescape(state)
+	// Populate component state
+	state, _ := url.QueryUnescape(r.PostFormValue("State"))
 	if err := json.Unmarshal([]byte(state), &component); err != nil {
 		panic(err)
 	}
 	// Extract arguments
 	var args []interface{}
-	json.Unmarshal([]byte(argsstr), &args)
+	json.Unmarshal([]byte(r.PostFormValue("Args")), &args)
 	// Call action
 	if component, ok := component.(ImplementsActions); ok {
-		component.Actions()[action](args...)
+		component.Actions()[aname](args...)
+	} else {
+		panic("Component not implements Actions, unexpected behavior")
 	}
+	// Prepare template
+	t := ssacs.TemplateBuilder()
+	t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, cname)))
 	// Render component
-	err := t.Execute(w, component)
-	if err != nil {
-		panic(err)
+	terr := t.Execute(rw, component)
+	if terr != nil {
+		panic(terr)
 	}
 }

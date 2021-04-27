@@ -13,9 +13,15 @@ type ComponentSampleBinding struct {
 }
 
 func (c *ComponentSampleBinding) Init(p ssc.Page) {
-	c.FirstValue = "5"
-	c.SecondValue = "5"
-	c.Result = "10"
+	if c.FirstValue == "" {
+		c.FirstValue = "5"
+	}
+	if c.SecondValue == "" {
+		c.SecondValue = "5"
+	}
+	if c.Result == "" {
+		c.Result = "10"
+	}
 }
 
 func (c *ComponentSampleBinding) Actions() ssc.ActionsMap {

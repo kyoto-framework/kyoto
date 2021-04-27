@@ -22,22 +22,7 @@ func main() {
 
 	g.Use(static.Serve("/static/", static.LocalFile("./static", true)))
 
-	g.POST("/SSA/:Component/:Action", func(c *gin.Context) {
-		ssc.HandleSSA(
-			c.Writer,
-			template.Must(template.New(c.Param("Component")).Funcs(funcmap()).ParseGlob("*.html")),
-			c.Param("Component"),
-			c.PostForm("State"),
-			c.Param("Action"),
-			c.PostForm("Args"),
-			[]ssc.Component{
-				&ComponentCounter{},
-				&ComponentSampleBinding{},
-				&ComponentSampleParent{},
-				&ComponentSampleChild{},
-			},
-		)
-	})
+	g.POST("/SSA/*path", gin.WrapF(ssc.SSAHandler))
 
 	addr := "localhost:25025"
 	if os.Getenv("PORT") != "" {
