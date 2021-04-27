@@ -5,5 +5,5 @@ go 1.16
 require (
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.6.3
-	github.com/yuriizinets/go-ssc v0.0.0-20210425192420-4eff51bba5a5
+	github.com/yuriizinets/go-ssc v0.0.0-20210427105032-439e44d16cfa
 )
