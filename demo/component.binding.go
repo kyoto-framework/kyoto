@@ -6,13 +6,13 @@ import (
 	"github.com/yuriizinets/go-ssc"
 )
 
-type ComponentSampleBinding struct {
+type ComponentBinding struct {
 	FirstValue  string
 	SecondValue string
 	Result      string
 }
 
-func (c *ComponentSampleBinding) Init(p ssc.Page) {
+func (c *ComponentBinding) Init(p ssc.Page) {
 	if c.FirstValue == "" {
 		c.FirstValue = "5"
 	}
@@ -24,7 +24,7 @@ func (c *ComponentSampleBinding) Init(p ssc.Page) {
 	}
 }
 
-func (c *ComponentSampleBinding) Actions() ssc.ActionsMap {
+func (c *ComponentBinding) Actions() ssc.ActionsMap {
 	return ssc.ActionsMap{
 		"Calculate": func(args ...interface{}) {
 			fv, err := strconv.Atoi(c.FirstValue)

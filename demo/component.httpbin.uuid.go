@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"encoding/json"
 	"net/http"
 
 	"github.com/yuriizinets/go-ssc"
@@ -17,11 +17,9 @@ func (c *ComponentHttpbinUUID) Async() error {
 		return err
 	}
 	defer resp.Body.Close()
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-	c.UUID = string(data)
+	data := map[string]string{}
+	json.NewDecoder(resp.Body).Decode(&data)
+	c.UUID = data["uuid"]
 	return nil
 }
 

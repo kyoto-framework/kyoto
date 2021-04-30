@@ -1,5 +1,6 @@
 {{ define "ComponentHttpbinUUID" }}
-<div {{ componentattrs . }}>
-    <div>{{ .UUID }}</div>
+<div {{ componentattrs . }} class="border shadow rounded p-4">
+    <div class="text-2xl font-semibold">httpbin.org UUID Demo</div>
+    <div class="mt-2 text-lg">{{ .UUID }}</div>
 </div>
 {{ end }}

@@ -2,10 +2,10 @@ package main
 
 import "github.com/yuriizinets/go-ssc"
 
-type ComponentSampleChild struct {
+type ComponentPСCChild struct {
 	Value string
 }
 
-func (c *ComponentSampleChild) Init(p ssc.Page) {
+func (c *ComponentPСCChild) Init(p ssc.Page) {
 	c.Value = "Child's component value"
 }

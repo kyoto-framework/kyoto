@@ -4,40 +4,73 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{ meta . }}
-    {{ dynamics }}
+    <title>Home | SSC</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    {{ dynamics }}
 </head>
 <body>
-    <div class="pt-24"></div>
-    <div>
-        <img src="/static/ssclogo.png" alt="Logo" width="400" class="m-auto">
+    {{ template "ComponentNavbar" .Navbar }}
+    {{ template "ComponentHero" .Hero }}
+    <!-- Overview -->
+    <a href="#" id="overview"></a>
+    <div class="mt-16 max-w-screen-lg m-auto text-center">
+        {{ template "ComponentContent" .WhatIsSSC }}
     </div>
-    <h1 class="mt-4 text-5xl text-center">Go SSC Demo Page</h1>
-    <div class="pt-16"></div>
-    <h2 class="text-3xl text-center">Httpbin UUID</h2>
-    <p class="text-center">UUID, fetched on the server side, asynchronously, from httpbin.org</p>
-    <div class="mt-2 text-center">
-        {{ template "ComponentHttpbinUUID" .ComponentHttpbinUUID }}
+    <div class="mt-16 max-w-screen-lg m-auto text-center">
+        {{ template "ComponentContent" .WhyNotJS }}
     </div>
-    <div class="pt-16"></div>
-    <h2 class="text-3xl text-center">Counter</h2>
-    <p class="text-center">Counter, fully implemented on server side (Server Side Actions, SSA)</p>
-    <div class="mt-2 text-center">
-        {{ template "ComponentCounter" .ComponentCounter }}
+    <div class="mt-16 max-w-screen-lg m-auto text-center">
+        {{ template "ComponentContent" .WhyNotGoKit }}
     </div>
-    <div class="pt-16"></div>
-    <h2 class="text-3xl text-center">Binding</h2>
-    <p class="text-center">Demo of Client Side state binding with Server Side calculation</p>
-    <div class="mt-2 text-center">
-        {{ template "ComponentSampleBinding" .ComponentSampleBinding }}
+    <!-- Demo -->
+    <a href="#" id="examples"></a>
+    <div class="mt-24 max-w-screen-lg px-4 m-auto text-center">
+        <div class="text-4xl font-semibold">Component examples</div>
+        <div class="mt-2 text-gray-500">For sources check <a href="https://github.com/yuriizinets/go-ssc/tree/master/demo" class="text-blue-700">demo repo</a></div>
     </div>
-    <div class="pt-16"></div>
-    <h2 class="text-3xl text-center">Parent Component Communication</h2>
-    <p class="text-center">SSA, triggered from child component</p>
-    <div class="mt-2 text-center">
-        {{ template "ComponentSampleParent" .ComponentSampleParent }}
+    <div class="mt-16 max-w-screen-xl m-auto w-full flex flex-wrap items-center">
+        <div class="w-full sm:w-1/2 px-4">
+            {{ template "ComponentContent" .ContentUUID }}
+        </div>
+        <div class="w-full sm:w-1/2 mt-6 sm:mt-0 px-4">
+            {{ template "ComponentHttpbinUUID" .ComponentUUID }}
+        </div>
     </div>
-    <div class="pt-16"></div>
+    <div class="mt-16 max-w-screen-xl m-auto w-full flex flex-wrap items-center">
+        <div class="w-full sm:w-1/2 px-4">
+            {{ template "ComponentContent" .ContentCounter }}
+        </div>
+        <div class="w-full sm:w-1/2 mt-6 sm:mt-0 px-4">
+            {{ template "ComponentCounter" .ComponentCounter }}
+        </div>
+    </div>
+    <div class="mt-16 max-w-screen-xl m-auto w-full flex flex-wrap items-center">
+        <div class="w-full sm:w-1/2 px-4">
+            {{ template "ComponentContent" .ContentBinding }}
+        </div>
+        <div class="w-full sm:w-1/2 mt-6 sm:mt-0 px-4">
+            {{ template "ComponentBinding" .ComponentBinding }}
+        </div>
+    </div>
+    <div class="mt-16 max-w-screen-xl m-auto w-full flex flex-wrap items-center">
+        <div class="w-full sm:w-1/2 px-4">
+            {{ template "ComponentContent" .ContentPCC }}
+        </div>
+        <div class="w-full sm:w-1/2 mt-6 sm:mt-0 px-4">
+            {{ template "ComponentPCCParent" .ComponentPCC }}
+        </div>
+    </div>
+    <!-- Communicate -->
+    <a href="" id="communicate"></a>
+    <div class="mt-32 max-w-screen-lg m-auto text-center">
+        {{ template "ComponentContent" .HelpPrompt }}
+    </div>
+    <!-- Sponsor -->
+    <a href="" id="sponsor"></a>
+    <div class="mt-24 max-w-screen-lg m-auto text-center">
+        {{ template "ComponentContent" .SponsorPrompt }}
+    </div>
+    
+    <div class="py-16"></div>
 </body>
 </html>

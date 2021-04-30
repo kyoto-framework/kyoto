@@ -1,0 +1,24 @@
+{{ define "ComponentNavbar" }}
+<nav class="fixed w-full bg-white shadow-md">
+    <div class="container m-auto h-12 flex items-center justify-between">
+        <!-- Left -->
+        <div>
+            <a href="/">
+                <span class="ml-2 font-semibold text-xl tracking-tight">SSC Engine</span>
+            </a>
+        </div>
+        <!-- Center -->
+        <div>
+
+        </div>
+        <!-- Right -->
+        <div class="hidden sm:block">
+            <a href="#overview" class="block md:inline-block text-sm px-4 py-2 leading-none rounded border-white mt-4 md:mt-0">Overview</a>
+            <a href="#examples" class="block md:inline-block text-sm px-4 py-2 leading-none rounded border-white mt-4 md:mt-0">Examples</a>
+            <a href="https://github.com/yuriizinets/go-ssc" class="block md:inline-block text-sm px-4 py-2 leading-none rounded border-white mt-4 md:mt-0">GitHub</a>
+            <a href="#sponsor" class="block md:inline-block text-sm px-4 py-2 leading-none rounded border-white mt-4 md:mt-0">Sponsor</a>
+        </div>
+    </div>
+</nav>
+<div class="pt-12"></div>
+{{ end }}

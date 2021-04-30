@@ -1,0 +1,15 @@
+{{ define "ComponentBinding" }}
+<div {{ componentattrs . }} class="border shadow rounded p-4">
+    <div class="text-2xl font-semibold">Binding Demo</div>
+    <div class="mt-6 flex flex-wrap items-center justify-center">
+        <input type="text" value="{{ .FirstValue }}" oninput="{{ bind `FirstValue` }}" class="border rounded shadow-sm mx-1 px-1"> 
+        <span>+</span>
+        <input type="text" value="{{ .SecondValue }}" oninput="{{ bind `SecondValue` }}" class="border rounded shadow-sm mx-1 px-1"> 
+        <span>=</span>
+        <span class="mx-1">{{ .Result }}</span>
+    </div>
+    <div class="mt-4 flex items-center">
+        <button onclick="{{ action `Calculate` }}" class="m-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Calculate</button>
+    </div>
+</div>
+{{ end }}

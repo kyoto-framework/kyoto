@@ -1,8 +1,7 @@
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/yuriizinets/go-ssc/master/demo/static/ssclogo.png" width="250">
+    <img src="https://i.imgur.com/iHqOPQN.jpg">
 </p>
-<h1 align="center">Go SSC (Go Server Side Components)</h1>
 
 An HTML render engine concept that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (nethttp/Gin/etc), that provides `io.Writer` in response.  
 
@@ -16,7 +15,7 @@ An HTML render engine concept that brings frontend-like components experience to
 
 - [TOC](#toc)
 - [Why?](#why)
-- [What problems it solves? Why not plain GoKit?](#what-problems-it-solves-why-not-plain-gokit)
+- [What problems does it solve? Why not using plain GoKit?](#what-problems-does-it-solve-why-not-using-plain-gokit)
 - [Zen](#zen)
 - [Features](#features)
 - [Quick start (simple page)](#quick-start-simple-page)

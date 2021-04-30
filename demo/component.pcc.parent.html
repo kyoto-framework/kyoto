@@ -1,0 +1,11 @@
+{{ define "ComponentPCCParent" }}
+<div {{ componentattrs . }} class="border shadow rounded p-4">
+    <div class="text-2xl font-semibold">Parent Communication Demo</div>
+    <div class="mt-4 text-center">
+        <div class="italic">I'm parent component. My value is: {{ .Value }}</div>
+        <div class="mt-2">
+            {{ template "ComponentPCCChild" .Child  }}
+        </div>
+    </div>
+</div>
+{{ end }}

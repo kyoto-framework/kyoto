@@ -2,8 +2,8 @@ module github.com/yuriizinets/go-ssc/demo
 
 go 1.16
 
-require (
-	github.com/gin-contrib/static v0.0.1
-	github.com/gin-gonic/gin v1.6.3
-	github.com/yuriizinets/go-ssc v0.0.0-20210427105032-439e44d16cfa
+require github.com/yuriizinets/go-ssc v0.0.0-20210427105130-db6c07804f8e // indirect
+
+replace (
+    github.com/yuriizinets/go-ssc => ../
 )

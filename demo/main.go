@@ -1,32 +1,24 @@
 package main
 
 import (
-	"html/template"
+	"log"
+	"net/http"
 	"os"
 
-	"github.com/gin-contrib/static"
-	"github.com/gin-gonic/gin"
 	"github.com/yuriizinets/go-ssc"
 )
 
-func funcmap() template.FuncMap {
-	return ssc.Funcs()
-}
-
 func main() {
-	g := gin.Default()
+	mux := http.NewServeMux()
 
-	g.GET("/", func(c *gin.Context) {
-		ssc.RenderPage(c.Writer, &PageIndex{})
-	})
+	mux.HandleFunc("/", PageIndexHandler)
+	mux.HandleFunc("/SSA/", ssc.SSAHandler)
 
-	g.Use(static.Serve("/static/", static.LocalFile("./static", true)))
-
-	g.POST("/SSA/*path", gin.WrapF(ssc.SSAHandler))
-
-	addr := "localhost:25025"
-	if os.Getenv("PORT") != "" {
-		addr = ":" + os.Getenv("PORT")
+	if os.Getenv("PORT") == "" {
+		log.Println("Listening on localhost:25025")
+		http.ListenAndServe("localhost:25025", mux)
+	} else {
+		log.Println("Listening on 0.0.0.0:" + os.Getenv("PORT"))
+		http.ListenAndServe(":"+os.Getenv("PORT"), mux)
 	}
-	g.Run(addr)
 }
