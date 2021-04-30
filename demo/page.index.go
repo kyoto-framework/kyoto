@@ -15,14 +15,16 @@ type PageIndex struct {
 	WhyNotJS    ssc.Component
 	WhyNotGoKit ssc.Component
 	// Demo
-	ContentUUID      ssc.Component
-	ComponentUUID    ssc.Component
-	ContentCounter   ssc.Component
-	ComponentCounter ssc.Component
-	ContentBinding   ssc.Component
-	ComponentBinding ssc.Component
-	ContentPCC       ssc.Component
-	ComponentPCC     ssc.Component
+	ContentUUID             ssc.Component
+	ComponentUUID           ssc.Component
+	ContentCounter          ssc.Component
+	ComponentCounter        ssc.Component
+	ContentBinding          ssc.Component
+	ComponentBinding        ssc.Component
+	ContentPCC              ssc.Component
+	ComponentPCC            ssc.Component
+	ContentEmailValidator   ssc.Component
+	ComponentEmailValidator ssc.Component
 	// Help prompt
 	HelpPrompt ssc.Component
 	// Sponsor prompt
@@ -142,6 +144,23 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.ComponentPCC = ssc.RegC(p, &ComponentPCCParent{})
+	p.ContentEmailValidator = ssc.RegC(p, &ComponentContent{
+		Title: "Form Submit Action",
+		Description: "" +
+			"Example of dynamic component behavior. " +
+			"Form is handled and processed on the server side, without page reload",
+		Links: []ComponentContentLink{
+			{
+				Href:  "https://github.com/yuriizinets/go-ssc/blob/master/demo/component.email.validator.go",
+				Title: "component.email.validator.go",
+			},
+			{
+				Href:  "https://github.com/yuriizinets/go-ssc/blob/master/demo/component.email.validator.html",
+				Title: "component.email.validator.html",
+			},
+		},
+	})
+	p.ComponentEmailValidator = ssc.RegC(p, &ComponentEmailValidator{})
 	// Help prompt
 	p.HelpPrompt = ssc.RegC(p, &ComponentContent{
 		Title: "Need to communicate?",

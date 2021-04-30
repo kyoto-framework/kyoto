@@ -61,11 +61,26 @@ function Bind(self, field) {
 	}
 	// Load state
 	let state = JSON.parse(decodeURIComponent(root.getAttribute('state')))
-	console.log(state)
 	// Set value
 	state[field] = self.value
 	// Set state
 	root.setAttribute('state', JSON.stringify(state))
+}
+
+function FormSubmit(self, e) {
+	// Prevent default submit
+	e.preventDefault()
+	// Override state with form data
+	let state = JSON.parse(decodeURIComponent(self.getAttribute('state')))
+	let form = new FormData(e.target)
+	let formdata = Object.fromEntries(form.entries())
+	Object.entries(formdata).forEach(pair => {
+		state[pair[0]] = pair[1]
+	})
+	self.setAttribute('state', JSON.stringify(state))
+	// Trigger "Submit" action
+	Action(self, 'Submit')
+	return false
 }
 </script>
 `
@@ -122,6 +137,9 @@ func Funcs() template.FuncMap {
 		},
 		"bind": func(field string) template.JS {
 			return template.JS(fmt.Sprintf("Bind(this, '%s')", field))
+		},
+		"formsubmit": func() template.JS {
+			return template.JS("FormSubmit(this, event)")
 		},
 	}
 }

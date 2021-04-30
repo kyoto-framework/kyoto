@@ -60,6 +60,14 @@
             {{ template "ComponentPCCParent" .ComponentPCC }}
         </div>
     </div>
+    <div class="mt-16 max-w-screen-xl m-auto w-full flex flex-wrap items-center">
+        <div class="w-full sm:w-1/2 px-4">
+            {{ template "ComponentContent" .ContentEmailValidator }}
+        </div>
+        <div class="w-full sm:w-1/2 mt-6 sm:mt-0 px-4">
+            {{ template "ComponentEmailValidator" .ComponentEmailValidator }}
+        </div>
+    </div>
     <!-- Communicate -->
     <a href="" id="communicate"></a>
     <div class="mt-32 max-w-screen-lg m-auto text-center">
