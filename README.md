@@ -26,6 +26,7 @@ An HTML render engine concept that brings frontend-like components experience to
 - [Components](#components)
   - [Component example](#component-example)
 - [Server Side Actions](#server-side-actions)
+  - [SSA Example](#ssa-example)
 
 ## Why?
 
@@ -139,9 +140,6 @@ import (
 
 type PageIndex struct {
     ComponentHttpbinUUID   ssc.Component
-    ComponentCounter       ssc.Component
-    ComponentSampleBinding ssc.Component
-    ComponentSampleParent  ssc.Component
 }
 
 func (*PageIndex) Template() *template.Template {
@@ -150,9 +148,6 @@ func (*PageIndex) Template() *template.Template {
 
 func (p *PageIndex) Init() {
     p.ComponentHttpbinUUID = ssc.RegC(p, &ComponentHttpbinUUID{})
-    p.ComponentCounter = ssc.RegC(p, &ComponentCounter{})
-    p.ComponentSampleBinding = ssc.RegC(p, &ComponentSampleBinding{})
-    p.ComponentSampleParent = ssc.RegC(p, &ComponentSampleParent{})
 }
 
 func (*PageIndex) Meta() ssc.Meta {
@@ -175,10 +170,6 @@ func (*PageIndex) Meta() ssc.Meta {
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="pt-24"></div>
-    <div>
-        <img src="/static/ssclogo.png" alt="Logo" width="400" class="m-auto">
-    </div>
     <h1 class="mt-4 text-5xl text-center">Go SSC Demo Page</h1>
     <div class="pt-16"></div>
     <h2 class="text-3xl text-center">Httpbin UUID</h2>
@@ -186,25 +177,6 @@ func (*PageIndex) Meta() ssc.Meta {
     <div class="mt-2 text-center">
         {{ template "ComponentHttpbinUUID" .ComponentHttpbinUUID }}
     </div>
-    <div class="pt-16"></div>
-    <h2 class="text-3xl text-center">Counter</h2>
-    <p class="text-center">Counter, fully implemented on server side (Server Side Actions, SSA)</p>
-    <div class="mt-2 text-center">
-        {{ template "ComponentCounter" .ComponentCounter }}
-    </div>
-    <div class="pt-16"></div>
-    <h2 class="text-3xl text-center">Binding</h2>
-    <p class="text-center">Demo of Client Side state binding with Server Side calculation</p>
-    <div class="mt-2 text-center">
-        {{ template "ComponentSampleBinding" .ComponentSampleBinding }}
-    </div>
-    <div class="pt-16"></div>
-    <h2 class="text-3xl text-center">Parent Component Communication</h2>
-    <p class="text-center">SSA, triggered from child component</p>
-    <div class="mt-2 text-center">
-        {{ template "ComponentSampleParent" .ComponentSampleParent }}
-    </div>
-    <div class="pt-16"></div>
 </body>
 </html>
 
@@ -260,4 +232,41 @@ For component usage you can check [example of page](#example-of-page).
 
 ## Server Side Actions
 
-The documentation is not ready yet. Try to explore [the demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) project for gettting familiar with all the features.
+Server Side Actions (SSA) - a way to execute logic on the server side and update component's DOM. This feature works with thin JS layer, so, you'll need to include `{{ dynamics }}` row in your page. Also, you'll need to register endpoint handler (`ssc.SSAHandler`) with prefix `/SSA/` for Actions to work. As an example for built-in `net/http`, you need to attach handler in that way `mux.HandleFunc("/SSA/", ssc.SSAHandler)`
+
+### SSA Example
+
+*Reference component is [here](https://github.com/yuriizinets/go-ssc/blob/master/demo/component.counter.go). Check [demo](https://github.com/yuriizinets/go-ssc/tree/master/demo) for full review.*  
+
+Example of Action
+
+```go
+package main
+
+import "github.com/yuriizinets/go-ssc"
+
+type ComponentCounter struct {
+    Count int
+}
+
+func (c *ComponentCounter) Actions() ssc.ActionsMap {
+    return ssc.ActionsMap{
+        "Increment": func(args ...interface{}) {
+            c.Count++
+        },
+    }
+}
+
+```
+
+```html
+{{ define "ComponentCounter" }}
+<div {{ componentattrs . }} class="border shadow rounded p-4">
+    <div class="text-2xl font-semibold">Counter Demo</div>
+    <div class="py-2 w-full flex flex-col items-center">
+        <div class="text-2xl">{{ .Count }}</div>
+        <button onclick="{{ action `Increment` }}" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-32">Increment</button>
+    </div>
+</div>
+{{ end }}
+```
