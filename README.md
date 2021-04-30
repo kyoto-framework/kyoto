@@ -232,7 +232,7 @@ For component usage you can check [example of page](#example-of-page).
 
 ## Server Side Actions
 
-Server Side Actions (SSA) - a way to execute logic on the server side and update component's DOM. This feature works with thin JS layer, so, you'll need to include `{{ dynamics }}` row in your page. Also, you'll need to register endpoint handler (`ssc.SSAHandler`) with prefix `/SSA/` for Actions to work. As an example for built-in `net/http`, you need to attach handler in that way `mux.HandleFunc("/SSA/", ssc.SSAHandler)`
+Server Side Actions (SSA) - a way to execute logic on the server side and update component's DOM. You don't need to define any custom JS to update and redraw your component, your template will be reused for this. This feature works with thin JS layer, so, you'll need to include `{{ dynamics }}` row in your page. Also, you'll need to register endpoint handler (`ssc.SSAHandler`) with prefix `/SSA/` for Actions to work. As an example for built-in `net/http`, you need to attach handler in that way `mux.HandleFunc("/SSA/", ssc.SSAHandler)`
 
 ### SSA Example
 
