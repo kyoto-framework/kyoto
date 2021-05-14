@@ -1,14 +1,9 @@
 package ssc
 
 import (
-	"encoding/json"
-	"fmt"
 	"html/template"
 	"io"
-	"net/http"
-	"net/url"
 	"reflect"
-	"strings"
 	"sync"
 )
 
@@ -22,24 +17,6 @@ var ssastore = map[string]ssacomponentstore{}
 type ssacomponentstore struct {
 	TemplateBuilder func() *template.Template
 	ComponentType   reflect.Type
-}
-
-// Dummy page for rendering component
-type DummyPage struct {
-	DTemplate  *template.Template
-	DComponent Component
-}
-
-func (p *DummyPage) Template() *template.Template {
-	return p.DTemplate
-}
-
-func (p *DummyPage) Init() {
-	p.DComponent = RegC(p, p.DComponent)
-}
-
-func (*DummyPage) Meta() Meta {
-	return Meta{}
 }
 
 // RegisterComponent is used while defining components in the Init() section
@@ -105,47 +82,6 @@ func RenderPage(w io.Writer, p Page) {
 	delete(cstore, p)
 	// Execute template
 	terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
-	if terr != nil {
-		panic(terr)
-	}
-}
-
-func SSAHandler(rw http.ResponseWriter, r *http.Request) {
-	// Extract component action and name from route
-	tokens := strings.Split(r.URL.Path, "/")
-	cname := tokens[2]
-	aname := tokens[3]
-	// Find ssacomponentstore
-	ssacs, found := ssastore[cname]
-	// Panic, if not found
-	if !found {
-		panic("Can't find component. Seems like it's not registered")
-	}
-	// Create component
-	component := reflect.New(ssacs.ComponentType).Interface().(Component)
-	// Init
-	if component, ok := component.(ImplementsNestedInit); ok {
-		component.Init(&DummyPage{})
-	}
-	// Populate component state
-	state, _ := url.QueryUnescape(r.PostFormValue("State"))
-	if err := json.Unmarshal([]byte(state), &component); err != nil {
-		panic(err)
-	}
-	// Extract arguments
-	var args []interface{}
-	json.Unmarshal([]byte(r.PostFormValue("Args")), &args)
-	// Call action
-	if component, ok := component.(ImplementsActions); ok {
-		component.Actions()[aname](args...)
-	} else {
-		panic("Component not implements Actions, unexpected behavior")
-	}
-	// Prepare template
-	t := ssacs.TemplateBuilder()
-	t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, cname)))
-	// Render component
-	terr := t.Execute(rw, component)
 	if terr != nil {
 		panic(terr)
 	}
