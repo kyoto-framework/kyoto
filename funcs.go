@@ -38,7 +38,6 @@ function Action(self, action, ...args) {
             }
         }
     }
-	console.log(root, action)
 	// Prepare form data
 	let formdata = new FormData()
 	formdata.set('State', root.getAttribute('state'))
