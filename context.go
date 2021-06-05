@@ -16,3 +16,16 @@ func SetContext(p Page, key string, value interface{}) {
 func GetContext(p Page, key string) interface{} {
 	return context[p][key]
 }
+
+func DelContext(p Page, key string) {
+	space, ok := context[p]
+	if !ok {
+		space = map[string]interface{}{}
+	}
+	if key != "" {
+		delete(space, key)
+	} else {
+		space = map[string]interface{}{}
+	}
+	context[p] = space
+}

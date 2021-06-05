@@ -15,6 +15,7 @@ func PageHandler(p Page) http.HandlerFunc {
 		SetContext(p, "internal:request", r)
 		SetContext(p, "internal:rwriter", rw)
 		RenderPage(rw, p)
+		DelContext(p, "")
 	}
 }
 
@@ -61,4 +62,6 @@ func SSAHandler(rw http.ResponseWriter, r *http.Request) {
 	if terr != nil {
 		panic(terr)
 	}
+	// Clear context
+	DelContext(dummypage, "")
 }

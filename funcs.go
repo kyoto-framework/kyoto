@@ -14,24 +14,31 @@ var dynamics = `
 <script>
 
 function Action(self, action, ...args) {
-	// Determine depth
-	let depth = (action.split('').filter(x => x === '$') || []).length
-	action = action.replaceAll('$', '')
-	// Find component root
-	let root = self
-	let dcount = 0
-	while (true) {
-		if (!root.getAttribute('state')) {
-			root = root.parentElement
-		} else {
-			if (dcount != depth) {
-				root = root.parentElement
-				dcount++
-			} else {
-				break
-			}
-		}
-	}
+    // Determine target component, if provided
+    let root
+    if (action.includes(':')) {
+        let rootid = action.split(':')[0]
+        action = action.split(':')[1]
+        root = document.getElementById(rootid)
+    } else {
+        let depth = (action.split('').filter(x => x === '$') || []).length
+        action = action.replaceAll('$', '')
+        root = self
+        let dcount = 0
+        while (true) {
+            if (!root.getAttribute('state')) {
+                root = root.parentElement
+            } else {
+                if (dcount != depth) {
+                    root = root.parentElement
+                    dcount++
+                } else {
+                    break
+                }
+            }
+        }
+    }
+	console.log(root, action)
 	// Prepare form data
 	let formdata = new FormData()
 	formdata.set('State', root.getAttribute('state'))
