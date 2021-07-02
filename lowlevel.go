@@ -3,9 +3,14 @@ package ssc
 import (
 	"html/template"
 	"io"
+	"log"
 	"reflect"
 	"sync"
+	"time"
 )
+
+// Debug flag
+var BENCH_LOWLEVEL = false
 
 // Temporary components store. Will be cleared in the end of lifecycle
 var cstore = map[Page][]Component{}
@@ -55,7 +60,12 @@ func RenderPage(w io.Writer, p Page) {
 	var err = make(chan error, 1000)
 	// Trigger init
 	if p, ok := p.(ImplementsInit); ok {
+		st := time.Now()
 		p.Init()
+		et := time.Since(st)
+		if BENCH_LOWLEVEL {
+			log.Println("Init time", reflect.TypeOf(p), et)
+		}
 	}
 	// Trigger async in goroutines
 	for _, component := range cstore[p] {
@@ -63,7 +73,12 @@ func RenderPage(w io.Writer, p Page) {
 			wg.Add(1)
 			go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
 				defer wg.Done()
+				st := time.Now()
 				_err := c.Async()
+				et := time.Since(st)
+				if BENCH_LOWLEVEL {
+					log.Println("Async time", reflect.TypeOf(component), et)
+				}
 				if _err != nil {
 					err <- _err
 				}
@@ -75,13 +90,23 @@ func RenderPage(w io.Writer, p Page) {
 	// Trigger aftersync
 	for _, component := range cstore[p] {
 		if component, ok := component.(ImplementsAfterAsync); ok {
+			st := time.Now()
 			component.AfterAsync()
+			et := time.Since(st)
+			if BENCH_LOWLEVEL {
+				log.Println("AfterAsync time", reflect.TypeOf(component), et)
+			}
 		}
 	}
 	// Clear components store (not needed more)
 	delete(cstore, p)
 	// Execute template
+	st := time.Now()
 	terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
+	et := time.Since(st)
+	if BENCH_LOWLEVEL {
+		log.Println("Execute time", et)
+	}
 	if terr != nil {
 		panic(terr)
 	}
