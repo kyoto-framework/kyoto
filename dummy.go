@@ -4,16 +4,16 @@ import "html/template"
 
 // Dummy page for component rendering
 type DummyPage struct {
-	DTemplate  *template.Template
-	DComponent Component
+	TemplateBuilder func() *template.Template
+	Component       Component
 }
 
 func (p *DummyPage) Template() *template.Template {
-	return p.DTemplate
+	return p.TemplateBuilder()
 }
 
 func (p *DummyPage) Init() {
-	p.DComponent = RegC(p, p.DComponent)
+	p.Component = RegC(p, p.Component)
 }
 
 func (*DummyPage) Meta() Meta {
