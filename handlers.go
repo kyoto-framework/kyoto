@@ -163,7 +163,7 @@ func SSAHandlerWithPage(page Page) func(rw http.ResponseWriter, r *http.Request)
 		}
 		// Prepare template
 		st = time.Now()
-		t := ssacs.TemplateBuilder()
+		t := page.Template()
 		t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, cname)))
 		et = time.Since(st)
 		if BENCH_HANDLERS {
