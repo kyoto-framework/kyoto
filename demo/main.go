@@ -9,7 +9,7 @@ import (
 	"github.com/yuriizinets/go-ssc"
 )
 
-func ssatemplate() *template.Template {
+func ssatemplate(p ssc.Page) *template.Template {
 	return template.Must(template.New("SSA").Funcs(ssc.Funcs()).ParseGlob("*.html"))
 }
 
