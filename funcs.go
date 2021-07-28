@@ -9,88 +9,8 @@ import (
 	"strings"
 )
 
-// Code, responsible for dynamics, like Server Side Actions, bindings, etc.
-var dynamics = `
-<script>
-
-function Action(self, action, ...args) {
-    // Determine target component, if provided
-    let root
-    if (action.includes(':')) {
-        let rootid = action.split(':')[0]
-        action = action.split(':')[1]
-        root = document.getElementById(rootid)
-    } else {
-        let depth = (action.split('').filter(x => x === '$') || []).length
-        action = action.replaceAll('$', '')
-        root = self
-        let dcount = 0
-        while (true) {
-            if (!root.getAttribute('state')) {
-                root = root.parentElement
-            } else {
-                if (dcount != depth) {
-                    root = root.parentElement
-                    dcount++
-                } else {
-                    break
-                }
-            }
-        }
-    }
-	// Prepare form data
-	let formdata = new FormData()
-	formdata.set('State', root.getAttribute('state'))
-	formdata.set('Args', JSON.stringify(args))
-	// Make request
-	fetch("/SSA/"+root.getAttribute('name')+"/"+action, {
-		method: 'POST',
-		body: formdata
-	}).then(resp => {
-		return resp.text()
-	}).then(data => {
-		root.outerHTML = data
-	}).catch(err => {
-		console.log(err)
-	})
-}
-
-function Bind(self, field) {
-	// Find component root
-	let root = self
-	while (true) {
-		if (!root.getAttribute('state')) {
-			root = root.parentElement
-		} else {
-			break
-		}
-	}
-	// Load state
-	let state = JSON.parse(decodeURIComponent(root.getAttribute('state')))
-	// Set value
-	state[field] = self.value
-	// Set state
-	root.setAttribute('state', JSON.stringify(state))
-}
-
-function FormSubmit(self, e) {
-	// Prevent default submit
-	e.preventDefault()
-	// Override state with form data
-	let state = JSON.parse(decodeURIComponent(self.getAttribute('state')))
-	let form = new FormData(e.target)
-	let formdata = Object.fromEntries(form.entries())
-	Object.entries(formdata).forEach(pair => {
-		state[pair[0]] = pair[1]
-	})
-	self.setAttribute('state', JSON.stringify(state))
-	// Trigger "Submit" action
-	Action(self, 'Submit')
-	return false
-}
-</script>
-`
-
+// This functions are required in template FuncMap
+// You have to use them for Template builders (or mix with your own)
 func Funcs() template.FuncMap {
 	return template.FuncMap{
 		"meta": func(p Page) template.HTML {
@@ -113,7 +33,7 @@ func Funcs() template.FuncMap {
 			return template.HTML(builder)
 		},
 		"dynamics": func() template.HTML {
-			return template.HTML(dynamics)
+			return template.HTML(ssaclient)
 		},
 		"json": func(data interface{}) string {
 			d, _ := json.Marshal(data)

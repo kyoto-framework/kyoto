@@ -24,8 +24,8 @@ func (c *ComponentBinding) Init(p ssc.Page) {
 	}
 }
 
-func (c *ComponentBinding) Actions() ssc.ActionsMap {
-	return ssc.ActionsMap{
+func (c *ComponentBinding) Actions() ssc.ActionMap {
+	return ssc.ActionMap{
 		"Calculate": func(args ...interface{}) {
 			fv, err := strconv.Atoi(c.FirstValue)
 			if err != nil {

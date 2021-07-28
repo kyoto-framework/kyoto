@@ -23,8 +23,8 @@ func (c *ComponentHttpbinUUID) Async() error {
 	return nil
 }
 
-func (c *ComponentHttpbinUUID) Actions() ssc.ActionsMap {
-	return ssc.ActionsMap{
+func (c *ComponentHttpbinUUID) Actions() ssc.ActionMap {
+	return ssc.ActionMap{
 		"Reload": func(args ...interface{}) {
 			c.Async()
 		},

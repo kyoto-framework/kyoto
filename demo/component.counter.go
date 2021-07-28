@@ -6,8 +6,8 @@ type ComponentCounter struct {
 	Count int
 }
 
-func (c *ComponentCounter) Actions() ssc.ActionsMap {
-	return ssc.ActionsMap{
+func (c *ComponentCounter) Actions() ssc.ActionMap {
+	return ssc.ActionMap{
 		"Increment": func(args ...interface{}) {
 			c.Count++
 		},

@@ -1,7 +1,6 @@
 package ssc
 
-// Context used as temporary store for data
-
+// Context used as scoped temporary store for data
 var context = map[Page]map[string]interface{}{}
 
 func SetContext(p Page, key string, value interface{}) {

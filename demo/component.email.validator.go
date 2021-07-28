@@ -14,8 +14,8 @@ type ComponentEmailValidator struct {
 	Color   string
 }
 
-func (c *ComponentEmailValidator) Actions() ssc.ActionsMap {
-	return ssc.ActionsMap{
+func (c *ComponentEmailValidator) Actions() ssc.ActionMap {
+	return ssc.ActionMap{
 		"Submit": func(args ...interface{}) {
 			if emailregex.MatchString(c.Email) {
 				c.Message = "Provided email is valid"

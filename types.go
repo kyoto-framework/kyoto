@@ -4,9 +4,23 @@ import (
 	"html/template"
 )
 
-// Aliases
+// SSA aliases
+
 type Action func(args ...interface{})
-type ActionsMap map[string]Action
+type ActionMap map[string]Action
+type TemplateBuilder func() *template.Template
+
+// SSA page placeholder
+
+type dummypage struct {
+	TemplateBuilder func() *template.Template
+}
+
+func (p *dummypage) Template() *template.Template {
+	return p.TemplateBuilder()
+}
+
+// Meta
 
 type Hreflang struct {
 	Lang string
@@ -49,7 +63,7 @@ type ImplementsAfterAsync interface {
 }
 
 type ImplementsActions interface {
-	Actions() ActionsMap
+	Actions() ActionMap
 }
 
 type ImplementsMeta interface {

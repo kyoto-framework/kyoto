@@ -12,8 +12,8 @@ func (c *ComponentPCCParent) Init(p ssc.Page) {
 	c.Child = ssc.RegC(p, &ComponentPСCChild{})
 }
 
-func (c *ComponentPCCParent) Actions() ssc.ActionsMap {
-	return ssc.ActionsMap{
+func (c *ComponentPCCParent) Actions() ssc.ActionMap {
+	return ssc.ActionMap{
 		"SetValue": func(args ...interface{}) {
 			c.Value = args[0].(string)
 		},

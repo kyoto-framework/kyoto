@@ -1,45 +1,33 @@
 package ssc
 
 import (
-	"html/template"
 	"io"
 	"log"
+	"net/http"
 	"reflect"
 	"sync"
 	"time"
 )
 
-// Debug flag
-var BENCH_LOWLEVEL = false
-
-// Temporary components store. Will be cleared in the end of lifecycle
-var cstore = map[Page][]Component{}
-
-// Persistent components store, used by SSA. Components are stored in pair with page template
-var ssastore = map[string]ssacomponentstore{}
-
-// Part of persistent components store
-type ssacomponentstore struct {
-	TemplateBuilder func() *template.Template
-	ComponentType   reflect.Type
-}
+// Component Store Lifecycle is a temporary storage for components processing
+// Will be cleared in the end of lifecycle
+var csl = map[Page][]Component{}
 
 // RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
-	// Save to stores
-	if _, ok := cstore[p]; !ok {
-		cstore[p] = []Component{}
+	// Init csl store
+	if _, ok := csl[p]; !ok {
+		csl[p] = []Component{}
 	}
-	if _, ok := ssastore[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
+	// Save type to SSA store
+	if _, ok := csssa[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
 		// Extract component type
 		ctype := reflect.ValueOf(c).Elem().Type()
 		// Save to store
-		ssastore[reflect.ValueOf(c).Elem().Type().Name()] = ssacomponentstore{
-			TemplateBuilder: p.Template,
-			ComponentType:   ctype,
-		}
+		csssa[reflect.ValueOf(c).Elem().Type().Name()] = ctype
 	}
-	cstore[p] = append(cstore[p], c)
+	// Save component to lifecycle store
+	csl[p] = append(csl[p], c)
 	// Trigger component init
 	if c, ok := c.(ImplementsNestedInit); ok {
 		c.Init(p)
@@ -48,10 +36,8 @@ func RegisterComponent(p Page, c Component) Component {
 	return c
 }
 
-// RegC - Shortcut for RegisterComponent
-func RegC(p Page, c Component) Component {
-	return RegisterComponent(p, c)
-}
+// Alias for RegisterComponent
+var RegC = RegisterComponent
 
 // RenderPage is a main entrypoint of rendering. Responsible for rendering and components lifecycle
 func RenderPage(w io.Writer, p Page) {
@@ -68,7 +54,7 @@ func RenderPage(w io.Writer, p Page) {
 		}
 	}
 	// Trigger async in goroutines
-	for _, component := range cstore[p] {
+	for _, component := range csl[p] {
 		if component, ok := component.(ImplementsAsync); ok {
 			wg.Add(1)
 			go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
@@ -88,7 +74,7 @@ func RenderPage(w io.Writer, p Page) {
 	// Wait for async completion
 	wg.Wait()
 	// Trigger aftersync
-	for _, component := range cstore[p] {
+	for _, component := range csl[p] {
 		if component, ok := component.(ImplementsAfterAsync); ok {
 			st := time.Now()
 			component.AfterAsync()
@@ -99,7 +85,7 @@ func RenderPage(w io.Writer, p Page) {
 		}
 	}
 	// Clear components store (not needed more)
-	delete(cstore, p)
+	delete(csl, p)
 	// Execute template
 	st := time.Now()
 	terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
@@ -109,5 +95,31 @@ func RenderPage(w io.Writer, p Page) {
 	}
 	if terr != nil {
 		panic(terr)
+	}
+}
+
+// PageHandlerFactory is a factory for building Page handler.
+// Simple wrapper around RenderPage with context setting.
+// Good for defining own project-level handler.
+// Example of usage:
+// func handle(p ssc.Page) http.HandlerFunc {
+//     return func(rw http.ResponseWriter, r *http.Request) {
+// 	       ssc.PageHandlerFactory(p, map[string]interface{}{
+//	           "internal:rw": rw,
+//             "internal:r": r,
+//         })(rw, r)
+//     }
+// }
+func PageHandlerFactory(p Page, context map[string]interface{}) http.HandlerFunc {
+	// Set context
+	for k, v := range context {
+		SetContext(p, k, v)
+	}
+	// Return handler
+	return func(rw http.ResponseWriter, r *http.Request) {
+		// Render page
+		RenderPage(rw, p)
+		// Clear context
+		DelContext(p, "")
 	}
 }
