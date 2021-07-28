@@ -8,16 +8,16 @@ import (
 
 type Action func(args ...interface{})
 type ActionMap map[string]Action
-type TemplateBuilder func() *template.Template
+type TemplateBuilder func(p Page) *template.Template
 
 // SSA page placeholder
 
 type dummypage struct {
-	TemplateBuilder func() *template.Template
+	TemplateBuilder TemplateBuilder
 }
 
 func (p *dummypage) Template() *template.Template {
-	return p.TemplateBuilder()
+	return p.TemplateBuilder(p)
 }
 
 // Meta

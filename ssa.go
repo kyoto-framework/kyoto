@@ -81,7 +81,7 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		}
 		// Prepare template
 		st = time.Now()
-		t := tb()
+		t := dp.Template()
 		t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, cname)))
 		et = time.Since(st)
 		if BENCH_HANDLERS {
