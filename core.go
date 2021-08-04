@@ -12,22 +12,29 @@ import (
 // Component Store Lifecycle is a temporary storage for components processing
 // Will be cleared in the end of lifecycle
 var csl = map[Page][]Component{}
+var csllock = &sync.Mutex{}
 
 // RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
 	// Init csl store
+	csllock.Lock()
 	if _, ok := csl[p]; !ok {
 		csl[p] = []Component{}
 	}
+	csllock.Unlock()
 	// Save type to SSA store
 	if _, ok := csssa[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
 		// Extract component type
 		ctype := reflect.ValueOf(c).Elem().Type()
 		// Save to store
+		csssalock.Lock()
 		csssa[reflect.ValueOf(c).Elem().Type().Name()] = ctype
+		csssalock.Unlock()
 	}
 	// Save component to lifecycle store
+	csllock.Lock()
 	csl[p] = append(csl[p], c)
+	csllock.Unlock()
 	// Trigger component init
 	if c, ok := c.(ImplementsNestedInit); ok {
 		c.Init(p)
@@ -85,7 +92,9 @@ func RenderPage(w io.Writer, p Page) {
 		}
 	}
 	// Clear components store (not needed more)
+	csllock.Lock()
 	delete(csl, p)
+	csllock.Unlock()
 	// Execute template
 	st := time.Now()
 	terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())

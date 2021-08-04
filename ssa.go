@@ -9,12 +9,14 @@ import (
 	"net/url"
 	"reflect"
 	"strings"
+	"sync"
 	"time"
 )
 
 // Component Store SSA is a storage for component types
 // When SSA is called, page's general lifecycle components store is not available (we have dummy page instead)
 var csssa = map[string]reflect.Type{}
+var csssalock = &sync.Mutex{}
 
 // SSAHandlerFactory is a factory for building Server Side Action handler
 // Check documentation for lifecycle details (different comparing to page's)
