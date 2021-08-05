@@ -23,14 +23,14 @@ func RegisterComponent(p Page, c Component) Component {
 	}
 	csllock.Unlock()
 	// Save type to SSA store
+	csssalock.Lock()
 	if _, ok := csssa[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
 		// Extract component type
 		ctype := reflect.ValueOf(c).Elem().Type()
 		// Save to store
-		csssalock.Lock()
 		csssa[reflect.ValueOf(c).Elem().Type().Name()] = ctype
-		csssalock.Unlock()
 	}
+	csssalock.Unlock()
 	// Save component to lifecycle store
 	csllock.Lock()
 	csl[p] = append(csl[p], c)
@@ -61,6 +61,7 @@ func RenderPage(w io.Writer, p Page) {
 		}
 	}
 	// Trigger async in goroutines
+	csllock.Lock()
 	for _, component := range csl[p] {
 		if component, ok := component.(ImplementsAsync); ok {
 			wg.Add(1)
@@ -78,9 +79,11 @@ func RenderPage(w io.Writer, p Page) {
 			}(&wg, err, component)
 		}
 	}
+	csllock.Unlock()
 	// Wait for async completion
 	wg.Wait()
 	// Trigger aftersync
+	csllock.Lock()
 	for _, component := range csl[p] {
 		if component, ok := component.(ImplementsAfterAsync); ok {
 			st := time.Now()
@@ -91,6 +94,7 @@ func RenderPage(w io.Writer, p Page) {
 			}
 		}
 	}
+	csllock.Unlock()
 	// Clear components store (not needed more)
 	csllock.Lock()
 	delete(csl, p)

@@ -7,12 +7,12 @@ var context = map[Page]map[string]interface{}{}
 var contextlock = &sync.Mutex{}
 
 func SetContext(p Page, key string, value interface{}) {
+	contextlock.Lock()
 	space, ok := context[p]
 	if !ok {
 		space = map[string]interface{}{}
 	}
 	space[key] = value
-	contextlock.Lock()
 	context[p] = space
 	contextlock.Unlock()
 }
@@ -22,6 +22,7 @@ func GetContext(p Page, key string) interface{} {
 }
 
 func DelContext(p Page, key string) {
+	contextlock.Lock()
 	space, ok := context[p]
 	if !ok {
 		space = map[string]interface{}{}
@@ -31,7 +32,6 @@ func DelContext(p Page, key string) {
 	} else {
 		space = map[string]interface{}{}
 	}
-	contextlock.Lock()
 	context[p] = space
 	contextlock.Unlock()
 }
