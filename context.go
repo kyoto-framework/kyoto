@@ -18,7 +18,10 @@ func SetContext(p Page, key string, value interface{}) {
 }
 
 func GetContext(p Page, key string) interface{} {
-	return context[p][key]
+	contextlock.Lock()
+	val := context[p][key]
+	contextlock.Unlock()
+	return val
 }
 
 func DelContext(p Page, key string) {
