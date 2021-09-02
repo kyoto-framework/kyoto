@@ -12,29 +12,29 @@ import (
 // Component Store Lifecycle is a temporary storage for components processing
 // Will be cleared in the end of lifecycle
 var csl = map[Page][]Component{}
-var csllock = &sync.Mutex{}
+var cslLock = &sync.RWMutex{}
 
 // RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
 	// Init csl store
-	csllock.Lock()
+	cslLock.Lock()
 	if _, ok := csl[p]; !ok {
 		csl[p] = []Component{}
 	}
-	csllock.Unlock()
+	cslLock.Unlock()
 	// Save type to SSA store
-	csssalock.Lock()
-	if _, ok := csssa[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
+	csSSALock.Lock()
+	if _, ok := csSSA[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
 		// Extract component type
 		ctype := reflect.ValueOf(c).Elem().Type()
 		// Save to store
-		csssa[reflect.ValueOf(c).Elem().Type().Name()] = ctype
+		csSSA[reflect.ValueOf(c).Elem().Type().Name()] = ctype
 	}
-	csssalock.Unlock()
+	csSSALock.Unlock()
 	// Save component to lifecycle store
-	csllock.Lock()
+	cslLock.Lock()
 	csl[p] = append(csl[p], c)
-	csllock.Unlock()
+	cslLock.Unlock()
 	// Trigger component init
 	if c, ok := c.(ImplementsNestedInit); ok {
 		c.Init(p)
@@ -61,7 +61,7 @@ func RenderPage(w io.Writer, p Page) {
 		}
 	}
 	// Trigger async in goroutines
-	csllock.Lock()
+	cslLock.RLock()
 	for _, component := range csl[p] {
 		if component, ok := component.(ImplementsAsync); ok {
 			wg.Add(1)
@@ -79,11 +79,11 @@ func RenderPage(w io.Writer, p Page) {
 			}(&wg, err, component)
 		}
 	}
-	csllock.Unlock()
+	cslLock.RUnlock()
 	// Wait for async completion
 	wg.Wait()
 	// Trigger aftersync
-	csllock.Lock()
+	cslLock.RLock()
 	for _, component := range csl[p] {
 		if component, ok := component.(ImplementsAfterAsync); ok {
 			st := time.Now()
@@ -94,11 +94,11 @@ func RenderPage(w io.Writer, p Page) {
 			}
 		}
 	}
-	csllock.Unlock()
+	cslLock.RUnlock()
 	// Clear components store (not needed more)
-	csllock.Lock()
+	cslLock.Lock()
 	delete(csl, p)
-	csllock.Unlock()
+	cslLock.Unlock()
 	// Execute template
 	st := time.Now()
 	terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())

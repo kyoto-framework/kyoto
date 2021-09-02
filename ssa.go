@@ -15,8 +15,8 @@ import (
 
 // Component Store SSA is a storage for component types
 // When SSA is called, page's general lifecycle components store is not available (we have dummy page instead)
-var csssa = map[string]reflect.Type{}
-var csssalock = &sync.Mutex{}
+var csSSA = map[string]reflect.Type{}
+var csSSALock = &sync.Mutex{}
 
 // SSAHandlerFactory is a factory for building Server Side Action handler
 // Check documentation for lifecycle details (different comparing to page's)
@@ -36,7 +36,7 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		cname := tokens[2]
 		aname := tokens[3]
 		// Find component type in store
-		ctype, found := csssa[cname]
+		ctype, found := csSSA[cname]
 		// Panic, if not found
 		if !found {
 			panic("Can't find component. Seems like it's not registered")
