@@ -2,6 +2,7 @@ package ssc
 
 import (
 	"html/template"
+	"net/http"
 )
 
 // SSA aliases
@@ -33,6 +34,17 @@ type Meta struct {
 	Canonical   string
 	Hreflangs   []Hreflang
 	Additional  []map[string]string
+}
+
+// RedirectParameters is a helper for Redirect function
+type RedirectParameters struct {
+	Page              Page
+	ResponseWriter    http.ResponseWriter
+	Request           *http.Request
+	ResponseWriterKey string
+	RequestKey        string
+	Target            string
+	StatusCode        int
 }
 
 // Basic page, only must-have methods

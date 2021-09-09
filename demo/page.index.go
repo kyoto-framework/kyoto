@@ -25,6 +25,8 @@ type PageIndex struct {
 	ComponentPCC            ssc.Component
 	ContentEmailValidator   ssc.Component
 	ComponentEmailValidator ssc.Component
+	ContentRedirect         ssc.Component
+	ComponentRedirect       ssc.Component
 	// Help prompt
 	HelpPrompt ssc.Component
 	// Sponsor prompt
@@ -161,6 +163,21 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.ComponentEmailValidator = ssc.RegC(p, &ComponentEmailValidator{})
+	p.ContentRedirect = ssc.RegC(p, &ComponentContent{
+		Title:       "Redirect Function",
+		Description: "You can initiate redirect from server side code, with own custom logic",
+		Links: []ComponentContentLink{
+			{
+				Href:  "https://github.com/yuriizinets/go-ssc/blob/master/demo/component.redirect.go",
+				Title: "component.redirect.go",
+			},
+			{
+				Href:  "https://github.com/yuriizinets/go-ssc/blob/master/demo/component.redirect.html",
+				Title: "component.redirect.html",
+			},
+		},
+	})
+	p.ComponentRedirect = ssc.RegC(p, &ComponentRedirect{})
 	// Help prompt
 	p.HelpPrompt = ssc.RegC(p, &ComponentContent{
 		Title: "Need to communicate?",

@@ -13,13 +13,25 @@ import (
 	"time"
 )
 
-// Component Store SSA is a storage for component types
-// When SSA is called, page's general lifecycle components store is not available (we have dummy page instead)
+// Component Store SSA is a storage for component types.
+// When SSA is called, page's general lifecycle components store is not available (we have dummy page instead).
 var csSSA = map[string]reflect.Type{}
 var csSSALock = &sync.Mutex{}
 
-// SSAHandlerFactory is a factory for building Server Side Action handler
-// Check documentation for lifecycle details (different comparing to page's)
+// SSAHandlerFactory is a factory for building Server Side Action handler.
+// Check documentation for lifecycle details (different comparing to page's).
+// Example of usage:
+// func ssatemplate(p ssc.Page) *template.Template {
+// 	return template.Must(template.New("SSA").Funcs(ssc.Funcs()).ParseGlob("*.html"))
+// }
+// func ssahandler() http.HandlerFunc {
+//     return func(rw http.ResponseWriter, r *http.Request) {
+// 	       ssc.SSAHandlerFactory(ssatemplate, map[string]interface{}{
+//	           "internal:rw": rw,
+//             "internal:r": r,
+//         })(rw, r)
+//     }
+// }
 func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.HandlerFunc {
 	// Init dummy page
 	dp := &dummypage{
@@ -81,23 +93,28 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		if BENCH_HANDLERS {
 			log.Println("Action time", reflect.TypeOf(component), et)
 		}
-		// Prepare template
-		st = time.Now()
-		t := dp.Template()
-		t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, cname)))
-		et = time.Since(st)
-		if BENCH_HANDLERS {
-			log.Println("Template prepare time", reflect.TypeOf(component), et)
-		}
-		// Render component
-		st = time.Now()
-		terr := t.Execute(rw, component)
-		if terr != nil {
-			panic(terr)
-		}
-		et = time.Since(st)
-		if BENCH_HANDLERS {
-			log.Println("Execute time", reflect.TypeOf(component), et)
+		// Extact flags
+		redirected := GetContext(dp, "internal:redirected")
+		// Render page
+		if redirected == nil {
+			// Prepare template
+			st = time.Now()
+			t := dp.Template()
+			t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, cname)))
+			et = time.Since(st)
+			if BENCH_HANDLERS {
+				log.Println("Template prepare time", reflect.TypeOf(component), et)
+			}
+			// Render component
+			st = time.Now()
+			terr := t.Execute(rw, component)
+			if terr != nil {
+				panic(terr)
+			}
+			et = time.Since(st)
+			if BENCH_HANDLERS {
+				log.Println("Executiton time", reflect.TypeOf(component), et)
+			}
 		}
 		// Clear context
 		DelContext(dp, "")
@@ -142,9 +159,15 @@ function Action(self, action, ...args) {
 		method: 'POST',
 		body: formdata
 	}).then(resp => {
+        if (resp.headers.get('X-Redirect')) {
+            window.location.href = resp.headers.get('X-Redirect')
+			return ''
+        }
 		return resp.text()
 	}).then(data => {
-		root.outerHTML = data
+		if (data) {
+			root.outerHTML = data
+		}
 	}).catch(err => {
 		console.log(err)
 	})

@@ -99,15 +99,40 @@ func RenderPage(w io.Writer, p Page) {
 	cslLock.Lock()
 	delete(csl, p)
 	cslLock.Unlock()
+	// Extract flags
+	redirected := GetContext(p, "internal:redirected")
 	// Execute template
-	st := time.Now()
-	terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
-	et := time.Since(st)
-	if BENCH_LOWLEVEL {
-		log.Println("Execute time", et)
+	if redirected == nil {
+		st := time.Now()
+		terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
+		et := time.Since(st)
+		if BENCH_LOWLEVEL {
+			log.Println("Execution time", et)
+		}
+		if terr != nil {
+			panic(terr)
+		}
 	}
-	if terr != nil {
-		panic(terr)
+}
+
+// Redirect is a wrapper around http.Redirect for correct work inside of SSC
+func Redirect(rp *RedirectParameters) {
+	// Write redirected flag
+	SetContext(rp.Page, "internal:redirected", true)
+	// Extract r/rw
+	rw := rp.ResponseWriter
+	r := rp.Request
+	if rp.ResponseWriterKey != "" {
+		rw = GetContext(rp.Page, rp.ResponseWriterKey).(http.ResponseWriter)
+	}
+	if rp.RequestKey != "" {
+		r = GetContext(rp.Page, rp.RequestKey).(*http.Request)
+	}
+	// Do actual redirect in case of usual response
+	if _, ssa := rp.Page.(*dummypage); !ssa {
+		http.Redirect(rw, r, rp.Target, rp.StatusCode)
+	} else { // Special header in case of SSA
+		rw.Header().Add("X-Redirect", rp.Target)
 	}
 }
 
