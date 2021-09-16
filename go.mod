@@ -1,3 +1,3 @@
-module github.com/yuriizinets/go-ssc
+module github.com/yuriizinets/ssceng
 
 go 1.17
