@@ -1,5 +1,7 @@
 # Quick Start
 
+> Please note, currently we recommend to use demo project as a start. Documentation needs a lot of work.
+
 ## Simple
 
 Just let's render a page  
