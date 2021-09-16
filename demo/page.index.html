@@ -52,5 +52,13 @@
             {{ template "ComponentContent" .DescriptionDemoRedirect }}
         </div>
     </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoNestingFirst" .DemoNesting }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoNesting }}
+        </div>
+    </section>
 </body>
 </html>

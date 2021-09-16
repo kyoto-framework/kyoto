@@ -18,6 +18,8 @@ type PageIndex struct {
 	DemoEmailValidator            ssc.Component
 	DescriptionDemoRedirect       ssc.Component
 	DemoRedirect                  ssc.Component
+	DescriptionDemoNesting        ssc.Component
+	DemoNesting                   ssc.Component
 }
 
 func (p *PageIndex) Template() *template.Template {
@@ -104,5 +106,20 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoRedirect = ssc.RegC(p, &ComponentDemoRedirect{})
+	p.DescriptionDemoNesting = ssc.RegC(p, &ComponentContent{
+		Title:       "Component nesting",
+		Description: "Small example of component nesting. Registering component inside of another component.",
+		Links: []ComponentContentLink{
+			{
+				Title: "component.demo.nesting.first.go",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.nesting.first.go",
+			},
+			{
+				Title: "component.demo.nesting.first.html",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.nesting.first.html",
+			},
+		},
+	})
+	p.DemoNesting = ssc.RegC(p, &ComponentDemoNestingFirst{})
 
 }
