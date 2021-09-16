@@ -1,0 +1,4 @@
+
+static/node_modules
+static/dist
+docs/.vuepress/dist

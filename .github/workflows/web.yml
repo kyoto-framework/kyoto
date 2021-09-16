@@ -1,0 +1,34 @@
+name: Web Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    env:
+      REPOSITORY_NAME: ${{ github.event.repository.name }}
+    steps:
+
+    - name: Check Out
+      uses: actions/checkout@v2
+
+    - name: Login to GitHub Packages Docker Registry
+      uses: docker/login-action@v1
+      with:
+        registry: docker.pkg.github.com
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.CR_PAT }}
+
+    - name: Build and Push
+      run: |
+        (
+          export CPATH=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${REPOSITORY_NAME,,};
+          cd web;
+          docker build -t $CPATH:latest .;
+          docker push $CPATH:latest;
+        )

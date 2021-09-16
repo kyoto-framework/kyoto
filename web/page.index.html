@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{ template "ComponentMeta" .CMeta }}
+    {{ meta . }}
+</head>
+
+<body class="dark:bg-gray-900 dark:text-white">
+    {{ template "ComponentNavbar" .Navbar }}
+    <!-- Hero section -->
+    <section class="mt-24 md:mt-64 px-4 text-center">
+        <div class="text-4xl md:text-6xl font-black">SSC Engine</div>
+        <div class="mt-4 text-xl">
+            Develop frontend Server Side Components with Go
+        </div>
+        <div class="mt-6">
+            <a href="https://github.com/yuriizinets/go-ssc" target="_blank" class="py-3 px-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition ease-in duration-200">Try now!</a>
+        </div>
+    </section>
+    <!-- Features section -->
+    <section class="my-24">
+        {{ template "ComponentBlockFeatures" .Features }}
+    </section>
+    <!-- Sponsors section -->
+    <section class="my-24">
+        {{ template "ComponentSponsors" .Sponsors }}
+    </section>
+    <!-- Promo section -->
+    <section class="my-24">
+        {{ template "ComponentContent" .Promo }}
+    </section>
+    <!-- Developers promo section -->
+    <section class="my-24">
+        {{ template "ComponentContent" .DevPromo }}
+    </section>
+    <!-- Details section -->
+    <section class="my-24">
+        {{ template "ComponentBlockFeaturesMore" .Details }}
+    </section>
+    <!-- About -->
+    <section class="my-24">
+        {{ template "ComponentBlockFAQ" .About }}
+    </section>
+    <!-- Statistics section -->
+    <section class="mt-12 mb-24">
+        {{ template "ComponentBlockStatistics" .Statistics }}
+    </section>
+    <!-- FAQ -->
+    <section class="py-8 px-4">
+        {{ template "ComponentBlockFAQ" .FAQ }}
+    </section>
+    <!-- Footer -->
+    <div class="mt-24">
+        {{ template "ComponentFooter" .Footer }}
+    </div>
+</body>
+
+</html>

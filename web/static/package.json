@@ -1,0 +1,20 @@
+{
+  "name": "subscrd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:css && npm run build:img && npm run build:meta",
+    "build:css": "tailwindcss -c tailwind.config.js -o dist/css/tailwind.min.css",
+    "build:css:w": "tailwindcss -w -c tailwind.config.js -o dist/css/tailwind.min.css",
+    "build:img": "rm -rf dist/img && mkdir -p dist/img && cp -r img/* dist/img/",
+    "build:meta": "rm -rf dist/meta && mkdir -p dist/meta && cp -r meta/* dist/meta/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.3.1",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.7"
+  }
+}

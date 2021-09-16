@@ -1,0 +1,6 @@
+github.com/yuriizinets/go-common v1.13.0 h1:2lGTXW072Swu1Oebgq4px6de/On8rj8km1mQnOQLN5A=
+github.com/yuriizinets/go-common v1.13.0/go.mod h1:e8qs8TpGTKavcMojePH+/p4681LttzNEYjNMvKnvvQg=
+github.com/yuriizinets/go-ssc v0.0.0-20210805083431-903646fb0294 h1:3wKP4oadN0B1wcLtI5RRI79RiC9o29OCLpNu5WBcqrk=
+github.com/yuriizinets/go-ssc v0.0.0-20210805083431-903646fb0294/go.mod h1:8izsw3dMvCrC2ugN2lbIiUBblwgVvf0WsxU0KLR1xB4=
+github.com/yuriizinets/go-ssc v0.0.0-20210909201359-b309fc725617 h1:6+6FjN/j16dkKJX2wxYi8kwmslwP5/SPvW41KJw9zJI=
+github.com/yuriizinets/go-ssc v0.0.0-20210909201359-b309fc725617/go.mod h1:QNxoJ+NxACaC05ZkDGU52qHxhR5MdbYDXWBqnq1Sg9Y=

@@ -1,9 +1,0 @@
-{{ define "ComponentCounter" }}
-<div {{ componentattrs . }} class="border shadow rounded p-4">
-    <div class="text-2xl font-semibold">Counter Demo</div>
-    <div class="py-2 w-full flex flex-col items-center">
-        <div class="text-2xl">{{ .Count }}</div>
-        <button onclick="{{ action `Increment` }}" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-32">Increment</button>
-    </div>
-</div>
-{{ end }}

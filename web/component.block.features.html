@@ -1,0 +1,19 @@
+{{ define "ComponentBlockFeatures" }}
+<section class="px-4 sm:flex flex-wrap justify-center items-center text-center gap-8">
+    {{ range .Entries }}
+    <div class="w-full sm:w-1/2 md:w-1/2 lg:w-1/4 px-4 py-4 bg-white dark:bg-gray-800 mt-6 shadow-lg rounded-lg">
+        <div class="flex-shrink-0">
+            <div class="flex items-center mx-auto justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                {{ .Image }}
+            </div>
+        </div>
+        <h3 class="text-2xl sm:text-xl text-gray-700 dark:text-white font-semibold py-4">
+            {{ .Title }}
+        </h3>
+        <p class="text-md text-gray-500 dark:text-gray-300 py-4">
+            {{ .Description }}
+        </p>
+    </div>
+    {{ end }}
+</section>
+{{ end }}
