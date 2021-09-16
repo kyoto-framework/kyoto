@@ -15,9 +15,9 @@ For implementing specific functionality, you need to implement one of predefined
 
 - [`Component`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L57) - main component interface with minimal requirements
 - [`ImplementsNestedInit`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L65) - component initialization method, for initializing default values or registering nested components
-- [ImplementsAsync](https://github.com/yuriizinets/ssceng/blob/master/types.go#L69) - async method will be called concurrently with another async methods
-- [ImplementsAfterAsync](https://github.com/yuriizinets/ssceng/blob/master/types.go#L73) - method is called when all async method finished execution
-- [ImplementsActions](https://github.com/yuriizinets/ssceng/blob/master/types.go#L77) - method, returning [`ssc.ActionMap`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L11) with component [SSA](http://localhost:8080/docs/extended.html#server-side-actions-ssa) methods
+- [`ImplementsAsync`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L69) - async method will be called concurrently with another async methods
+- [`ImplementsAfterAsync`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L73) - method is called when all async method finished execution
+- [`ImplementsActions`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L77) - method, returning [`ssc.ActionMap`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L11) with component [SSA](http://localhost:8080/docs/extended.html#server-side-actions-ssa) methods
 
 ## Lifecycle
 
