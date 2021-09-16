@@ -11,7 +11,7 @@ ADD . /src
 RUN apk add --no-cache git npm
 
 # Node deps
-RUN npm i -g vuepress
+RUN npm i -g vuepress vuepress-theme-default-prefers-color-scheme
 
 # Build
 RUN go build -o ssceng-web

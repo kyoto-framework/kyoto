@@ -4,6 +4,7 @@ title: SSC Documentation
 description: Develop frontend Server Side Components with Go
 base: /docs/
 
+theme: default-prefers-color-scheme
 themeConfig:
   displayAllHeaders: true
   nav:
