@@ -46,4 +46,4 @@ func main() {
 
 ## Documentation & overview
 
-For more details, check project's page
+For more details, check [project page](https://ssceng.codes)
