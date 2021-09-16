@@ -1,0 +1,4 @@
+github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d h1:VhgPp6v9qf9Agr/56bj7Y/xa04UccTW04VP0Qed4vnQ=
+github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d/go.mod h1:YUTz3bUH2ZwIWBy3CJBeOBEugqcmXREj14T+iG/4k4U=
+github.com/yuriizinets/ssceng v0.0.0-20210916084337-dcd26770c396 h1:f1ELVSjMnQMiPItFDuuCo4eFbMXW4cslOUSP45eyc/s=
+github.com/yuriizinets/ssceng v0.0.0-20210916084337-dcd26770c396/go.mod h1:l8tFeMfpiiG1n8dQYM1OpmQ1uJ6ziisjH3F+QEToHgE=

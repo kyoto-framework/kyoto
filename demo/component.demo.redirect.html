@@ -1,0 +1,9 @@
+{{ define "ComponentDemoRedirect" }}
+<div {{ componentattrs . }} class="bg-gray-100 rounded p-4">
+    <div class="text-2xl font-semibold">Redirect Demo</div>
+    <div class="mt-4 flex justify-center gap-2">
+        <button onclick="{{ action `Redirect` `https://google.com` }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">To Google</button>
+        <button onclick="{{ action `Redirect` `https://github.com` }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">To GitHub</button>
+    </div>
+</div>
+{{ end }}
