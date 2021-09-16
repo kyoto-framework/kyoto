@@ -13,8 +13,5 @@ Detailed project description, idea and motivation - here: https://ssceng.codes/d
 
 ## Documentation & examples
 
-Is not ready yet. We are currently working on providing demo project and better documentation. Unfortunately, best demo project for now is library landing page (which is not feature-rich): https://github.com/yuriizinets/ssceng/tree/master/web  
-
-You can find Quick Start here: https://ssceng.codes/docs/quickstart.html  
-
-More details about concept here: https://ssceng.codes/docs/concepts.html
+Documentation requires a lot of work, but already have some useful info: https://ssceng.codes/docs/  
+Demo project can be found here: https://github.com/yuriizinets/ssceng/tree/master/demo
