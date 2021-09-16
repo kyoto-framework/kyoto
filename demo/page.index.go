@@ -35,11 +35,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.uuid.go",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.uuid.go",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.uuid.go",
 			},
 			{
 				Title: "component.demo.uuid.html",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.uuid.html",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.uuid.html",
 			},
 		},
 	})
@@ -50,11 +50,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.counter.go",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.counter.go",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.counter.go",
 			},
 			{
 				Title: "component.demo.counter.html",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.counter.html",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.counter.html",
 			},
 		},
 	})
@@ -65,11 +65,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.calc.go",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.calc.go",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.calc.go",
 			},
 			{
 				Title: "component.demo.calc.html",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.calc.html",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.calc.html",
 			},
 		},
 	})
@@ -80,11 +80,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.email.validator.go",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.email.validator.go",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.email.validator.go",
 			},
 			{
 				Title: "component.demo.email.validator.html",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.email.validator.html",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.email.validator.html",
 			},
 		},
 	})
@@ -95,11 +95,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.redirect.go",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.redirect.go",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.redirect.go",
 			},
 			{
 				Title: "component.demo.redirect.html",
-				Href:  "https://github.com/yuriizinets/ssceng/demo/component.demo.redirect.html",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.redirect.html",
 			},
 		},
 	})
