@@ -3,7 +3,7 @@ package main
 import (
 	"html/template"
 
-	"github.com/yuriizinets/go-ssc"
+	ssc "github.com/yuriizinets/ssceng"
 )
 
 type PageIndex struct {
@@ -52,7 +52,7 @@ func (p *PageIndex) Init() {
 					</g>
 				</svg>
 				`),
-				Href: "https://github.com/yuriizinets/go-ssc",
+				Href: "https://github.com/yuriizinets/ssceng",
 			},
 		},
 	})
@@ -76,7 +76,7 @@ func (p *PageIndex) Init() {
 					</g>
 				</svg>
 				`),
-				Href: "https://github.com/yuriizinets/go-ssc",
+				Href: "https://github.com/yuriizinets/ssceng",
 			},
 		},
 		Copyright: "© 2021-present Created by Yurii Zinets",

@@ -8,7 +8,7 @@ themeConfig:
   displayAllHeaders: true
   nav:
     - text: GitHub
-      link: https://github.com/yuriizinets/go-ssc
+      link: https://github.com/yuriizinets/ssceng
   sidebar:
     - title: Overview
       path: /overview

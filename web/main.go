@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/yuriizinets/go-ssc"
+	ssc "github.com/yuriizinets/ssceng"
 )
 
 func ssatemplate(p ssc.Page) *template.Template {

@@ -11,7 +11,7 @@ import(
     "html/template"
 
     "github.com/gin-gonic/gin"
-    "github.com/yuriizinets/go-ssc"
+    "github.com/yuriizinets/ssceng"
 )
 
 // PageIndex is an implementation of ssc.Page interface
@@ -52,7 +52,7 @@ package main
 import(
     "html/template"
 
-    "github.com/yuriizinets/go-ssc"
+    "github.com/yuriizinets/ssceng"
 )
 
 type PageIndex struct{

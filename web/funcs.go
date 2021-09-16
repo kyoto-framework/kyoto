@@ -5,7 +5,7 @@ import (
 	"html/template"
 
 	"github.com/yuriizinets/go-common"
-	"github.com/yuriizinets/go-ssc"
+	ssc "github.com/yuriizinets/ssceng"
 )
 
 func tfuncs() template.FuncMap {
