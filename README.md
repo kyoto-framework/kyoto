@@ -13,5 +13,5 @@ Detailed project description, idea and motivation - here: https://ssceng.codes/d
 
 ## Documentation & examples
 
-Documentation requires a lot of work, but already have some useful info: https://ssceng.codes/docs/
+Documentation requires a lot of work, but already have some useful info: https://ssceng.codes/docs/  
 Demo project can be found here: https://github.com/yuriizinets/ssceng/tree/master/demo
