@@ -157,24 +157,8 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.Statistics = ssc.RegC(p, &ComponentBlockStatistics{
-		Entries: []ComponentBlockStatisticsEntry{
-			{
-				Title: "stars",
-				Count: 63,
-			},
-			{
-				Title: "contributors",
-				Count: 3,
-			},
-			{
-				Title: "projects",
-				Count: 2,
-			},
-			{
-				Title: "sponsors",
-				Count: 1,
-			},
-		},
+		Title: "Dry numbers",
+		Repo:  "yuriizinets/ssceng",
 	})
 	p.About = ssc.RegC(p, &ComponentBlockFAQ{
 		Title: "About",
