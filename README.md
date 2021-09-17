@@ -14,4 +14,5 @@ Demo project: https://github.com/yuriizinets/ssceng/tree/master/demo
 
 ## Support
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/yuriizinets)
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/yuriizinets)  
+Or directly with Bitcoin: 18WY5KRWVKVxjWKFzJLqqALsRrsDh4snqg'
