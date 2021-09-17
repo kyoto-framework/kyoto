@@ -42,6 +42,12 @@ Example of usage:
 ```go
 type ComponentDemoUUID struct {
     UUID string
+
+    Nested ssc.Component
+}
+
+func (c *ComponentDemoUUID) Init(p ssc.Page) {
+    c.Nested = ssc.RegC(p, &ComponentNested{})
 }
 
 func (c *ComponentDemoUUID) Async() error {
