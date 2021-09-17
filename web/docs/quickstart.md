@@ -84,7 +84,7 @@ Let's define sample component, which fetches UUID from httpbin page.
 Component is represented by a struct which implements [Component](https://github.com/yuriizinets/ssceng/blob/master/types.go#L57) interface.
 By default, Component interface doesn't have any required methods. Instead of having all-in-one, we have multiple interfaces with functionality separation.
 This approach also covers pages. In this example, we will implement [ImplementsAsync](https://github.com/yuriizinets/ssceng/blob/master/types.go#L69) interface.
-This method will be called as goroutine in page rendering [lifecycle](https://ssceng.codes/docs/concepts.html#lifecycle).
+This method will be called as goroutine in page rendering [lifecycle](/concepts.html#lifecycle).
 In that way, all needed async data will be fetched concurrently. In this example, component's markup will be stored in `component.uuid.html`
 
 ```go
@@ -118,7 +118,7 @@ component.uuid.html
 ## Attaching component
 
 For using component, you need to define page fields for storing component objects and `Init` method for initialization and registration of components.
-Inside of init, use `ssc.RegC` for registering your components. In that way you're including component in page render [lifecycle](https://ssceng.codes/docs/concepts.html#lifecycle).
+Inside of init, use `ssc.RegC` for registering your components. In that way you're including component in page render [lifecycle](/concepts.html#lifecycle).
 After that, you need to pass component object to template in your page markup.
 
 ```go
