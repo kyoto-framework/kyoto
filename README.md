@@ -6,12 +6,12 @@ An HTML render engine concept that brings frontend-like components experience to
 > **Disclaimer**  
 > This project is an experimental concept. Code quality may not meet your expectations. **Don’t use in production.** In case of any issues/proposals, feel free to open an issue
 
-## General info
+## References
 
-You can find library overview here: https://ssceng.codes  
-Detailed project description, idea and motivation - here: https://ssceng.codes/docs/overview.html
+Main project landing: https://ssceng.codes
+Documentation: https://ssceng.codes/docs/
+Demo project: https://github.com/yuriizinets/ssceng/tree/master/demo
 
-## Documentation & examples
+## Support
 
-Documentation requires a lot of work, but already have some useful info: https://ssceng.codes/docs/  
-Demo project can be found here: https://github.com/yuriizinets/ssceng/tree/master/demo
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/yuriizinets)
