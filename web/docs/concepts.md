@@ -39,8 +39,8 @@ Each page's lifecycle is hidden under the render function and follows this steps
 
 If you want to use SSA in your project, it's better to know how it works first. SSA has own, shorten lifecycle.  
 
-- Creating request with JS on client side
-- Extracting action data from request (component name, component state, action name, action args)
+- Creating request with JS on client side (icluding component name, state, action name, args)
+- Extracting action data from request on server side
 - Finding registered component type
 - Creating component struct
 - Triggering the component's `Init()`

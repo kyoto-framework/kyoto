@@ -33,6 +33,7 @@ Not stable. In active development.
 Server Side Actions very similar to component methods in traditional frontend frameworks.
 Main difference - all actions are executed on server side, code placed only on server and client has only thin communication layer.
 Frontend only recieves ready for use HTML markup.  
+Check [SSA lifecycle](/concepts/#ssa-rendering) for more details.
 
 ### Basic
 
