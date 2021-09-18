@@ -153,7 +153,9 @@ Example of usage: check [component](/core.html#component) section
 You can set execution flags as part of configuration.  
 All flags are collected in [`flags.go`](https://github.com/yuriizinets/ssceng/blob/master/flags.go).
 
-> This flag names are temporary and will be changed in nearest future
+::: warning
+This flag names are temporary and will be changed in nearest future
+:::
 
 - `BENCH_LOWLEVEL` - responsible for logging lifecycle timings
 - `BENCH_HANDLERS` - responsible for logging more highlevel timings
