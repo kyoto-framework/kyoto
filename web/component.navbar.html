@@ -1,6 +1,6 @@
 {{ define "ComponentNavbar" }}
 <!-- Navbar -->
-<nav class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between flex-wrap bg-white dark:bg-black dark:text-white shadow-sm border-b dark:border-none py-3 px-4">
+<nav class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between flex-wrap shadow-sm border-b bg-white dark:bg-gray-900 dark:text-white dark:border-none py-3 px-4">
     <div class="hidden md:flex items-center gap-4 w-2/5">
         {{ range .Left }}
             <a href="{{ .Href }}" class="font-medium">
@@ -39,7 +39,7 @@
     </div>
 </div>
 <!-- Spacer -->
-<div class="pt-14"></div>
+<div class="pt-12"></div>
 
 <!-- JS for mobile menu -->
 <script>

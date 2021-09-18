@@ -6,10 +6,14 @@
     {{ meta . }}
 </head>
 
-<body class="dark:bg-gray-900 dark:text-white">
+<body class="dark:bg-black dark:text-white">
     {{ template "ComponentNavbar" .Navbar }}
+    <!-- Gradient background -->
+    <div class="h-screen max-h-96 bg-gradient-to-b from-blue-200 to-white dark:from-blue-900 dark:to-black">
+
+    </div>
     <!-- Hero section -->
-    <section class="mt-24 md:mt-64 px-4 text-center">
+    <section class="-mt-64 md:-mt-24 px-4 text-center">
         <div class="text-4xl md:text-6xl font-black">SSC Engine</div>
         <div class="mt-4 text-xl">
             Develop frontend Server Side Components with Go
@@ -17,7 +21,7 @@
         <div class="mt-6">
             <a href="/docs/quickstart.html" target="_blank" class="py-3 px-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition ease-in duration-200">Try now!</a>
         </div>
-        <div class="mt-10 py-2 max-w-screen-sm mx-auto font-mono bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <div class="mt-10 py-2 max-w-screen-sm mx-auto font-mono bg-gray-100 dark:bg-gray-900 rounded-lg">
             go get github.com/yuriizinets/ssceng
         </div>
     </section>
