@@ -38,6 +38,14 @@
     </section>
     <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
         <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoAutocomplete" .DemoAutocomplete }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoAutocomplete }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
             {{ template "ComponentDemoEmailValidator" .DemoEmailValidator }}
         </div>
         <div class="w-full md:w-1/2">

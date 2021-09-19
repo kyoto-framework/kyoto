@@ -14,6 +14,8 @@ type PageIndex struct {
 	DemoCounter                   ssc.Component
 	DescriptionDemoCalc           ssc.Component
 	DemoCalc                      ssc.Component
+	DescriptionDemoAutocomplete   ssc.Component
+	DemoAutocomplete              ssc.Component
 	DescriptionDemoEmailValidator ssc.Component
 	DemoEmailValidator            ssc.Component
 	DescriptionDemoRedirect       ssc.Component
@@ -76,6 +78,30 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoCalc = ssc.RegC(p, &ComponentDemoCalc{})
+	p.DescriptionDemoAutocomplete = ssc.RegC(p, &ComponentContent{
+		Title:       "Combining events",
+		Description: "Example, that combines state binding and server action.",
+		Links: []ComponentContentLink{
+			{
+				Title: "component.demo.autocomplete.go",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.autocomplete.go",
+			},
+			{
+				Title: "component.demo.autocomplete.html",
+				Href:  "https://github.com/yuriizinets/ssceng/blob/master/demo/component.demo.autocomplete.html",
+			},
+		},
+	})
+	p.DemoAutocomplete = ssc.RegC(p, &ComponentDemoAutocomplete{
+		Placeholder: "Select browser ...",
+		Items: []string{
+			"Edge",
+			"Firefox",
+			"Chrome",
+			"Safari",
+			"Opera",
+		},
+	})
 	p.DescriptionDemoEmailValidator = ssc.RegC(p, &ComponentContent{
 		Title:       "SSA form rocessing",
 		Description: "Example of using formsubmit shortcut to simplify server-side form processing.",
