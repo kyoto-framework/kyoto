@@ -121,5 +121,4 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoNesting = ssc.RegC(p, &ComponentDemoNestingFirst{})
-
 }
