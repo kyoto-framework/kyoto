@@ -65,7 +65,6 @@ func RenderPage(w io.Writer, p Page) {
 	for {
 		cslLock.RLock()
 		regc := csl[p][subset:]
-		log.Println(subset, len(regc))
 		cslLock.RUnlock()
 		subset += len(regc)
 		if len(regc) == 0 {
