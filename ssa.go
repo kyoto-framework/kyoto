@@ -43,6 +43,9 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 	}
 	// Return handler
 	return func(rw http.ResponseWriter, r *http.Request) {
+		// Async specific state
+		var wg sync.WaitGroup
+		var err = make(chan error, 1000)
 		// Extract component action and name from route
 		tokens := strings.Split(r.URL.Path, "/")
 		cname := tokens[2]
@@ -92,6 +95,40 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		et = time.Since(st)
 		if BENCH_HANDLERS {
 			log.Println("Action time", reflect.TypeOf(component), et)
+		}
+		// If new components registered, trigger async
+		st = time.Now()
+		subset := 0
+		for {
+			cslLock.RLock()
+			regc := csl[dp][subset:]
+			cslLock.RUnlock()
+			subset += len(regc)
+			if len(regc) == 0 {
+				break
+			}
+			for _, component := range regc {
+				if component, ok := component.(ImplementsAsync); ok {
+					wg.Add(1)
+					go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
+						defer wg.Done()
+						st := time.Now()
+						_err := c.Async()
+						et := time.Since(st)
+						if BENCH_LOWLEVEL {
+							log.Println("Async time", reflect.TypeOf(component), et)
+						}
+						if _err != nil {
+							err <- _err
+						}
+					}(&wg, err, component)
+				}
+			}
+			wg.Wait()
+		}
+		et = time.Since(st)
+		if BENCH_HANDLERS {
+			log.Println("Nested async time", et)
 		}
 		// Extact flags
 		redirected := GetContext(dp, "internal:redirected")

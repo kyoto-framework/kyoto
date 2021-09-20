@@ -61,27 +61,35 @@ func RenderPage(w io.Writer, p Page) {
 		}
 	}
 	// Trigger async in goroutines
-	cslLock.RLock()
-	for _, component := range csl[p] {
-		if component, ok := component.(ImplementsAsync); ok {
-			wg.Add(1)
-			go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
-				defer wg.Done()
-				st := time.Now()
-				_err := c.Async()
-				et := time.Since(st)
-				if BENCH_LOWLEVEL {
-					log.Println("Async time", reflect.TypeOf(component), et)
-				}
-				if _err != nil {
-					err <- _err
-				}
-			}(&wg, err, component)
+	subset := 0
+	for {
+		cslLock.RLock()
+		regc := csl[p][subset:]
+		log.Println(subset, len(regc))
+		cslLock.RUnlock()
+		subset += len(regc)
+		if len(regc) == 0 {
+			break
 		}
+		for _, component := range regc {
+			if component, ok := component.(ImplementsAsync); ok {
+				wg.Add(1)
+				go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
+					defer wg.Done()
+					st := time.Now()
+					_err := c.Async()
+					et := time.Since(st)
+					if BENCH_LOWLEVEL {
+						log.Println("Async time", reflect.TypeOf(component), et)
+					}
+					if _err != nil {
+						err <- _err
+					}
+				}(&wg, err, component)
+			}
+		}
+		wg.Wait()
 	}
-	cslLock.RUnlock()
-	// Wait for async completion
-	wg.Wait()
 	// Trigger aftersync
 	cslLock.RLock()
 	for _, component := range csl[p] {

@@ -31,6 +31,7 @@ Each page's lifecycle is hidden under the render function and follows this steps
 - Triggering the page's `Init()` to initialize and register components
 - Running all component's `Async()` functions in separate goroutines
 - Waiting untill all asynchronous operations are completed
+- If new components were registered while `Async` execution, repeat `Async` stage for newly created components
 - Calling `AfterAsync()` for each component
 - Cleaning up registered components (not needed more for internal usage)
 - Getting page's template and render
@@ -46,5 +47,6 @@ If you want to use SSA in your project, it's better to know how it works first. 
 - Triggering the component's `Init()`
 - Populating component's state
 - Calling action
+- If new components where registed while action execution, do `Async` stage in the same way as for page
 - Rendering component and returning HTML to client side
 - Replacing component's HTML with recieved version
