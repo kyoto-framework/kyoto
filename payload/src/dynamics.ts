@@ -42,6 +42,16 @@ function _LocateRoot(parameters: LocateParameters): HTMLElement {
     return root
 }
 
+function _NameCleanup(action: string): string {
+    if (action.includes(':')) {
+        action = action.split(':')[1]
+    }
+    if (action.includes('$')) {
+        action = action.replaceAll('$', '')
+    }
+    return action
+}
+
 
 // Public
 
@@ -53,33 +63,33 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
         id: action.includes(':') ? action.split(':')[0] : undefined,
     })
     // Prepare form data
-	let formdata = new FormData()
-	formdata.set('State', root.getAttribute('state') || '{}')
-	formdata.set('Args', JSON.stringify(args))
-	// Make request
-	fetch(`/SSA/${root.getAttribute('name')}/${action}`, {
-		method: 'POST',
-		body: formdata
-	}).then(resp => {
+    let formdata = new FormData()
+    formdata.set('State', root.getAttribute('state') || '{}')
+    formdata.set('Args', JSON.stringify(args))
+    // Make request
+    fetch(`/SSA/${root.getAttribute('name')}/${_NameCleanup(action)}`, {
+        method: 'POST',
+        body: formdata
+    }).then(resp => {
         // Handle redirect header
         if (resp.headers.get('X-Redirect')) {
             window.location.href = resp.headers.get('X-Redirect') as string
-			return ''
+            return ''
         }
-		return resp.text()
-	}).then(data => {
+        return resp.text()
+    }).then(data => {
         // Morph HTML
-		if (data) {
+        if (data) {
             morphdom(root, data)
-		}
-	}).catch(err => {
-		console.log(err)
-	})
+        }
+    }).catch(err => {
+        console.log(err)
+    })
 }
 
 export function Bind(self: HTMLElement, field: string) {
-	// Find component root
-	let root = _LocateRoot({
+    // Find component root
+    let root = _LocateRoot({
         starter: self,
         depth: field.split('').filter(x => x === '$').length,
         id: field.includes(':') ? field.split(':')[0] : undefined,
@@ -88,47 +98,47 @@ export function Bind(self: HTMLElement, field: string) {
     if (!root.getAttribute('state')) {
         throw new Error('Bind call error: component state is underfined')
     }
-	// Load state
-	let state = JSON.parse(decodeURIComponent(root.getAttribute('state') as string))
-	// Set value
-	state[field] = (self as HTMLInputElement).value
-	// Set state
-	root.setAttribute('state', JSON.stringify(state))
+    // Load state
+    let state = JSON.parse(decodeURIComponent(root.getAttribute('state') as string))
+    // Set value
+    state[field] = (self as HTMLInputElement).value
+    // Set state
+    root.setAttribute('state', JSON.stringify(state))
 }
 
 export function FormSubmit(self: HTMLElement, e: Event) {
-	// Prevent default submit
-	e.preventDefault()
+    // Prevent default submit
+    e.preventDefault()
     // Find component root
-	let root = _LocateRoot({
+    let root = _LocateRoot({
         starter: self
     })
     // Check state
     if (!root.getAttribute('state')) {
         throw new Error('Bind call error: component state is underfined')
     }
-	// Load state
-	let state = JSON.parse(decodeURIComponent(root.getAttribute('state') as string))
+    // Load state
+    let state = JSON.parse(decodeURIComponent(root.getAttribute('state') as string))
     // Update state with form data
-	let form = new FormData((e.target as HTMLFormElement))
-	let formdata = Object.fromEntries(form.entries())
-	Object.entries(formdata).forEach(pair => {
-		state[pair[0]] = pair[1]
-	})
+    let form = new FormData((e.target as HTMLFormElement))
+    let formdata = Object.fromEntries(form.entries())
+    Object.entries(formdata).forEach(pair => {
+        state[pair[0]] = pair[1]
+    })
     // Set state
-	root.setAttribute('state', JSON.stringify(state))
-	// Trigger "Submit" action
-	Action(root, 'Submit')
+    root.setAttribute('state', JSON.stringify(state))
+    // Trigger "Submit" action
+    Action(root, 'Submit')
     // Fix for ...?
     // Can't remember the issue
-	return false
+    return false
 }
 
 
 // Export to global
 
 declare global {
-    interface Window { 
+    interface Window {
         _LocaleRoot: any;
         Action: any,
         Bind: any,
