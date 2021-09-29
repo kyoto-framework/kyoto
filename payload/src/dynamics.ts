@@ -78,9 +78,22 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
         }
         return resp.text()
     }).then(data => {
-        // Morph HTML
-        if (data) {
+        // Handle no data case
+        if (!data) {
+            return
+        }
+        // Handle replace case
+        if (root.hasAttribute('ssa-replace')) {
+            root.outerHTML = data
+            return
+        }
+        // Morph
+        try {
             morphdom(root, data)
+        } 
+        catch (e: any) {
+            console.log('Fallback from morphdom to root.outerHTML due to error', e)
+            root.outerHTML = data
         }
     }).catch(err => {
         console.log(err)
