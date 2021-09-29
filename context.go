@@ -33,7 +33,8 @@ func DelContext(p Page, key string) {
 	if key != "" {
 		delete(space, key)
 	} else {
-		space = map[string]interface{}{}
+		delete(context, p)
+		return
 	}
 	context[p] = space
 }
