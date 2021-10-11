@@ -1,4 +1,8 @@
 
+<div align="center">
+  <img height="300" alt="logo" src="https://github.com/egonelbre/gophers/blob/master/sketch/fairy-tale/witch-cooking.png?raw=true">
+</div>
+
 # SSC Engine
 
 ![GitHub](https://img.shields.io/github/license/yuriizinets/ssceng)
@@ -18,6 +22,7 @@ HackerNews client, make with SSC: https://hn.ssceng.codes
 
 ## Support
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/yuriizinets)  
+<a target="_blank" href="https://www.buymeacoffee.com/yuriizinets"><img alt="Buy me a Coffee" src="https://github.com/egonelbre/gophers/blob/master/.thumb/animation/buy-morning-coffee-3x.gif?raw=true"></a>
+
 
 Or directly with Bitcoin: `18WY5KRWVKVxjWKFzJLqqALsRrsDh4snqg`
