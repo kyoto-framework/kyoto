@@ -11,6 +11,7 @@ type PageIndex struct {
 	Navbar     ssc.Component
 	Footer     ssc.Component
 	Features   ssc.Component
+	SideBySide ssc.Component
 	Sponsors   ssc.Component
 	Statistics ssc.Component
 	Promo      ssc.Component
@@ -98,6 +99,23 @@ func (p *PageIndex) Init() {
 				Title:       "Use with Anything",
 				Description: "Use any framework as a base for your web project, net/http is not a requirement",
 			},
+		},
+	})
+	p.SideBySide = ssc.RegC(p, &ComponentSideBySide{
+		Title:         "Best Of Two Worlds",
+		LeftSubtitle:  "Server Templates",
+		RightSubtitle: "JS Frameworks",
+		LeftItems: []string{
+			"SSR-friendly",
+			"Complete control",
+			"Simplicity",
+			"Speed",
+		},
+		RightItems: []string{
+			"Developer friendly",
+			"Component-based approach",
+			"Rich functionality",
+			"Dynamic behavior",
 		},
 	})
 	p.Sponsors = ssc.RegC(p, &ComponentSponsors{
