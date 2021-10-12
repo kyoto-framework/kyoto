@@ -103,3 +103,11 @@ Not implemented yet. Check [issue](https://github.com/yuriizinets/ssceng/issues/
 This feature is useful in case of large state payloads.
 Instead of saving state inline as html tag, store state on server side and inject state hash as html tag.
 Using this, you will decrease amount of data sent with SSA request and total HTML document size.
+
+## Insights
+
+::: danger
+Not implemented yet. Check [issue](https://github.com/yuriizinets/ssceng/issues/26) state
+:::
+
+Widget on page, that can be included with inisghts template function. Widget includes general page render information, like errors, overall lifecycle timings, etc. Also, widget includes list of each rendered component with lifecycle timings (init, async, afterasync, etc). On hover, highlights component on page.

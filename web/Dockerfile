@@ -10,13 +10,10 @@ ADD . /src
 # System deps
 RUN apk add --no-cache git npm
 
-# Node deps
-RUN npm i -g vuepress vuepress-theme-default-prefers-color-scheme
-
 # Build
 RUN go build -o ssceng-web
 RUN (cd static; npm i; npm run build)
-RUN vuepress build docs
+RUN (cd docs; npm i; npm run build)
 
 # -------------
 # runtime stage
