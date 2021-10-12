@@ -26,7 +26,7 @@ func (p *PageIndex) Template() *template.Template {
 
 func (p *PageIndex) Meta() ssc.Meta {
 	return ssc.Meta{
-		Title: "ssceng - Mind blowing way to build frontend",
+		Title: "ssceng - Mind Blowing Way to Build Frontend",
 	}
 }
 
@@ -86,22 +86,22 @@ func (p *PageIndex) Init() {
 			{
 				Image:       template.HTML(`<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>`),
 				Title:       "Functional",
-				Description: "Component approach, async operations, component server side methods and more",
+				Description: "Components based approach, async operations, component based server side methods and more",
 			},
 			{
 				Image:       template.HTML(`<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`),
 				Title:       "Customizable",
-				Description: "Feel free to use context feature, define own handlers with context setters",
+				Description: "Easy to use context feature, define your own handlers with the context setters",
 			},
 			{
 				Image:       template.HTML(`<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>`),
-				Title:       "Pure Design",
-				Description: "You're free to use any framework as base for your web project, net/http is not a requirement",
+				Title:       "Use with Anything",
+				Description: "Use any framework as a base for your web project, net/http is not a requirement",
 			},
 		},
 	})
 	p.Sponsors = ssc.RegC(p, &ComponentSponsors{
-		Title: "Our sponsors",
+		Title: "Our Sponsors",
 		Entries: []ComponentSponsorsEntry{
 			{
 				Photo: "/static/img/sponsors/brokerone.svg",
@@ -127,7 +127,7 @@ func (p *PageIndex) Init() {
 
 	p.Details = ssc.RegC(p, &ComponentBlockFeaturesMore{
 		Title:    "core features",
-		Subtitle: "A better way to build your frontend",
+		Subtitle: "A Better Way to Build Your Frontend",
 		Entries: []ComponentBlockFeaturesEntry{
 			{
 				Image:       template.HTML(`<svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`),
@@ -165,12 +165,12 @@ func (p *PageIndex) Init() {
 		Entries: []ComponentBlockFAQEntry{
 			{
 				Question: "Motivation",
-				Answer:   "Main motivation is to reduce usage of popular SPA/PWA frameworks where it's not needed because it adds a lot of complexity and overhead. There is no reason to bring significant runtime, VirtualDOM, and Webpack into the project with minimal dynamic frontend behavior. This project proves the possibility of keeping most of the logic on the server's side.",
+				Answer:   "The main motivation is to reduce the usage of popular SPA/PWA frameworks where it's not needed because it adds a lot of complexity and overhead. There is no reason to bring significant runtime, VirtualDOM, and Webpack into the project with minimal dynamic frontend behavior. This project proves the possibility of keeping most of the logic on the server's side.",
 			},
 			{
 				Question: "What problems does it solve?",
 				Answer: template.HTML(`
-					While developing the website's frontend with traditional Go handlers and templates, I discovered some of the downsides of this approach:
+				While developing the website's frontend with traditional Go handlers and templates, I discovered some of the downsides of this approach:
 					<ul class="py-2 list-disc list-inside">
 						<li>With plain html/template you're starting to repeat yourself. It's harder to define reusable parts.</li>
 						<li>You must repeat DTO calls for each page, where you're using reusable parts.</li>
@@ -188,7 +188,7 @@ func (p *PageIndex) Init() {
 					<li>Don't replace Go features that exist already</li>
 					<li>Don't do work that's already done</li>
 					<li>Don't force developers to use a specific solution (Gin/Chi/GORM/sqlx/etc). Let them choose</li>
-					<li>Rely on the server to do the rendering, minimum JS specifics or client-side only behavior</li>
+					<li>Rely on the server to do the rendering, minimum JS specifics, or client-side only behavior</li>
 					<li>KISS</li>
 				</ul>
 				`),
