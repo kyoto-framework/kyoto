@@ -26,7 +26,7 @@ func (p *PageIndex) Template() *template.Template {
 
 func (p *PageIndex) Meta() ssc.Meta {
 	return ssc.Meta{
-		Title: "Home - SSC",
+		Title: "ssceng - Mind blowing way to build frontend",
 	}
 }
 
@@ -79,7 +79,7 @@ func (p *PageIndex) Init() {
 				Href: "https://github.com/yuriizinets/ssceng",
 			},
 		},
-		Copyright: "© 2021-present Created by Yurii Zinets",
+		Copyright: "© 2021-present. Created by Yurii Zinets",
 	})
 	p.Features = ssc.RegC(p, &ComponentBlockFeatures{
 		Entries: []ComponentBlockFeaturesEntry{
