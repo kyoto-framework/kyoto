@@ -130,14 +130,14 @@ func (p *PageIndex) Init() {
 	p.Promo = ssc.RegC(p, &ComponentContent{
 		Title:       "SSR-first, fast, reliable",
 		Description: "An HTML render engine concept that brings frontend-like components experience to the server side with native html/template on steroids. Ideal fit for SEO strict projects. Fast, on-demand HTML, minimal JS payload.",
-		Photo:       "/static/img/demo.png",
+		Photo:       "/static/img/content/components.svg",
 		LinkTitle:   "Check Cons & Pros",
 		LinkHref:    "/docs/",
 	})
 	p.DevPromo = ssc.RegC(p, &ComponentContent{
 		Title:       "Developer friendly",
 		Description: "This library was created to solve developer problems first. Use full power of Go, build your parallel development process around components system, deliver your webpages fast! Feel free to use landing page of this library as starter project.",
-		Photo:       "/static/img/code.jpg",
+		Photo:       "/static/img/content/developer.svg",
 		Reverse:     true,
 		LinkTitle:   "Check Documentation",
 		LinkHref:    "/docs/",
