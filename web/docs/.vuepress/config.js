@@ -3,6 +3,8 @@ module.exports = {
     title: 'ssceng',
     description: 'Keep your Go stack united with Server Side Components',
 
+    base: '/docs',
+
     themeConfig: {
         navbar: [
             {
