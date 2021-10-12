@@ -8,6 +8,10 @@ module.exports = {
     themeConfig: {
         navbar: [
             {
+                text: 'Home',
+                link: 'https://ssceng.codes'
+            },
+            {
                 text: 'GitHub',
                 link: 'https://github.com/yuriizinets/ssceng'
             }
