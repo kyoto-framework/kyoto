@@ -49,7 +49,7 @@ module.exports = {
                     },
                     {
                         text: 'Components',
-                        link: '/core/#components'
+                        link: '/core/#component'
                     },
                     {
                         text: 'Rendering',
