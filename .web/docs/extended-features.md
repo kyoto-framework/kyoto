@@ -55,6 +55,8 @@ This can be done with `dynamics` template function, provided by `ssc.Funcs()` fu
 
 ### SSA Usage
 
+#### Actions definition
+
 Now you can implement `Actions` method to define own component's methods.  
 This method must return `ssc.ActionMap`, map which holds your methods. Each method accepts dynamic arguments amount with `...interface{}`.
 In the method you can modify component's state, dynamicaly create and initialize another components, etc.
@@ -68,7 +70,10 @@ func (c *ComponentExample) Actions() ssc.ActionMap {
     return ssc.ActionMap{
         "ExampleAction": func(args ...interface{}) {
             // Do what you want here
-        }
+        },
+        "Submit": func(args ...interface{}) {
+            // Do what you want here
+        },
     }
 }
 
@@ -83,9 +88,24 @@ func (c *ComponentExample) Actions(p ssc.Page) ssc.ActionMap {
 }
 ```
 
-Now, let's see how to trigger an action in your component template.  
-First, you need to include component attributes into your top-level node with `componentattrs` template function. This function accepts component as argument.
-This includes different internal library data and component state. After that, you can use `action` template function to trigger an action. This function accepts multiple arguments: first arguments is always action name, all arguments after that will be passed as `...interface{}` to action arguments.  
+#### Component attributes injection
+
+You need to include component attributes into your top-level node with `componentattrs` template function. This function accepts component as argument.  
+This includes different internal library data and component state.
+
+Usage:
+
+```html
+{{ define "ComponentExample" }}
+<div {{ componentattrs . }}>
+    ...
+</div>
+{{ end }}
+```
+
+#### `action` usage
+
+Library provides multiple ways of action triggering. One of them - `action` template function. This function accepts multiple arguments: first arguments is always action name, all arguments after that will be passed as `...interface{}` to action arguments.  
 
 > Please note, that you can use `action` template function only in event handlers, like `onclick="..."`.  
 
@@ -94,6 +114,41 @@ Usage:
 ```html
 {{ define "ComponentExample" }}
 <div {{ componentattrs . }}>
+    <button onclick="{{ action 'ExampleAction' }}">Click Me</button>
+</div>
+{{ end }}
+```
+
+#### `formsubmit` usage
+
+`action` is not the only way to trigger an action. `formsubmit` allows to handle form submition. On trigger, it calls `Submit` action, defined in your `ssc.ActionMap`.
+Instead of passing form values as arguments, library unpacks that data directly into component by name attribute.
+
+Usage:
+
+```html
+<form
+    {{ componentattrs . }}
+    action="/" 
+    method="POST"
+    onsubmit="{{ formsubmit }}"
+>
+    <input name="Email" value="{{ .Email }}" type="email" />
+    <button type="submit">Submit</button>
+</form>
+```
+
+#### `binding` usage
+
+Not all operations needs to be done on server side. Some actions like inputs binding better to implement on client side to avoid delays and unnecessary server calls.
+For input binding, library provides `bind` template function. This function accepts one argument - target component field name.
+
+Usage:
+
+```html
+{{ define "ComponentExample" }}
+<div {{ componentattrs . }}>
+    <input value="{{ .InputData }}" oninput="{{ bind 'InputData' }}" />
     <button onclick="{{ action 'ExampleAction' }}">Click Me</button>
 </div>
 {{ end }}
