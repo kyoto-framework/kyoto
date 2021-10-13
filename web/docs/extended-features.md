@@ -75,6 +75,14 @@ func (c *ComponentExample) Actions() ssc.ActionMap {
 ...
 ```
 
+In case when you need page instance, f.e. for getting context, this method have overload option with page argument
+
+```go
+func (c *ComponentExample) Actions(p ssc.Page) ssc.ActionMap {
+    ...
+}
+```
+
 Now, let's see how to trigger an action in your component template.  
 First, you need to include component attributes into your top-level node with `componentattrs` template function. This function accepts component as argument.
 This includes different internal library data and component state. After that, you can use `action` template function to trigger an action. This function accepts multiple arguments: first arguments is always action name, all arguments after that will be passed as `...interface{}` to action arguments.  
