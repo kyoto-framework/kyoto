@@ -1,8 +1,3 @@
-
-<div align="center">
-  <img height="300" alt="logo" src="https://github.com/egonelbre/gophers/blob/master/sketch/fairy-tale/witch-cooking.png?raw=true">
-</div>
-
 # ssceng (Server Side Components Engine)
 
 ![GitHub](https://img.shields.io/github/license/yuriizinets/ssceng)
