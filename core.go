@@ -36,8 +36,10 @@ func RegisterComponent(p Page, c Component) Component {
 	csl[p] = append(csl[p], c)
 	cslLock.Unlock()
 	// Trigger component init
-	if c, ok := c.(ImplementsInit); ok {
-		c.Init(p)
+	if _c, ok := c.(ImplementsInit); ok {
+		_c.Init(p)
+	} else if _c, ok := c.(ImplementsInitWithoutPage); ok {
+		_c.Init()
 	}
 	// Return component for external assignment
 	return c

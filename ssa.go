@@ -59,9 +59,16 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		// Create component
 		component := reflect.New(ctype).Interface().(Component)
 		// Init
-		if component, ok := component.(ImplementsInit); ok {
+		if _component, ok := component.(ImplementsInit); ok {
 			st := time.Now()
-			component.Init(dp)
+			_component.Init(dp)
+			et := time.Since(st)
+			if BENCH_HANDLERS {
+				log.Println("Init time", reflect.TypeOf(component), et)
+			}
+		} else if _component, ok := component.(ImplementsInitWithoutPage); ok {
+			st := time.Now()
+			_component.Init()
 			et := time.Since(st)
 			if BENCH_HANDLERS {
 				log.Println("Init time", reflect.TypeOf(component), et)

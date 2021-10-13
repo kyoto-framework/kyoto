@@ -94,7 +94,8 @@ You can use
 [`ssc.GetContext`](https://github.com/yuriizinets/ssceng/blob/master/context.go#L20) and
 [`ssc.DelContext`](https://github.com/yuriizinets/ssceng/blob/master/context.go#L26) for managing your context.
 Context uses `Page` instance as namespace for correct concurrency handling on requests level (`Page` instance is creating for each new request).
-Context can be used for passing additional state (f.e.`Request`, `gin.Context`) which can be accessed inside of lifecycle methods, like `Init` or `Async`.
+Context can be used for passing additional state (f.e.`Request`, `gin.Context`) which can be accessed inside of lifecycle methods, like `Init` or `Async`.  
+**It's important to cleanup context with `ssc.DelContext(p, "")` after page processing to avoid memory leaks!**
 
 Example of usage:
 
@@ -104,6 +105,7 @@ func IndexPageHandler(rw http.ResponseWriter, r *http.Request) {
     ssc.SetContext(p, "internal:r", r)
     ssc.SetContext(p, "internal:rw", rw)
     ssc.RenderPage(rw, )
+    ssc.DelContext(p, "")
 }
 ...
 func (p *PageIndex) Init() {
