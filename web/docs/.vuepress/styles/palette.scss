@@ -3,22 +3,24 @@
 :root {
     --c-brand: rgba(59, 130, 246);
     --c-brand-light: rgba(37, 99, 235);
+    --c-brand-bg: rgba(59, 130, 246, 0.1);
 
-    --c-border: #fff;
-    --c-border-dark: #fff;
+    // --c-border: #fff;
+    // --c-border-dark: #fff;
 }
 
 html.dark {
     --c-brand: rgba(59, 130, 246);
     --c-brand-light: rgba(37, 99, 235);
+    --c-brand-bg: rgba(59, 130, 246, 0.1);
 
     --c-bg: #000;
 
-    --c-text: #fff;
-    --c-text-light: #fff;
-    --c-text-lighter: #fff;
-    --c-text-lightest: #fff;
+    --c-text: #eee;
+    --c-text-light: #eee;
+    --c-text-lighter: #eee;
+    --c-text-lightest: #eee;
 
-    --c-border: #000;
-    --c-border-dark: #000;
+    --c-border: #222;
+    --c-border-dark: #222;
 }

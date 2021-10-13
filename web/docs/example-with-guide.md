@@ -1,8 +1,6 @@
-# Quick Start
+# Example with guide
 
-SSC was created for complex project setup, so, providing minimal quick start example is not an option.
-To provide better quick start experience, guide will show minimal setup with page, multiple component instances and `net/http` setup.
-This guide will rely on demo project setup, that can be found [here](https://github.com/yuriizinets/ssceng/tree/master/demo)
+This guide will show minimal setup with page, multiple component instances, lifecycle integration and `net/http` setup. This guide will rely on demo project setup, that can be found [here](https://github.com/yuriizinets/ssceng/tree/master/demo)
 
 ## Entry point
 

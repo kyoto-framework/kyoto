@@ -18,83 +18,135 @@ module.exports = {
         ],
         sidebar: [
             {
-                text: 'Overview',
-                link: '/overview'
+                text: 'Prologue',
+                link: '/prologue'
             },
             {
-                text: 'Quick Start',
-                link: '/quickstart'
+                text: 'Get Started',
+                link: '/get-started',
+                children: [
+                    {
+                        text: 'Quick Start',
+                        link: '/get-started/#quick-start'
+                    },
+                    {
+                        text: 'Installation',
+                        link: '/get-started/#installation'
+                    },
+                    {
+                        text: 'Integration',
+                        link: '/get-started/#integration'
+                    },
+                ],
             },
             {
                 text: 'Concepts',
                 link: '/concepts',
                 children: [
                     {
-                        text: 'Interfaces',
-                        link: '/concepts/#interfaces'
+                        text: 'Structures',
+                        link: '/concepts/#structures'
                     },
                     {
-                        text: 'Lifecycle',
-                        link: '/concepts/#lifecycle'
+                        text: 'Rendering lifecycle',
+                        link: '/concepts/#rendering-lifecycle'
+                    },
+                    {
+                        text: 'Lifecycle integration',
+                        link: '/concepts/#lifecycle-integration'
+                    },
+                    {
+                        text: 'Methods overloading',
+                        link: '/concepts/#methods-overloading'
+                    },
+                ]
+            },
+            {
+                text: 'Core Features',
+                link: '/core-features',
+                children: [
+                    {
+                        text: 'Page rendering',
+                        link: '/core-features/#page-rendering'
+                    },
+                    {
+                        text: 'Context management',
+                        link: '/core-features/#context-management'
+                    },
+                    {
+                        text: 'Component lifecycle',
+                        link: '/core-features/#component-lifecycle'
+                    },
+                    {
+                        text: 'Handler factory',
+                        link: '/core-features/#handler-factory'
                     }
                 ]
             },
             {
-                text: 'Core',
-                link: '/core',
+                text: 'Extended Features',
+                link: '/extended-features',
                 children: [
-                    {
-                        text: 'Pages',
-                        link: '/core/#page'
-                    },
-                    {
-                        text: 'Components',
-                        link: '/core/#component'
-                    },
-                    {
-                        text: 'Rendering',
-                        link: '/core/#render-page'
-                    },
-                    {
-                        text: 'Context',
-                        link: '/core/#context'
-                    },
-                    {
-                        text: 'Handler',
-                        link: '/core/#handler-factory'
-                    },
-                    {
-                        text: 'Async',
-                        link: '/core/#async-components'
-                    },
-                    {
-                        text: 'Flags',
-                        link: '/core/#flags'
-                    }
-                ]
-            },
-            {
-                text: 'Extended',
-                link: '/extended',
-                children: [
-                    {
-                        text: 'Meta builder',
-                        link: '/extended/#meta-builder'
-                    },
                     {
                         text: 'Server Side Actions',
-                        link: '/extended/#server-side-actions-ssa'
+                        link: '/extended-features/#server-side-actions',
+                        children: [
+                            {
+                                text: 'Installation',
+                                link: '/extended-features/#ssa-installation'
+                            },
+                            {
+                                text: 'Usage',
+                                link: '/extended-features/#ssa-usage'
+                            },
+                            {
+                                text: 'Lifecycle',
+                                link: '/extended-features/#ssa-lifecycle'
+                            },
+                            {
+                                text: 'Notes',
+                                link: '/extended-features/#ssa-notes'
+                            }
+                        ]
                     },
                     {
                         text: 'Server Side State',
-                        link: '/extended/#server-side-state'
+                        link: '/extended-features/#server-side-state'
+                    },
+                    {
+                        text: 'Meta builder',
+                        link: '/extended-features/#meta-builder'
                     },
                     {
                         text: 'Insights',
-                        link: '/extended/#insights'
+                        link: '/extended-features/#insights'
                     }
                 ]
+            },
+            {
+                text: 'Additional notes',
+                link: '/additional-notes',
+                children: [
+                    {
+                        text: 'Dealing with Go packages',
+                        link: '/additional-notes/#dealing-with-go-packages'
+                    }
+                ]
+            },
+            {
+                text: 'Example with guide',
+                link: '/example-with-guide'
             }
         ]
-    }
+    },
+
+    plugins: [
+        ['@vuepress/plugin-search', {
+            locales: {
+                '/': {
+                    placeholder: 'Search'
+                }
+            }
+        }]
+    ],
 }

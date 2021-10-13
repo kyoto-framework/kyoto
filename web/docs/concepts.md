@@ -1,60 +1,62 @@
 # Concepts
 
-## Interfaces
+In this part you'll understand basic library concepts, page rendering lifecycle and how to use most of library features.
 
-Each page or component is represented by its own structure.
-For implementing specific functionality, you need to implement one of predefined interfaces. You need to follow declaration rules to match the required interface (you can find all interfaces in [`types.go`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L59)).  
-In some cases, you can use methods overloading with extended interfaces. This allows to simplify setup and avoid unnecessary code.
+## Structures
 
-### Page interfaces
+Each page or component must to be represented by its own structure.  
+Just think of this structure as a component, where page - toplevel component with own set of functionality.
 
-- [`Page`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L51) - main page interface with minimal requirements
-- [`ImplementsInitWithoutPage`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L61) - page initialization method
-- [`ImplementsMeta`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L81) - page meta builder, you can find more [here](/extended.html#meta-builder)
+## Rendering lifecycle
 
-### Component interfaces
+In the plain `html/template` there is no such thing as lifecycle. Lifecycle concept was took from popular JS frameworks.  
+Let's explore how lifecycle works in `ssceng`:
 
-- [`Component`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L57) - main component interface with minimal requirements
-- [`ImplementsInit`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L61) - component initialization method, for initializing default values or registering nested components
-- [`ImplementsAsync`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L69) - async method will be called concurrently with another async methods
-- [`ImplementsAfterAsync`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L77) - method is called when all async method finished execution
-- [`ImplementsActions`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L85) - method, returning [`ssc.ActionMap`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L11) with component [SSA](/extended#server-side-actions-ssa) methods
-
-Overloads
-
-- [`ImplementsInitWithoutPage`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L65) - same as [`ImplementsInit`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L61), but without page argument
-- [`ImplementsAsyncWithoutPage`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L73) - same as [`ImplementsAsync`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L69), but without page argument
-- [`ImplementsAfterAsyncWithoutPage`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L81) - same as [`ImplementsAfterAsync`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L77), but without page argument
-- [`ImplementsActionsWithoutPage`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L89) - same as [`ImplementsActions`](https://github.com/yuriizinets/ssceng/blob/master/types.go#L85), but without page argument
-
-## Lifecycle
-
-Before implementing any method, you need to understand the rendering lifecycle.  
-
-### Page rendering
-
-Each page's lifecycle is hidden under the render function and follows this steps:
-
-- Defining shared variables (waitgroup, errors channel)
-- Triggering the page's `Init()` to initialize and register components
-- Running all component's `Async()` functions in separate goroutines
+- Definition of shared variables (waitgroup, errors channel)
+- Initializing page and registering components
+- Triggering asynchronous components in separate goroutines
 - Waiting untill all asynchronous operations are completed
-- If new components were registered while `Async` execution, repeat `Async` stage for newly created components
-- Calling `AfterAsync()` for each component
-- Cleaning up registered components (not needed more for internal usage)
-- Getting page's template and render
+- If new components was registered during asychronous operations, repeat async steps for new components
+- Triggering after async operations
+- Cleanup registered components
+- Rendering final page to `io.Writer`
 
-### SSA Rendering
+## Lifecycle integration
 
-If you want to use SSA in your project, it's better to know how it works first. SSA has own, shorten lifecycle.  
+To integrate your component into lifecycle, you need at least 2 things to be done:  
 
-- Creating request with JS on client side (icluding component name, state, action name, args)
-- Extracting action data from request on server side
-- Finding registered component type
-- Creating component struct
-- Triggering the component's `Init()`
-- Populating component's state
-- Calling action
-- If new components where registed while action execution, do `Async` stage in the same way as for page
-- Rendering component and returning HTML to client side
-- Replacing component's HTML with recieved version
+- Register component on page initialization
+- Implement lifecycle method to match one of existing interfaces (will be described further)
+
+Components registration must to be done on page initialization stage. It can be done with implementing `ImplementsInitWithoutPage` interface and registering components with `RegC` method. `RegC` method immediately returns initialized component pointer, so you can use it on component assign.  
+Example:
+
+```go
+type PageIndex struct {
+    Example ssc.Component
+}
+
+...
+
+func (p *PageIndex) Init() {
+    p.Example = ssc.RegC(p, &ComponentExample{})
+}
+```
+
+After component registration, you can use all lifecycle features. Let's explore them:
+
+- Initialization step. Triggered immediately on component registration. You can integrate your component into this step with `Init` method
+- Asynchronous operations step. Triggered concurrently after all initializations are done. You can integrate your component into this step with `Aync` method
+- After asynchronous operations step. Triggered after all concurrent operations are done. You can integrate your component into this step with `AfterAsync` method
+
+You can find detailed usage examples in [Core Features](/core-features) section.  
+This overview not includes features from [Extended Features](/extended-features) section, because most of them not related to lifecycle directly.
+
+## Methods overloading
+
+This library can handle different method signatures. Under the hood it tries to cast your component to different interfaces, depending on current lifecycle step. This approach allows to reduce code complexity and extend library features with minimal pain.  
+For example, you can use `Async(p ssc.Page)` or `Async()` signature depending on your needs.  
+
+You can find detailed usage examples in [Core Features](/core-features) section.  
+
+## Interfaces

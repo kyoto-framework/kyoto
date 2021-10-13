@@ -1,6 +1,6 @@
-# Overview
+# Prologue
 
-An HTML render engine concept that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (`net/http`/`gin`/etc), that provides io.Writer in response.
+This library implements an HTML render engine concept that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (`net/http`/`gin`/etc), that provides io.Writer in response.
 
 ::: warning
 This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/yuriizinets/ssceng/issues/new)
@@ -12,9 +12,9 @@ Main motivation is to reduce usage of popular SPA/PWA frameworks where it's not 
 
 ## What problems does it solve?
 
-While developing the website's frontend with Go, I discovered some of the downsides of this approach:
+While developing the website's frontend with plain Go templates, I discovered some of the downsides of this approach:
 
-- With plain html/template you're starting to repeat yourself. It's harder to define reusable parts.
+- With plain `html/template` you're starting to repeat yourself. It's harder to define reusable parts.
 - You must repeat DTO calls for each page, where you're using reusable parts.
 - With Go's routines approach it's hard to make async-like DTO calls in the handlers.
 - For dynamic things, you still need to use JS and client-side DOM modification.

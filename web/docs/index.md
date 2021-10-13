@@ -1,9 +1,12 @@
 ---
 home: true
-heroImage: /demo.png
-heroText: SSC Engine
-tagline: Develop frontend Server Side Components with Go
+heroImage: /dk.svg
+heroText: ssceng
+tagline: Keep your Go stack united with Server Side Components
 actions:
-    - text: Get started
-      link: /overview
+  - text: Prologue
+    link: /prologue
+    type: secondary
+  - text: Get started
+    link: /get-started
 ---
