@@ -60,3 +60,32 @@ For example, you can use `Async(p ssc.Page)` or `Async()` signature depending on
 You can find detailed usage examples in [Core Features](/core-features) section.  
 
 ## Interfaces
+
+This library strongly relies on interfaces. For methods overloading, lifecycle integrations, etc.  
+List of all (or almost all) available interfaces:
+
+- `ImplementsInit` - interface for checking implementation of initialization method.  
+  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Appliable for components.
+- `ImplementsInitWithoutPage` - same as `ImplementsInit`, but without `ssc.Page` argument.  
+  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Appliable for both pages and components.
+- `ImplementsMeta` - interface for checking implementation of meta builder.  
+  - Appliable for pages.
+- `ImplementsAsync` - interface for checking implementation of asynchronous method.  
+  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Appliable for components.
+- `ImplementsAsyncWithoutPage` - same as `ImplementsAsync`, but without `ssc.Page` argument.  
+  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Appliable for components.
+- `ImplementsAfterAsync` - interface for checking implementation of after async method.  
+  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Appliable for components.
+- `ImplementsAfterAsyncWithoutPage` - same as `ImplementsAfterAsync`, but without `ssc.Page` argument.  
+  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Appliable for components.
+- `ImplementsAtions` - interface for checking implementation of [Server Side Actions](/extended-features/#server-side-actions).  
+  - Appliable for components.
+
+You can find complete list of interfaces here:
+[https://github.com/yuriizinets/ssceng/blob/master/types.go](https://github.com/yuriizinets/ssceng/blob/master/types.go)
