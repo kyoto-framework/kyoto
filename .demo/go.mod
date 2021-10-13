@@ -1,4 +1,4 @@
-module github.com/yuriizinets/ssceng/demo
+module github.com/yuriizinets/ssceng/.demo
 
 go 1.17
 

@@ -18,7 +18,7 @@ An HTML render engine concept that brings frontend-like components experience to
 Main project landing: https://ssceng.codes/  
 Documentation: https://ssceng.codes/docs/  
 Demo project, Hacker News client made with SSC: https://hn.ssceng.codes/  
-Demo project, features overview: https://github.com/yuriizinets/ssceng/tree/master/demo  
+Demo project, features overview: https://github.com/yuriizinets/ssceng/tree/master/.demo  
 
 
 ## Support

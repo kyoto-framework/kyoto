@@ -1,6 +1,6 @@
 # Example with guide
 
-This guide will show minimal setup with page, multiple component instances, lifecycle integration and `net/http` setup. This guide will rely on demo project setup, that can be found [here](https://github.com/yuriizinets/ssceng/tree/master/demo)
+This guide will show minimal setup with page, multiple component instances, lifecycle integration and `net/http` setup. This guide will rely on demo project setup, that can be found [here](https://github.com/yuriizinets/ssceng/tree/master/.demo)
 
 ## Entry point
 

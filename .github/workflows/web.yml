@@ -28,7 +28,7 @@ jobs:
       run: |
         (
           export CPATH=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${REPOSITORY_NAME,,};
-          cd web;
+          cd .web;
           docker build -t $CPATH:latest .;
           docker push $CPATH:latest;
         )
