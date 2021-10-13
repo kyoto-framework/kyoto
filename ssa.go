@@ -59,7 +59,7 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		// Create component
 		component := reflect.New(ctype).Interface().(Component)
 		// Init
-		if component, ok := component.(ImplementsNestedInit); ok {
+		if component, ok := component.(ImplementsInit); ok {
 			st := time.Now()
 			component.Init(dp)
 			et := time.Since(st)
@@ -87,8 +87,10 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		}
 		// Call action
 		st = time.Now()
-		if component, ok := component.(ImplementsActions); ok {
-			component.Actions()[aname](args...)
+		if _component, ok := component.(ImplementsActions); ok {
+			_component.Actions(dp)[aname](args...)
+		} else if _component, ok := component.(ImplementsActionsWithoutPage); ok {
+			_component.Actions()[aname](args...)
 		} else {
 			panic("Component not implements Actions, unexpected behavior")
 		}
@@ -108,9 +110,23 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 				break
 			}
 			for _, component := range regc {
-				if component, ok := component.(ImplementsAsync); ok {
+				if _component, ok := component.(ImplementsAsync); ok {
 					wg.Add(1)
-					go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
+					go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync, dp Page) {
+						defer wg.Done()
+						st := time.Now()
+						_err := c.Async(dp)
+						et := time.Since(st)
+						if BENCH_LOWLEVEL {
+							log.Println("Async time", reflect.TypeOf(component), et)
+						}
+						if _err != nil {
+							err <- _err
+						}
+					}(&wg, err, _component, dp)
+				} else if _component, ok := component.(ImplementsAsyncWithoutPage); ok {
+					wg.Add(1)
+					go func(wg *sync.WaitGroup, err chan error, c ImplementsAsyncWithoutPage) {
 						defer wg.Done()
 						st := time.Now()
 						_err := c.Async()
@@ -121,7 +137,7 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 						if _err != nil {
 							err <- _err
 						}
-					}(&wg, err, component)
+					}(&wg, err, _component)
 				}
 			}
 			wg.Wait()

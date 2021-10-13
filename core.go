@@ -36,7 +36,7 @@ func RegisterComponent(p Page, c Component) Component {
 	csl[p] = append(csl[p], c)
 	cslLock.Unlock()
 	// Trigger component init
-	if c, ok := c.(ImplementsNestedInit); ok {
+	if c, ok := c.(ImplementsInit); ok {
 		c.Init(p)
 	}
 	// Return component for external assignment
@@ -52,7 +52,7 @@ func RenderPage(w io.Writer, p Page) {
 	var wg sync.WaitGroup
 	var err = make(chan error, 1000)
 	// Trigger init
-	if p, ok := p.(ImplementsInit); ok {
+	if p, ok := p.(ImplementsInitWithoutPage); ok {
 		st := time.Now()
 		p.Init()
 		et := time.Since(st)
@@ -71,9 +71,23 @@ func RenderPage(w io.Writer, p Page) {
 			break
 		}
 		for _, component := range regc {
-			if component, ok := component.(ImplementsAsync); ok {
+			if _component, ok := component.(ImplementsAsync); ok {
 				wg.Add(1)
-				go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync) {
+				go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync, p Page) {
+					defer wg.Done()
+					st := time.Now()
+					_err := c.Async(p)
+					et := time.Since(st)
+					if BENCH_LOWLEVEL {
+						log.Println("Async time", reflect.TypeOf(component), et)
+					}
+					if _err != nil {
+						err <- _err
+					}
+				}(&wg, err, _component, p)
+			} else if _component, ok := component.(ImplementsAsyncWithoutPage); ok {
+				wg.Add(1)
+				go func(wg *sync.WaitGroup, err chan error, c ImplementsAsyncWithoutPage) {
 					defer wg.Done()
 					st := time.Now()
 					_err := c.Async()
@@ -84,7 +98,7 @@ func RenderPage(w io.Writer, p Page) {
 					if _err != nil {
 						err <- _err
 					}
-				}(&wg, err, component)
+				}(&wg, err, _component)
 			}
 		}
 		wg.Wait()
@@ -92,9 +106,16 @@ func RenderPage(w io.Writer, p Page) {
 	// Trigger aftersync
 	cslLock.RLock()
 	for _, component := range csl[p] {
-		if component, ok := component.(ImplementsAfterAsync); ok {
+		if _component, ok := component.(ImplementsAfterAsync); ok {
 			st := time.Now()
-			component.AfterAsync()
+			_component.AfterAsync(p)
+			et := time.Since(st)
+			if BENCH_LOWLEVEL {
+				log.Println("AfterAsync time", reflect.TypeOf(component), et)
+			}
+		} else if _component, ok := component.(ImplementsAfterAsyncWithoutPage); ok {
+			st := time.Now()
+			_component.AfterAsync()
 			et := time.Since(st)
 			if BENCH_LOWLEVEL {
 				log.Println("AfterAsync time", reflect.TypeOf(component), et)

@@ -59,22 +59,34 @@ type Component interface{}
 // Extensions
 
 type ImplementsInit interface {
-	Init()
-}
-
-type ImplementsNestedInit interface {
 	Init(Page)
 }
 
+type ImplementsInitWithoutPage interface {
+	Init()
+}
+
 type ImplementsAsync interface {
+	Async(Page) error
+}
+
+type ImplementsAsyncWithoutPage interface {
 	Async() error
 }
 
 type ImplementsAfterAsync interface {
+	AfterAsync(Page)
+}
+
+type ImplementsAfterAsyncWithoutPage interface {
 	AfterAsync()
 }
 
 type ImplementsActions interface {
+	Actions(Page) ActionMap
+}
+
+type ImplementsActionsWithoutPage interface {
 	Actions() ActionMap
 }
 
