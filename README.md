@@ -3,7 +3,7 @@
   <img height="300" alt="logo" src="https://github.com/egonelbre/gophers/blob/master/sketch/fairy-tale/witch-cooking.png?raw=true">
 </div>
 
-# SSC Engine
+# ssceng (Server Side Components Engine)
 
 ![GitHub](https://img.shields.io/github/license/yuriizinets/ssceng)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yuriizinets/ssceng)](https://goreportcard.com/report/github.com/yuriizinets/ssceng)
