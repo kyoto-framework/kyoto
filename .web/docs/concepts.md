@@ -10,7 +10,7 @@ Just think of this structure as a component, where page - toplevel component wit
 ## Rendering lifecycle
 
 In the plain `html/template` there is no such thing as lifecycle. Lifecycle concept was took from popular JS frameworks.  
-Let's explore how lifecycle works in `ssceng`:
+Let's explore how lifecycle works in `kyoto`:
 
 - Definition of shared variables (waitgroup, errors channel)
 - Initializing page and registering components
@@ -33,13 +33,13 @@ Example:
 
 ```go
 type PageIndex struct {
-    Example ssc.Component
+    Example kyoto.Component
 }
 
 ...
 
 func (p *PageIndex) Init() {
-    p.Example = ssc.RegC(p, &ComponentExample{})
+    p.Example = kyoto.RegC(p, &ComponentExample{})
 }
 ```
 
@@ -55,7 +55,7 @@ This overview not includes features from [Extended Features](/extended-features)
 ## Methods overloading
 
 This library can handle different method signatures. Under the hood it tries to cast your component to different interfaces, depending on current lifecycle step. This approach allows to reduce code complexity and extend library features with minimal pain.  
-For example, you can use `Async(p ssc.Page)` or `Async()` signature depending on your needs.  
+For example, you can use `Async(p kyoto.Page)` or `Async()` signature depending on your needs.  
 
 You can find detailed usage examples in [Core Features](/core-features) section.  
 
@@ -67,7 +67,7 @@ List of all (or almost all) available interfaces:
 - `ImplementsInit` - interface for checking implementation of initialization method.  
   - Part of [lifecycle](/concepts/#rendering-lifecycle).  
   - Appliable for components.
-- `ImplementsInitWithoutPage` - same as `ImplementsInit`, but without `ssc.Page` argument.  
+- `ImplementsInitWithoutPage` - same as `ImplementsInit`, but without `kyoto.Page` argument.  
   - Part of [lifecycle](/concepts/#rendering-lifecycle).  
   - Appliable for both pages and components.
 - `ImplementsMeta` - interface for checking implementation of meta builder.  
@@ -75,17 +75,17 @@ List of all (or almost all) available interfaces:
 - `ImplementsAsync` - interface for checking implementation of asynchronous method.  
   - Part of [lifecycle](/concepts/#rendering-lifecycle).  
   - Appliable for components.
-- `ImplementsAsyncWithoutPage` - same as `ImplementsAsync`, but without `ssc.Page` argument.  
+- `ImplementsAsyncWithoutPage` - same as `ImplementsAsync`, but without `kyoto.Page` argument.  
   - Part of [lifecycle](/concepts/#rendering-lifecycle).  
   - Appliable for components.
 - `ImplementsAfterAsync` - interface for checking implementation of after async method.  
   - Part of [lifecycle](/concepts/#rendering-lifecycle).  
   - Appliable for components.
-- `ImplementsAfterAsyncWithoutPage` - same as `ImplementsAfterAsync`, but without `ssc.Page` argument.  
+- `ImplementsAfterAsyncWithoutPage` - same as `ImplementsAfterAsync`, but without `kyoto.Page` argument.  
   - Part of [lifecycle](/concepts/#rendering-lifecycle).  
   - Appliable for components.
 - `ImplementsAtions` - interface for checking implementation of [Server Side Actions](/extended-features/#server-side-actions).  
   - Appliable for components.
 
 You can find complete list of interfaces here:
-[https://github.com/yuriizinets/ssceng/blob/master/types.go](https://github.com/yuriizinets/ssceng/blob/master/types.go)
+[https://github.com/yuriizinets/kyoto/blob/master/types.go](https://github.com/yuriizinets/kyoto/blob/master/types.go)

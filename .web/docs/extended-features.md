@@ -17,7 +17,7 @@ For creating SSA handler, you can use high-level SSA handler factory:
 ```go
 func ssahandler() http.HandlerFunc {
     return func(rw http.ResponseWriter, r *http.Request) {
-        ssc.SSAHandlerFactory(ssatemplate, map[string]interface{}{
+        kyoto.SSAHandlerFactory(ssatemplate, map[string]interface{}{
             "internal:rw": rw,
             "internal:r":  r,
         })(rw, r)
@@ -39,7 +39,7 @@ http.HandleFunc("/SSA/", ssahandler())
 ```
 
 And now, we need to include thin communication layer, implemented with JS, into target page.  
-This can be done with `dynamics` template function, provided by `ssc.Funcs()` function (check [Page rendering](/core-features/#page-rendering) for details)
+This can be done with `dynamics` template function, provided by `kyoto.Funcs()` function (check [Page rendering](/core-features/#page-rendering) for details)
 
 ```html
 <html>
@@ -58,7 +58,7 @@ This can be done with `dynamics` template function, provided by `ssc.Funcs()` fu
 #### Actions definition
 
 Now you can implement `Actions` method to define own component's methods.  
-This method must return `ssc.ActionMap`, map which holds your methods. Each method accepts dynamic arguments amount with `...interface{}`.
+This method must return `kyoto.ActionMap`, map which holds your methods. Each method accepts dynamic arguments amount with `...interface{}`.
 In the method you can modify component's state, dynamicaly create and initialize another components, etc.
 
 Usage:
@@ -66,8 +66,8 @@ Usage:
 ```go
 ...
 
-func (c *ComponentExample) Actions() ssc.ActionMap {
-    return ssc.ActionMap{
+func (c *ComponentExample) Actions() kyoto.ActionMap {
+    return kyoto.ActionMap{
         "ExampleAction": func(args ...interface{}) {
             // Do what you want here
         },
@@ -83,7 +83,7 @@ func (c *ComponentExample) Actions() ssc.ActionMap {
 In case when you need page instance, f.e. for getting context, this method have overload option with page argument
 
 ```go
-func (c *ComponentExample) Actions(p ssc.Page) ssc.ActionMap {
+func (c *ComponentExample) Actions(p kyoto.Page) kyoto.ActionMap {
     ...
 }
 ```
@@ -121,7 +121,7 @@ Usage:
 
 #### `formsubmit` usage
 
-`action` is not the only way to trigger an action. `formsubmit` allows to handle form submition. On trigger, it calls `Submit` action, defined in your `ssc.ActionMap`.
+`action` is not the only way to trigger an action. `formsubmit` allows to handle form submition. On trigger, it calls `Submit` action, defined in your `kyoto.ActionMap`.
 Instead of passing form values as arguments, library unpacks that data directly into component by name attribute.
 
 Usage:
@@ -176,7 +176,7 @@ SSA has own lifecycle, which is a bit different in comparison with page renderin
 ## Server Side State
 
 ::: danger
-Not implemented yet. Check [issue](https://github.com/yuriizinets/ssceng/issues/28) state
+Not implemented yet. Check [issue](https://github.com/yuriizinets/kyoto/issues/28) state
 :::
 
 This feature is useful in case of large state payloads.
@@ -194,7 +194,7 @@ Widget on page, that can be included with inisghts template function. Widget inc
 ## Insights
 
 ::: danger
-Not implemented yet. Check [issue](https://github.com/yuriizinets/ssceng/issues/26) state
+Not implemented yet. Check [issue](https://github.com/yuriizinets/kyoto/issues/26) state
 :::
 
 Widget on page, that can be included with inisghts template function. Widget includes general page render information, like errors, overall lifecycle timings, etc. Also, widget includes list of each rendered component with lifecycle timings (init, async, afterasync, etc). On hover, highlights component on page.

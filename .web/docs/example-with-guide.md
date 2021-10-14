@@ -1,6 +1,6 @@
 # Example with guide
 
-This guide will show minimal setup with page, multiple component instances, lifecycle integration and `net/http` setup. This guide will rely on demo project setup, that can be found [here](https://github.com/yuriizinets/ssceng/tree/master/.demo)
+This guide will show minimal setup with page, multiple component instances, lifecycle integration and `net/http` setup. This guide will rely on demo project setup, that can be found [here](https://github.com/yuriizinets/kyoto/tree/master/.demo)
 
 ## Entry point
 
@@ -28,13 +28,13 @@ func main() {
 ## Page handler
 
 After that, we need to define generic page handler.  
-SSC is not providing own page handler, because you can use any serving basis, not only `net/http`.
-Instead of that, SSC provides PageHandlerFactory, helper for creating own page handler.
+Kyoto is not providing own page handler, because you can use any serving basis, not only `net/http`.
+Instead of that, Kyoto provides PageHandlerFactory, helper for creating own page handler.
 
 ```go
-func pagehandler(p ssc.Page) http.HandlerFunc {
+func pagehandler(p kyoto.Page) http.HandlerFunc {
     return func(rw http.ResponseWriter, r *http.Request) {
-        ssc.PageHandlerFactory(p, map[string]interface{}{
+        kyoto.PageHandlerFactory(p, map[string]interface{}{
             "internal:rw": rw,
             "internal:r":  r,
         })(rw, r)
@@ -45,15 +45,15 @@ func pagehandler(p ssc.Page) http.HandlerFunc {
 ## Page
 
 Now, we can define our page.  
-Page is represented by a struct which implements [Page](https://github.com/yuriizinets/ssceng/blob/master/types.go#L51) interface.
+Page is represented by a struct which implements [Page](https://github.com/yuriizinets/kyoto/blob/master/types.go#L51) interface.
 Page requires method, returning ready for use template. In this example, we will store our page markup in `page.index.html`.
-`ssc.Funcs` is a function, that returns FuncMap. This funcmap is required for correct work of some SSC features.
+`kyoto.Funcs` is a function, that returns FuncMap. This funcmap is required for correct work of some Kyoto features.
 
 ```go
 type PageIndex struct {}
 
 func (p *PageIndex) Template() *template.Template {
-    return template.Must(template.New("page.index.html").Funcs(ssc.Funcs()).ParseGlob("*.html"))
+    return template.Must(template.New("page.index.html").Funcs(kyoto.Funcs()).ParseGlob("*.html"))
 }
 ```
 
@@ -67,7 +67,7 @@ page.index.html
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSC Quick Start</title>
+    <title>Kyoto Quick Start</title>
 </head>
 
 <body>
@@ -79,9 +79,9 @@ page.index.html
 ## Component
 
 Let's define sample component, which fetches UUID from httpbin page.  
-Component is represented by a struct which implements [Component](https://github.com/yuriizinets/ssceng/blob/master/types.go#L57) interface.
+Component is represented by a struct which implements [Component](https://github.com/yuriizinets/kyoto/blob/master/types.go#L57) interface.
 By default, Component interface doesn't have any required methods. Instead of having all-in-one, we have multiple interfaces with functionality separation.
-This approach also covers pages. In this example, we will implement [ImplementsAsync](https://github.com/yuriizinets/ssceng/blob/master/types.go#L69) interface.
+This approach also covers pages. In this example, we will implement [ImplementsAsync](https://github.com/yuriizinets/kyoto/blob/master/types.go#L69) interface.
 This method will be called as goroutine in page rendering [lifecycle](/concepts.html#lifecycle).
 In that way, all needed async data will be fetched concurrently. In this example, component's markup will be stored in `component.uuid.html`
 
@@ -116,24 +116,24 @@ component.uuid.html
 ## Attaching component
 
 For using component, you need to define page fields for storing component objects and `Init` method for initialization and registration of components.
-Inside of init, use `ssc.RegC` for registering your components. In that way you're including component in page render [lifecycle](/concepts.html#lifecycle).
+Inside of init, use `kyoto.RegC` for registering your components. In that way you're including component in page render [lifecycle](/concepts.html#lifecycle).
 After that, you need to pass component object to template in your page markup.
 
 ```go
 type PageIndex struct {
-    DemoUUID1 ssc.Component
-    DemoUUID2 ssc.Component
-    DemoUUID3 ssc.Component
-    DemoUUID4 ssc.Component
+    DemoUUID1 kyoto.Component
+    DemoUUID2 kyoto.Component
+    DemoUUID3 kyoto.Component
+    DemoUUID4 kyoto.Component
 }
 
 ...
 
 func (p *PageIndex) Init() {
-    p.DemoUUID1 = ssc.RegC(p, &ComponentUUID{})
-    p.DemoUUID2 = ssc.RegC(p, &ComponentUUID{})
-    p.DemoUUID3 = ssc.RegC(p, &ComponentUUID{})
-    p.DemoUUID4 = ssc.RegC(p, &ComponentUUID{})
+    p.DemoUUID1 = kyoto.RegC(p, &ComponentUUID{})
+    p.DemoUUID2 = kyoto.RegC(p, &ComponentUUID{})
+    p.DemoUUID3 = kyoto.RegC(p, &ComponentUUID{})
+    p.DemoUUID4 = kyoto.RegC(p, &ComponentUUID{})
 }
 ```
 

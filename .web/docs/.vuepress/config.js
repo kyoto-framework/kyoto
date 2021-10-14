@@ -1,6 +1,6 @@
 
 module.exports = {
-    title: 'ssceng',
+    title: 'kyoto',
     description: 'Keep your Go stack united with Server Side Components',
 
     base: '/docs/',
@@ -9,11 +9,11 @@ module.exports = {
         navbar: [
             {
                 text: 'Home',
-                link: 'https://ssceng.codes'
+                link: 'https://kyoto.codes'
             },
             {
                 text: 'GitHub',
-                link: 'https://github.com/yuriizinets/ssceng'
+                link: 'https://github.com/yuriizinets/kyoto'
             }
         ],
         sidebar: [

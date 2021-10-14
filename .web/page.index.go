@@ -3,37 +3,37 @@ package main
 import (
 	"html/template"
 
-	ssc "github.com/yuriizinets/ssceng"
+	"github.com/yuriizinets/kyoto"
 )
 
 type PageIndex struct {
-	CMeta      ssc.Component
-	Navbar     ssc.Component
-	Footer     ssc.Component
-	Features   ssc.Component
-	SideBySide ssc.Component
-	Sponsors   ssc.Component
-	Statistics ssc.Component
-	Promo      ssc.Component
-	DevPromo   ssc.Component
-	Details    ssc.Component
-	About      ssc.Component
-	FAQ        ssc.Component
+	CMeta      kyoto.Component
+	Navbar     kyoto.Component
+	Footer     kyoto.Component
+	Features   kyoto.Component
+	SideBySide kyoto.Component
+	Sponsors   kyoto.Component
+	Statistics kyoto.Component
+	Promo      kyoto.Component
+	DevPromo   kyoto.Component
+	Details    kyoto.Component
+	About      kyoto.Component
+	FAQ        kyoto.Component
 }
 
 func (p *PageIndex) Template() *template.Template {
 	return template.Must(template.New("page.index.html").Funcs(tfuncs()).ParseGlob("*.html"))
 }
 
-func (p *PageIndex) Meta() ssc.Meta {
-	return ssc.Meta{
-		Title: "ssceng - Mind Blowing Way to Build Frontend",
+func (p *PageIndex) Meta() kyoto.Meta {
+	return kyoto.Meta{
+		Title: "kyoto - Mind Blowing Way to Build Frontend",
 	}
 }
 
 func (p *PageIndex) Init() {
-	p.CMeta = ssc.RegC(p, &ComponentMeta{})
-	p.Navbar = ssc.RegC(p, &ComponentNavbar{
+	p.CMeta = kyoto.RegC(p, &ComponentMeta{})
+	p.Navbar = kyoto.RegC(p, &ComponentNavbar{
 		Left: []ComponentNavbarHref{
 			{
 				Title: "Documentation",
@@ -53,11 +53,11 @@ func (p *PageIndex) Init() {
 					</g>
 				</svg>
 				`),
-				Href: "https://github.com/yuriizinets/ssceng",
+				Href: "https://github.com/yuriizinets/kyoto",
 			},
 		},
 	})
-	p.Footer = ssc.RegC(p, &ComponentFooter{
+	p.Footer = kyoto.RegC(p, &ComponentFooter{
 		Left: []ComponentFooterHref{
 			{
 				Title: "Documentation",
@@ -77,12 +77,12 @@ func (p *PageIndex) Init() {
 					</g>
 				</svg>
 				`),
-				Href: "https://github.com/yuriizinets/ssceng",
+				Href: "https://github.com/yuriizinets/kyoto",
 			},
 		},
 		Copyright: "© 2021-present. Created by Yurii Zinets",
 	})
-	p.Features = ssc.RegC(p, &ComponentBlockFeatures{
+	p.Features = kyoto.RegC(p, &ComponentBlockFeatures{
 		Entries: []ComponentBlockFeaturesEntry{
 			{
 				Image:       template.HTML(`<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>`),
@@ -101,7 +101,7 @@ func (p *PageIndex) Init() {
 			},
 		},
 	})
-	p.SideBySide = ssc.RegC(p, &ComponentSideBySide{
+	p.SideBySide = kyoto.RegC(p, &ComponentSideBySide{
 		Title:         "Best Of Two Worlds",
 		LeftSubtitle:  "Server Templates",
 		RightSubtitle: "JS Frameworks",
@@ -118,7 +118,7 @@ func (p *PageIndex) Init() {
 			"Dynamic behavior",
 		},
 	})
-	p.Sponsors = ssc.RegC(p, &ComponentSponsors{
+	p.Sponsors = kyoto.RegC(p, &ComponentSponsors{
 		Title: "Our Sponsors",
 		Entries: []ComponentSponsorsEntry{
 			{
@@ -127,14 +127,14 @@ func (p *PageIndex) Init() {
 			},
 		},
 	})
-	p.Promo = ssc.RegC(p, &ComponentContent{
+	p.Promo = kyoto.RegC(p, &ComponentContent{
 		Title:       "SSR-first, fast, reliable",
 		Description: "An HTML render engine concept that brings frontend-like components experience to the server side with native html/template on steroids. Ideal fit for SEO strict projects. Fast, on-demand HTML, minimal JS payload.",
 		Photo:       "/static/img/content/components.svg",
 		LinkTitle:   "Check Cons & Pros",
 		LinkHref:    "/docs/",
 	})
-	p.DevPromo = ssc.RegC(p, &ComponentContent{
+	p.DevPromo = kyoto.RegC(p, &ComponentContent{
 		Title:       "Developer friendly",
 		Description: "This library was created to solve developer problems first. Use full power of Go, build your parallel development process around components system, deliver your webpages fast! Feel free to use landing page of this library as starter project.",
 		Photo:       "/static/img/content/developer.svg",
@@ -143,7 +143,7 @@ func (p *PageIndex) Init() {
 		LinkHref:    "/docs/",
 	})
 
-	p.Details = ssc.RegC(p, &ComponentBlockFeaturesMore{
+	p.Details = kyoto.RegC(p, &ComponentBlockFeaturesMore{
 		Title:    "core features",
 		Subtitle: "A Better Way to Build Your Frontend",
 		Entries: []ComponentBlockFeaturesEntry{
@@ -174,11 +174,11 @@ func (p *PageIndex) Init() {
 			},
 		},
 	})
-	p.Statistics = ssc.RegC(p, &ComponentBlockStatistics{
+	p.Statistics = kyoto.RegC(p, &ComponentBlockStatistics{
 		Title: "Dry numbers",
-		Repo:  "yuriizinets/ssceng",
+		Repo:  "yuriizinets/kyoto",
 	})
-	p.About = ssc.RegC(p, &ComponentBlockFAQ{
+	p.About = kyoto.RegC(p, &ComponentBlockFAQ{
 		Title: "About",
 		Entries: []ComponentBlockFAQEntry{
 			{
@@ -213,7 +213,7 @@ func (p *PageIndex) Init() {
 			},
 		},
 	})
-	p.FAQ = ssc.RegC(p, &ComponentBlockFAQ{
+	p.FAQ = kyoto.RegC(p, &ComponentBlockFAQ{
 		Title: "Frequently-asked questions",
 		Entries: []ComponentBlockFAQEntry{
 			{

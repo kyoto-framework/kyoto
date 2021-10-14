@@ -5,11 +5,11 @@ import (
 	"html/template"
 
 	"github.com/yuriizinets/go-common"
-	ssc "github.com/yuriizinets/ssceng"
+	"github.com/yuriizinets/kyoto"
 )
 
 func tfuncs() template.FuncMap {
-	f := ssc.Funcs()
+	f := kyoto.Funcs()
 	f["fprice"] = func(price int) string {
 		return fmt.Sprintf("%v", price/100)
 	}

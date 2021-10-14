@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	ssc "github.com/yuriizinets/ssceng"
+	"github.com/yuriizinets/kyoto"
 )
 
 // Repository statistics
@@ -20,7 +20,7 @@ type ComponentBlockStatistics struct {
 	Sponsors     int
 }
 
-func (c *ComponentBlockStatistics) Init(p ssc.Page) {
+func (c *ComponentBlockStatistics) Init(p kyoto.Page) {
 	if c.Repo == "" {
 		panic("ComponentBlockStatistics: Repo is required")
 	}

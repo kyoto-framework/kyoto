@@ -17,14 +17,14 @@ First of all, let's create a page structure
 package main
 
 import (
-    ssc "github.com/yuriizinets/ssceng"
+    "github.com/yuriizinets/kyoto"
 )
 
 type PageIndex struct {}
 ```
 
 As a requirement, each page must have an html template builder method.  
-Please note that providing `ssc.Funcs()` is not required, but highly recommended as far as it provides some library features.
+Please note that providing `kyoto.Funcs()` is not required, but highly recommended as far as it provides some library features.
 
 `page.index.go`
 
@@ -32,7 +32,7 @@ Please note that providing `ssc.Funcs()` is not required, but highly recommended
 ...
 
 func (*PageIndex) Template() *template.Template {
-    return template.Must(template.New("page.index.html").Funcs(ssc.Funcs()).ParseGlob("*.html"))
+    return template.Must(template.New("page.index.html").Funcs(kyoto.Funcs()).ParseGlob("*.html"))
 }
 ```
 
@@ -43,7 +43,7 @@ After creating page structure, it's time to create template
 ```html
 <html>
     <head>
-        <title>ssceng page</title>
+        <title>kyoto page</title>
     </head>
     <body>
         ...
@@ -99,15 +99,15 @@ Check [Lifecycle integration](/concepts/#lifecycle-integration) section for deta
 package main
 
 import (
-    ssc "github.com/yuriizinets/ssceng"
+    "github.com/yuriizinets/kyoto"
 )
 
 type PageIndex struct {
-    Rand ssc.Component
+    Rand kyoto.Component
 }
 
 func (p *PageIndex) Init() {
-    p.Rand = ssc.RegC(p &ComponentRand{})
+    p.Rand = kyoto.RegC(p &ComponentRand{})
 }
 ```
 
@@ -116,7 +116,7 @@ func (p *PageIndex) Init() {
 ```html
 <html>
     <head>
-        <title>ssceng page</title>
+        <title>kyoto page</title>
     </head>
     <body>
         {{ template "ComponentRand" .Rand }}
@@ -130,26 +130,26 @@ That's it! Now you have component instance, included into lifecycle and rendered
 
 ## Context management
 
-You can use `ssc.SetContext`, `ssc.GetContext` and `ssc.DelContext` for managing your context.  
+You can use `kyoto.SetContext`, `kyoto.GetContext` and `kyoto.DelContext` for managing your context.  
 
 Context uses page instance as namespace for correct concurrency handling on requests level (page instance is creating for each new request).
 Context can be used for passing additional state (f.e.`http.Request`, `gin.Context`) which can be accessed inside of lifecycle methods, like `Init` or `Async`.  
-**It's important to cleanup context with `ssc.DelContext(p, "")` after page processing to avoid memory leaks!**
+**It's important to cleanup context with `kyoto.DelContext(p, "")` after page processing to avoid memory leaks!**
 
 Example of usage:
 
 ```go
 func IndexPageHandler(rw http.ResponseWriter, r *http.Request) {
     p := &PageIndex{}
-    ssc.SetContext(p, "internal:r", r)
-    ssc.SetContext(p, "internal:rw", rw)
-    ssc.RenderPage(rw, )
-    ssc.DelContext(p, "")
+    kyoto.SetContext(p, "internal:r", r)
+    kyoto.SetContext(p, "internal:rw", rw)
+    kyoto.RenderPage(rw, )
+    kyoto.DelContext(p, "")
 }
 ...
 func (p *PageIndex) Init() {
-    r := ssc.GetContext(p, "internal:r").(*http.Request)
-    rw := ssc.GetContext(p, "internal:rw").(http.ResponseWriter)
+    r := kyoto.GetContext(p, "internal:r").(*http.Request)
+    rw := kyoto.GetContext(p, "internal:rw").(http.ResponseWriter)
     ...
 }
 ...
@@ -161,8 +161,8 @@ Example of overloaded asynchronous method:
 ```go
 ...
 
-func (*ComponentExample) Async(p ssc.Page) error {
-    r := ssc.GetContext(p, "internal:r").(*http.Request)
+func (*ComponentExample) Async(p kyoto.Page) error {
+    r := kyoto.GetContext(p, "internal:r").(*http.Request)
 }
 
 ...
@@ -193,7 +193,7 @@ This method have overload option with page argument
 ```go
 ...
 
-func (*ComponentExample) Init(p ssc.Page) {
+func (*ComponentExample) Init(p kyoto.Page) {
     // Do what you want here
 }
 
@@ -223,7 +223,7 @@ This method have overload option with page argument
 ```go
 ...
 
-func (*ComponentExample) Async(p ssc.Page) error {
+func (*ComponentExample) Async(p kyoto.Page) error {
     // Do what you want here
     return nil
 }
@@ -252,7 +252,7 @@ This method have overload option with page argument
 ```go
 ...
 
-func (*ComponentExample) AfterAsync(p ssc.Page) {
+func (*ComponentExample) AfterAsync(p kyoto.Page) {
     // Do what you want here
 }
 
@@ -267,9 +267,9 @@ Takes 2 parameters: page pointer and `map[string]interface{}` containing context
 Usage:
 
 ```go
-func pagehandler(p ssc.Page) http.HandlerFunc {
+func pagehandler(p kyoto.Page) http.HandlerFunc {
     return func(rw http.ResponseWriter, r *http.Request) {
-        ssc.PageHandlerFactory(p, map[string]interface{}{
+        kyoto.PageHandlerFactory(p, map[string]interface{}{
             "internal:rw": rw,
             "internal:r":  r,
         })(rw, r)

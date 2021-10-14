@@ -1,7 +1,7 @@
 ---
 home: true
 heroImage: /dk.svg
-heroText: ssceng
+heroText: kyoto
 tagline: Keep your Go stack united with Server Side Components
 actions:
   - text: Prologue

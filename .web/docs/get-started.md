@@ -5,11 +5,11 @@ If you want to implement own project from zero, or extend already existing, it's
 
 ## Quick Start
 
-The quickest way to get started with `ssceng` is to clone ready demo project, like [`ssceng-hn`](https://github.com/yuriizinets/ssceng-hn), and try to expore/modify things inside.
+The quickest way to get started with `kyoto` is to clone ready demo project, like [`kyoto-hn`](https://github.com/yuriizinets/kyoto-hn), and try to expore/modify things inside.
 
 ## Installation
 
-To install this library, just use `go get github.com/yuriizinets/ssceng`
+To install this library, just use `go get github.com/yuriizinets/kyoto`
 
 ## Integration
 
@@ -27,7 +27,7 @@ Example with `gin`:
 
 ```go
 func IndexPageHandler(g *gin.Context) {
-    ssc.RenderPage(g.Writer, &IndexPage{})
+    kyoto.RenderPage(g.Writer, &IndexPage{})
 }
 ```
 
