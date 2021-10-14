@@ -1,4 +1,4 @@
-package ssc
+package kyoto
 
 import "sync"
 
