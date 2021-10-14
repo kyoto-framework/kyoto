@@ -1,4 +1,19 @@
 
+#main-title,.description,.site-name,.action-button {
+    font-family: ui-monospace;
+}
+
+.home .hero #main-title {
+    font-size: 2.5rem;
+}
+.home .hero .description {
+    font-size: 1.0rem;
+}
+.home .hero .action-button {
+    font-size: 1.0rem;
+    padding: .4rem 1.2rem;
+}
+
 .sidebar-heading {
     font-size: 1.0rem;
     padding: .25rem 1.5rem .25rem 1.25rem;
