@@ -9,9 +9,9 @@ import (
 	"strings"
 )
 
-// This functions are required in template FuncMap
-// You have to use them for Template builders (or mix with your own)
-func Funcs() template.FuncMap {
+// This functions is responsible for integration of library functionality into template rendering
+// You need to use this function while template building (or mix with your own)
+func TFuncMap() template.FuncMap {
 	return template.FuncMap{
 		"meta": func(p Page) template.HTML {
 			builder := ""
@@ -69,3 +69,7 @@ func Funcs() template.FuncMap {
 		},
 	}
 }
+
+// Deprecated: use TFuncMap instead.
+// Alias for TFuncMap
+var Funcs = TFuncMap

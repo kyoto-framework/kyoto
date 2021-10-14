@@ -165,33 +165,3 @@ func Redirect(rp *RedirectParameters) {
 		rw.Header().Add("X-Redirect", rp.Target)
 	}
 }
-
-// PageHandlerFactory is a factory for building Page handler.
-// Simple wrapper around RenderPage with context setting.
-// Good for defining own project-level handler.
-// Example of usage:
-// func handle(p ssc.Page) http.HandlerFunc {
-//     return func(rw http.ResponseWriter, r *http.Request) {
-// 	       ssc.PageHandlerFactory(p, map[string]interface{}{
-//	           "internal:rw": rw,
-//             "internal:r": r,
-//         })(rw, r)
-//     }
-// }
-func PageHandlerFactory(p Page, context map[string]interface{}) http.HandlerFunc {
-	// Make page instance
-	var pi Page
-	pptr := reflect.New(reflect.TypeOf(p).Elem())
-	pi = pptr.Interface().(Page)
-	// Set context
-	for k, v := range context {
-		SetContext(pi, k, v)
-	}
-	// Return handler
-	return func(rw http.ResponseWriter, r *http.Request) {
-		// Render page
-		RenderPage(rw, pi)
-		// Clear context
-		DelContext(pi, "")
-	}
-}
