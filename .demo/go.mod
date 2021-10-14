@@ -1,5 +1,5 @@
-module github.com/yuriizinets/ssceng/.demo
+module github.com/yuriizinets/kyoto/.demo
 
 go 1.17
 
-require github.com/yuriizinets/ssceng v0.0.0-20210919094020-a4a2496d2f72
+require github.com/yuriizinets/kyoto v0.0.0-20211014070234-f65ffdfd01ff

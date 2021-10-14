@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	ssc "github.com/yuriizinets/ssceng"
+	"github.com/yuriizinets/kyoto"
 )
 
 type ComponentDemoAutocomplete struct {
@@ -16,8 +16,8 @@ type ComponentDemoAutocomplete struct {
 	FilteredItems []string
 }
 
-func (c *ComponentDemoAutocomplete) Actions() ssc.ActionMap {
-	return ssc.ActionMap{
+func (c *ComponentDemoAutocomplete) Actions() kyoto.ActionMap {
+	return kyoto.ActionMap{
 		"Reload": func(args ...interface{}) {
 			c.FilteredItems = []string{}
 			if len(c.Value) != 0 {

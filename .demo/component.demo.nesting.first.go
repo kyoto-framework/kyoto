@@ -1,11 +1,11 @@
 package main
 
-import ssc "github.com/yuriizinets/ssceng"
+import "github.com/yuriizinets/kyoto"
 
 type ComponentDemoNestingFirst struct {
-	Nested ssc.Component
+	Nested kyoto.Component
 }
 
-func (c *ComponentDemoNestingFirst) Init(p ssc.Page) {
-	c.Nested = ssc.RegC(p, &ComponentDemoNestingSecond{})
+func (c *ComponentDemoNestingFirst) Init(p kyoto.Page) {
+	c.Nested = kyoto.RegC(p, &ComponentDemoNestingSecond{})
 }

@@ -1,13 +1,13 @@
 package main
 
-import ssc "github.com/yuriizinets/ssceng"
+import "github.com/yuriizinets/kyoto"
 
 type ComponentDemoCounter struct {
 	Count int
 }
 
-func (c *ComponentDemoCounter) Actions() ssc.ActionMap {
-	return ssc.ActionMap{
+func (c *ComponentDemoCounter) Actions() kyoto.ActionMap {
+	return kyoto.ActionMap{
 		"Increment": func(args ...interface{}) {
 			c.Count++
 		},

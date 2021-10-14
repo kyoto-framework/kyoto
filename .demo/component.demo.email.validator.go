@@ -3,7 +3,7 @@ package main
 import (
 	"regexp"
 
-	ssc "github.com/yuriizinets/ssceng"
+	"github.com/yuriizinets/kyoto"
 )
 
 var emailregex = regexp.MustCompile(`.+\@.+\..+`)
@@ -14,8 +14,8 @@ type ComponentDemoEmailValidator struct {
 	Color   string
 }
 
-func (c *ComponentDemoEmailValidator) Actions() ssc.ActionMap {
-	return ssc.ActionMap{
+func (c *ComponentDemoEmailValidator) Actions() kyoto.ActionMap {
+	return kyoto.ActionMap{
 		"Submit": func(args ...interface{}) {
 			if emailregex.MatchString(c.Email) {
 				c.Message = "Provided email is valid"

@@ -1,20 +1,20 @@
 package main
 
-import ssc "github.com/yuriizinets/ssceng"
+import "github.com/yuriizinets/kyoto"
 
 type ComponentDemoRedirect struct {
-	Page ssc.Page `json:"-"`
+	Page kyoto.Page `json:"-"`
 }
 
-func (c *ComponentDemoRedirect) Init(p ssc.Page) {
+func (c *ComponentDemoRedirect) Init(p kyoto.Page) {
 	c.Page = p
 }
 
-func (c *ComponentDemoRedirect) Actions() ssc.ActionMap {
-	return ssc.ActionMap{
+func (c *ComponentDemoRedirect) Actions() kyoto.ActionMap {
+	return kyoto.ActionMap{
 		"Redirect": func(args ...interface{}) {
 			target := args[0].(string)
-			ssc.Redirect(&ssc.RedirectParameters{
+			kyoto.Redirect(&kyoto.RedirectParameters{
 				Page:              c.Page,
 				ResponseWriterKey: "internal:rw",
 				RequestKey:        "internal:r",

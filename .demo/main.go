@@ -6,16 +6,16 @@ import (
 	"net/http"
 	"os"
 
-	ssc "github.com/yuriizinets/ssceng"
+	"github.com/yuriizinets/kyoto"
 )
 
-func ssatemplate(p ssc.Page) *template.Template {
-	return template.Must(template.New("SSA").Funcs(ssc.Funcs()).ParseGlob("*.html"))
+func ssatemplate(p kyoto.Page) *template.Template {
+	return template.Must(template.New("SSA").Funcs(kyoto.Funcs()).ParseGlob("*.html"))
 }
 
-func pagehandler(p ssc.Page) http.HandlerFunc {
+func pagehandler(p kyoto.Page) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
-		ssc.PageHandlerFactory(p, map[string]interface{}{
+		kyoto.PageHandlerFactory(p, map[string]interface{}{
 			"internal:rw": rw,
 			"internal:r":  r,
 		})(rw, r)
@@ -24,7 +24,7 @@ func pagehandler(p ssc.Page) http.HandlerFunc {
 
 func ssahandler() http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
-		ssc.SSAHandlerFactory(ssatemplate, map[string]interface{}{
+		kyoto.SSAHandlerFactory(ssatemplate, map[string]interface{}{
 			"internal:rw": rw,
 			"internal:r":  r,
 		})(rw, r)

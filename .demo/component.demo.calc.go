@@ -3,7 +3,7 @@ package main
 import (
 	"strconv"
 
-	ssc "github.com/yuriizinets/ssceng"
+	"github.com/yuriizinets/kyoto"
 )
 
 type ComponentDemoCalc struct {
@@ -12,7 +12,7 @@ type ComponentDemoCalc struct {
 	Result      string
 }
 
-func (c *ComponentDemoCalc) Init(p ssc.Page) {
+func (c *ComponentDemoCalc) Init(p kyoto.Page) {
 	if c.FirstValue == "" {
 		c.FirstValue = "5"
 	}
@@ -24,8 +24,8 @@ func (c *ComponentDemoCalc) Init(p ssc.Page) {
 	}
 }
 
-func (c *ComponentDemoCalc) Actions() ssc.ActionMap {
-	return ssc.ActionMap{
+func (c *ComponentDemoCalc) Actions() kyoto.ActionMap {
+	return kyoto.ActionMap{
 		"Calculate": func(args ...interface{}) {
 			fv, err := strconv.Atoi(c.FirstValue)
 			if err != nil {
