@@ -1,6 +1,7 @@
 # Extended Features
 
-This part of documentation holds extended library features.
+This part of documentation holds extended library features.  
+This features are optional, but make library feature-rich.
 
 ## Server Side Actions
 

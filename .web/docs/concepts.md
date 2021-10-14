@@ -9,6 +9,10 @@ Just think of this structure as a component, where page - toplevel component wit
 
 ## Rendering lifecycle
 
+![arch-rendering](https://i.imgur.com/72xIkzx.png)
+
+> Diagram might become outdated with time, as far as library in active development
+
 In the plain `html/template` there is no such thing as lifecycle. Lifecycle concept was took from popular JS frameworks.  
 Let's explore how lifecycle works in `kyoto`:
 

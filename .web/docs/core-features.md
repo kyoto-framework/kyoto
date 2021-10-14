@@ -1,7 +1,7 @@
 # Core Features
 
 This part of documentation holds core library features.  
-This features highly relies on rendering lifecycle and covers all low-level operations.
+This features are pillars for implementing other functionality and using this library. They implement and hold the most basic, low-level needs such as rendering lifecycle, context operations, handling requests.
 
 ## Page rendering
 
