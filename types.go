@@ -7,7 +7,7 @@ import (
 
 // SSA aliases
 
-// Action is the
+// Action is used to pass arguments onto a component to be used
 type Action func(args ...interface{})
 
 // ActionMap is a map of Actions stored by string
