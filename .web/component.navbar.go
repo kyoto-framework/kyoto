@@ -8,7 +8,8 @@ type ComponentNavbar struct {
 }
 
 type ComponentNavbarHref struct {
-	Title template.HTML
-	Image template.HTML
-	Href  string
+	Title     template.HTML
+	Image     template.HTML
+	Href      string
+	AriaLabel string
 }

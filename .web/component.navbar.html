@@ -3,7 +3,7 @@
 <nav class="fixed top-0 left-0 right-0 z-10 py-3 px-4 flex items-center justify-between flex-wrap font-mono bg-white dark:bg-black dark:text-white bg-opacity-60 dark:bg-opacity-60 backdrop-blur-lg">
     <div class="hidden md:flex items-center gap-4 w-2/5">
         {{ range .Left }}
-            <a href="{{ .Href }}" class="hover:underline">
+            <a href="{{ .Href }}" {{ if .AriaLabel }} aria-label="{{ .AriaLabel }}" {{ end }} class="hover:underline">
                 {{ .Image }}
                 {{ .Title }}
             </a>
@@ -19,7 +19,7 @@
     </a>
     <div class="hidden md:flex items-center justify-end gap-4 w-2/5">
         {{ range .Right }}
-            <a href="{{ .Href }}" class="font-medium hover:underline">
+            <a href="{{ .Href }}" {{ if .AriaLabel }} aria-label="{{ .AriaLabel }}" {{ end }} class="font-medium hover:underline">
                 {{ .Image }}
                 {{ .Title }}
             </a>
