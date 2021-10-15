@@ -13,15 +13,6 @@ func ssatemplate(p kyoto.Page) *template.Template {
 	return template.Must(template.New("SSA").Funcs(kyoto.Funcs()).ParseGlob("*.html"))
 }
 
-func pagehandler(p kyoto.Page) http.HandlerFunc {
-	return func(rw http.ResponseWriter, r *http.Request) {
-		kyoto.PageHandlerFactory(p, map[string]interface{}{
-			"internal:rw": rw,
-			"internal:r":  r,
-		})(rw, r)
-	}
-}
-
 func ssahandler() http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		kyoto.SSAHandlerFactory(ssatemplate, map[string]interface{}{
@@ -32,10 +23,15 @@ func ssahandler() http.HandlerFunc {
 }
 
 func main() {
+	// Set flags
+	kyoto.INSIGHTS = true
+	kyoto.INSIGHTS_CLI = true
+
+	// Init mux
 	mux := http.NewServeMux()
 
 	// Routes
-	mux.HandleFunc("/", pagehandler(&PageIndex{}))
+	mux.HandleFunc("/", kyoto.PageHandler(&PageIndex{}))
 	// SSA plugin
 	mux.HandleFunc("/SSA/", ssahandler())
 

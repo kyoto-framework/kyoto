@@ -1,5 +1,7 @@
 github.com/yuriizinets/go-common v1.13.0 h1:2lGTXW072Swu1Oebgq4px6de/On8rj8km1mQnOQLN5A=
 github.com/yuriizinets/go-common v1.13.0/go.mod h1:e8qs8TpGTKavcMojePH+/p4681LttzNEYjNMvKnvvQg=
+github.com/yuriizinets/kyoto v0.0.0-20210916082523-81b7986e3524/go.mod h1:l8tFeMfpiiG1n8dQYM1OpmQ1uJ6ziisjH3F+QEToHgE=
 github.com/yuriizinets/kyoto v0.0.0-20211014070234-f65ffdfd01ff h1:OCeefxBExtLNZAbz5nb+JWR24UY1qmWUVjtIzR62dgg=
 github.com/yuriizinets/kyoto v0.0.0-20211014070234-f65ffdfd01ff/go.mod h1:5mMUtxQ1AdsJNmpDih3NQC4PJWq1kbqx9IrRs+06ZRg=
-github.com/yuriizinets/kyoto v0.0.0-20210916082523-81b7986e3524/go.mod h1:l8tFeMfpiiG1n8dQYM1OpmQ1uJ6ziisjH3F+QEToHgE=
+github.com/yuriizinets/kyoto v0.0.0-20211015082429-59b43c333fe4 h1:vifMxE+7UfZ4d5Pj2DQiiaNuUgXxsbncrp2pjwdl3lU=
+github.com/yuriizinets/kyoto v0.0.0-20211015082429-59b43c333fe4/go.mod h1:5mMUtxQ1AdsJNmpDih3NQC4PJWq1kbqx9IrRs+06ZRg=

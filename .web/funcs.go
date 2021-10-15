@@ -9,7 +9,7 @@ import (
 )
 
 func tfuncs() template.FuncMap {
-	f := kyoto.Funcs()
+	f := kyoto.TFuncMap()
 	f["fprice"] = func(price int) string {
 		return fmt.Sprintf("%v", price/100)
 	}
