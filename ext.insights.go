@@ -81,20 +81,20 @@ func (i *Insights) Update(t InsightsTiming) {
 	}
 }
 
-func (i *Insights) Component(c Component) *Insights {
-	// Try to return existing component insights
+func (i *Insights) GetOrCreateNested(p interface{}) *Insights {
+	// Try to return existing nested insights
 	for _, ci := range i.Nested {
-		if ci.ID == InsightsID(c) {
+		if ci.ID == InsightsID(p) {
 			return ci
 		}
 	}
-	// Init new component insights
+	// Init new nested insights
 	ci := &Insights{
-		ID:   InsightsID(c),
-		Name: InsightsName(c),
+		ID:   InsightsID(p),
+		Name: InsightsName(p),
 	}
 	i.Nested = append(i.Nested, ci)
-	// Return new component insights
+	// Return new nested insights
 	return ci
 }
 

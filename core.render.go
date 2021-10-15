@@ -39,13 +39,13 @@ func RegisterComponent(p Page, c Component) Component {
 	if _c, ok := c.(ImplementsInit); ok {
 		st := time.Now()
 		_c.Init(p)
-		GetInsights(p).Component(_c).Update(InsightsTiming{
+		GetInsights(p).GetOrCreateNested(_c).Update(InsightsTiming{
 			Init: time.Since(st),
 		})
 	} else if _c, ok := c.(ImplementsInitWithoutPage); ok {
 		st := time.Now()
 		_c.Init()
-		GetInsights(p).Component(_c).Update(InsightsTiming{
+		GetInsights(p).GetOrCreateNested(_c).Update(InsightsTiming{
 			Init: time.Since(st),
 		})
 	}
@@ -90,7 +90,7 @@ func RenderPage(w io.Writer, p Page) {
 		for _, component := range regc {
 			var cinsights *Insights
 			if insights != nil {
-				cinsights = insights.Component(component)
+				cinsights = insights.GetOrCreateNested(component)
 			}
 			if _component, ok := component.(ImplementsAsync); ok {
 				wg.Add(1)
@@ -137,7 +137,7 @@ func RenderPage(w io.Writer, p Page) {
 	for _, component := range csl[p] {
 		var cinsights *Insights
 		if insights != nil {
-			cinsights = insights.Component(component)
+			cinsights = insights.GetOrCreateNested(component)
 		}
 		if _component, ok := component.(ImplementsAfterAsync); ok {
 			st := time.Now()
