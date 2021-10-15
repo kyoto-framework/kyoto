@@ -3,8 +3,9 @@
 
 # kyoto
 
-![GitHub](https://img.shields.io/github/license/yuriizinets/kyoto)
+![License](https://img.shields.io/github/license/yuriizinets/kyoto)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yuriizinets/kyoto)](https://goreportcard.com/report/github.com/yuriizinets/kyoto)
+[![Go Reference](https://pkg.go.dev/badge/github.com/yuriizinets/kyoto.svg)](https://pkg.go.dev/github.com/yuriizinets/kyoto)
 
 An HTML render engine concept that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (`net/http`/`gin`/etc), that provides io.Writer in response.
 
