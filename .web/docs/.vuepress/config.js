@@ -70,16 +70,16 @@ module.exports = {
                         link: '/core-features/#page-rendering'
                     },
                     {
+                        text: 'Built-in handler',
+                        link: '/core-features/#built-in-handler'
+                    },
+                    {
                         text: 'Context management',
                         link: '/core-features/#context-management'
                     },
                     {
                         text: 'Component lifecycle',
                         link: '/core-features/#component-lifecycle'
-                    },
-                    {
-                        text: 'Handler factory',
-                        link: '/core-features/#handler-factory'
                     }
                 ]
             },

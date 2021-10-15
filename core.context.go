@@ -4,11 +4,11 @@ import "sync"
 
 // Context used as scoped temporary store for data
 var context = map[Page]map[string]interface{}{}
-var contextLock = &sync.RWMutex{}
+var contextrw = &sync.RWMutex{}
 
 func SetContext(p Page, key string, value interface{}) {
-	contextLock.Lock()
-	defer contextLock.Unlock()
+	contextrw.Lock()
+	defer contextrw.Unlock()
 	space, ok := context[p]
 	if !ok {
 		space = map[string]interface{}{}
@@ -18,14 +18,14 @@ func SetContext(p Page, key string, value interface{}) {
 }
 
 func GetContext(p Page, key string) interface{} {
-	contextLock.RLock()
-	defer contextLock.RUnlock()
+	contextrw.RLock()
+	defer contextrw.RUnlock()
 	return context[p][key]
 }
 
 func DelContext(p Page, key string) {
-	contextLock.Lock()
-	defer contextLock.Unlock()
+	contextrw.Lock()
+	defer contextrw.Unlock()
 	space, ok := context[p]
 	if !ok {
 		space = map[string]interface{}{}

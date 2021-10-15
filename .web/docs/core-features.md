@@ -128,6 +128,26 @@ That's it! Now you have component instance, included into lifecycle and rendered
 
 :::
 
+## Built-in handler
+
+High-level function, returns `http.HandlerFunc` that can be used directly by `net/http` or compatible framework.  
+Takes 1 paramter - page pointer.  
+Under the hood writes 2 context variables, that you can use with `GetContext`:  
+
+- `internal:rw` - `http.ResponseWriter`
+- `internal:r` - `*http.Request`
+
+Usage:
+
+```go
+
+func main() {
+    ...
+    mux.HandleFunc("/", kyoto.PageHandler(&PageIndex{}))
+    ...
+}
+```
+
 ## Context management
 
 You can use `kyoto.SetContext`, `kyoto.GetContext` and `kyoto.DelContext` for managing your context.  
@@ -257,30 +277,4 @@ func (*ComponentExample) AfterAsync(p kyoto.Page) {
 }
 
 ...
-```
-
-## Handler factory
-
-High-level function for creating own page handler with context setting.  
-Takes 2 parameters: page pointer and `map[string]interface{}` containing context items (`SetContext` will be called for each item in map)
-
-Usage:
-
-```go
-func pagehandler(p kyoto.Page) http.HandlerFunc {
-    return func(rw http.ResponseWriter, r *http.Request) {
-        kyoto.PageHandlerFactory(p, map[string]interface{}{
-            "internal:rw": rw,
-            "internal:r":  r,
-        })(rw, r)
-    }
-}
-
-...
-
-func main() {
-    ...
-    mux.HandleFunc("/", pagehandler(&PageIndex{}))
-    ...
-}
 ```

@@ -12,34 +12,42 @@ import (
 // Component Store Lifecycle is a temporary storage for components processing
 // Will be cleared in the end of lifecycle
 var csl = map[Page][]Component{}
-var cslLock = &sync.RWMutex{}
+var cslrw = &sync.RWMutex{}
 
 // RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
 	// Init csl store
-	cslLock.Lock()
+	cslrw.Lock()
 	if _, ok := csl[p]; !ok {
 		csl[p] = []Component{}
 	}
-	cslLock.Unlock()
+	cslrw.Unlock()
 	// Save type to SSA store
-	csSSALock.Lock()
-	if _, ok := csSSA[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
+	ssacstorerw.Lock()
+	if _, ok := ssacstore[reflect.ValueOf(c).Elem().Type().Name()]; !ok {
 		// Extract component type
 		ctype := reflect.ValueOf(c).Elem().Type()
 		// Save to store
-		csSSA[reflect.ValueOf(c).Elem().Type().Name()] = ctype
+		ssacstore[reflect.ValueOf(c).Elem().Type().Name()] = ctype
 	}
-	csSSALock.Unlock()
+	ssacstorerw.Unlock()
 	// Save component to lifecycle store
-	cslLock.Lock()
+	cslrw.Lock()
 	csl[p] = append(csl[p], c)
-	cslLock.Unlock()
+	cslrw.Unlock()
 	// Trigger component init
 	if _c, ok := c.(ImplementsInit); ok {
+		st := time.Now()
 		_c.Init(p)
+		GetInsights(p).Component(_c).Update(InsightsTiming{
+			Init: time.Since(st),
+		})
 	} else if _c, ok := c.(ImplementsInitWithoutPage); ok {
+		st := time.Now()
 		_c.Init()
+		GetInsights(p).Component(_c).Update(InsightsTiming{
+			Init: time.Since(st),
+		})
 	}
 	// Return component for external assignment
 	return c
@@ -50,6 +58,11 @@ var RegC = RegisterComponent
 
 // RenderPage is a main entrypoint of rendering. Responsible for rendering and components lifecycle
 func RenderPage(w io.Writer, p Page) {
+	// Init insights (if enabled)
+	var insights *Insights
+	if INSIGHTS {
+		insights = NewInsights(p)
+	}
 	// Async specific state
 	var wg sync.WaitGroup
 	var err = make(chan error, 1000)
@@ -57,31 +70,38 @@ func RenderPage(w io.Writer, p Page) {
 	if p, ok := p.(ImplementsInitWithoutPage); ok {
 		st := time.Now()
 		p.Init()
-		et := time.Since(st)
-		if BENCH_LOWLEVEL {
-			log.Println("Init time", reflect.TypeOf(p), et)
+		if insights != nil {
+			insights.Update(InsightsTiming{
+				Init: time.Since(st),
+			})
 		}
 	}
 	// Trigger async in goroutines
+	st := time.Now()
 	subset := 0
 	for {
-		cslLock.RLock()
+		cslrw.RLock()
 		regc := csl[p][subset:]
-		cslLock.RUnlock()
+		cslrw.RUnlock()
 		subset += len(regc)
 		if len(regc) == 0 {
 			break
 		}
 		for _, component := range regc {
+			var cinsights *Insights
+			if insights != nil {
+				cinsights = insights.Component(component)
+			}
 			if _component, ok := component.(ImplementsAsync); ok {
 				wg.Add(1)
 				go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync, p Page) {
 					defer wg.Done()
 					st := time.Now()
 					_err := c.Async(p)
-					et := time.Since(st)
-					if BENCH_LOWLEVEL {
-						log.Println("Async time", reflect.TypeOf(component), et)
+					if cinsights != nil {
+						cinsights.Update(InsightsTiming{
+							Async: time.Since(st),
+						})
 					}
 					if _err != nil {
 						err <- _err
@@ -93,9 +113,10 @@ func RenderPage(w io.Writer, p Page) {
 					defer wg.Done()
 					st := time.Now()
 					_err := c.Async()
-					et := time.Since(st)
-					if BENCH_LOWLEVEL {
-						log.Println("Async time", reflect.TypeOf(component), et)
+					if cinsights != nil {
+						cinsights.Update(InsightsTiming{
+							Async: time.Since(st),
+						})
 					}
 					if _err != nil {
 						err <- _err
@@ -105,42 +126,68 @@ func RenderPage(w io.Writer, p Page) {
 		}
 		wg.Wait()
 	}
+	if insights != nil {
+		insights.Update(InsightsTiming{
+			Async: time.Since(st),
+		})
+	}
 	// Trigger aftersync
-	cslLock.RLock()
+	st = time.Now()
+	cslrw.RLock()
 	for _, component := range csl[p] {
+		var cinsights *Insights
+		if insights != nil {
+			cinsights = insights.Component(component)
+		}
 		if _component, ok := component.(ImplementsAfterAsync); ok {
 			st := time.Now()
 			_component.AfterAsync(p)
-			et := time.Since(st)
-			if BENCH_LOWLEVEL {
-				log.Println("AfterAsync time", reflect.TypeOf(component), et)
+			if cinsights != nil {
+				cinsights.Update(InsightsTiming{
+					AfterAsync: time.Since(st),
+				})
 			}
 		} else if _component, ok := component.(ImplementsAfterAsyncWithoutPage); ok {
 			st := time.Now()
 			_component.AfterAsync()
-			et := time.Since(st)
-			if BENCH_LOWLEVEL {
-				log.Println("AfterAsync time", reflect.TypeOf(component), et)
+			if cinsights != nil {
+				cinsights.Update(InsightsTiming{
+					AfterAsync: time.Since(st),
+				})
 			}
 		}
 	}
-	cslLock.RUnlock()
+	cslrw.RUnlock()
+	if insights != nil {
+		insights.Update(InsightsTiming{
+			AfterAsync: time.Since(st),
+		})
+	}
 	// Clear components store (not needed more)
-	cslLock.Lock()
+	cslrw.Lock()
 	delete(csl, p)
-	cslLock.Unlock()
+	cslrw.Unlock()
 	// Extract flags
 	redirected := GetContext(p, "internal:redirected")
 	// Execute template
 	if redirected == nil {
 		st := time.Now()
 		terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
-		et := time.Since(st)
-		if BENCH_LOWLEVEL {
-			log.Println("Execution time", et)
+		if insights != nil {
+			insights.Update(InsightsTiming{
+				Render: time.Since(st),
+			})
 		}
 		if terr != nil {
 			panic(terr)
+		}
+	}
+	// Print insights
+	if INSIGHTS && INSIGHTS_CLI {
+		log.Printf(" ---------------- insights %s %s", insights.ID, insights.Name)
+		log.Printf("i:%s a:%s aa:%s r:%s", insights.Init, insights.Async, insights.AfterAsync, insights.Render)
+		for _, ci := range insights.Nested {
+			log.Printf("--- id:%s n:%s i:%s a:%s aa:%s r:%s", ci.ID, ci.Name, ci.Init, ci.Async, ci.AfterAsync, ci.Render)
 		}
 	}
 }
@@ -163,5 +210,55 @@ func Redirect(rp *RedirectParameters) {
 		http.Redirect(rw, r, rp.Target, rp.StatusCode)
 	} else { // Special header in case of SSA
 		rw.Header().Add("X-Redirect", rp.Target)
+	}
+}
+
+// PageHandler is an opinionated net/http handler.
+// Context:
+// - internal:rw - http.ResponseWritr
+// - internal:r - *http.Request
+func PageHandler(p Page) http.HandlerFunc {
+	// Return handler
+	return func(rw http.ResponseWriter, r *http.Request) {
+		// Init new page instance
+		_p := reflect.New(reflect.TypeOf(p).Elem()).Interface().(Page)
+		// Set context
+		SetContext(_p, "internal:rw", rw)
+		SetContext(_p, "internal:r", r)
+		// Render page
+		RenderPage(rw, _p)
+		// Clear context
+		DelContext(_p, "")
+	}
+}
+
+// Deprecated: define own generic handler, or usage PageHandler instead
+// PageHandlerFactory is a factory for building Page handler.
+// Simple wrapper around RenderPage with context setting.
+// Good for defining own project-level handler.
+// Example of usage:
+// func handle(p ssc.Page) http.HandlerFunc {
+//     return func(rw http.ResponseWriter, r *http.Request) {
+// 	       ssc.PageHandlerFactory(p, map[string]interface{}{
+//	           "internal:rw": rw,
+//             "internal:r": r,
+//         })(rw, r)
+//     }
+// }
+func PageHandlerFactory(p Page, context map[string]interface{}) http.HandlerFunc {
+	// Make page instance
+	var pi Page
+	pptr := reflect.New(reflect.TypeOf(p).Elem())
+	pi = pptr.Interface().(Page)
+	// Set context
+	for k, v := range context {
+		SetContext(pi, k, v)
+	}
+	// Return handler
+	return func(rw http.ResponseWriter, r *http.Request) {
+		// Render page
+		RenderPage(rw, pi)
+		// Clear context
+		DelContext(pi, "")
 	}
 }

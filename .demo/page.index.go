@@ -103,7 +103,7 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DescriptionDemoEmailValidator = kyoto.RegC(p, &ComponentContent{
-		Title:       "SSA form rocessing",
+		Title:       "SSA form processing",
 		Description: "Example of using formsubmit shortcut to simplify server-side form processing.",
 		Links: []ComponentContentLink{
 			{

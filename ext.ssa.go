@@ -4,19 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"net/url"
 	"reflect"
 	"strings"
 	"sync"
-	"time"
 )
 
-// Component Store SSA is a storage for component types.
+// SSA Component Store is a storage for component types.
 // When SSA is called, page's general lifecycle components store is not available (we have dummy page instead).
-var csSSA = map[string]reflect.Type{}
-var csSSALock = &sync.Mutex{}
+var ssacstore = map[string]reflect.Type{}
+var ssacstorerw = &sync.RWMutex{}
 
 // SSAHandlerFactory is a factory for building Server Side Action handler.
 // Check documentation for lifecycle details (different comparing to page's).
@@ -51,7 +49,9 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		cname := tokens[2]
 		aname := tokens[3]
 		// Find component type in store
-		ctype, found := csSSA[cname]
+		ssacstorerw.RLock()
+		ctype, found := ssacstore[cname]
+		ssacstorerw.RUnlock()
 		// Panic, if not found
 		if !found {
 			panic("Can't find component. Seems like it's not registered")
@@ -60,40 +60,19 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		component := reflect.New(ctype).Interface().(Component)
 		// Init
 		if _component, ok := component.(ImplementsInit); ok {
-			st := time.Now()
 			_component.Init(dp)
-			et := time.Since(st)
-			if BENCH_HANDLERS {
-				log.Println("Init time", reflect.TypeOf(component), et)
-			}
 		} else if _component, ok := component.(ImplementsInitWithoutPage); ok {
-			st := time.Now()
 			_component.Init()
-			et := time.Since(st)
-			if BENCH_HANDLERS {
-				log.Println("Init time", reflect.TypeOf(component), et)
-			}
 		}
 		// Populate component state
-		st := time.Now()
 		state, _ := url.QueryUnescape(r.PostFormValue("State"))
 		if err := json.Unmarshal([]byte(state), &component); err != nil {
 			panic(err)
 		}
-		et := time.Since(st)
-		if BENCH_HANDLERS {
-			log.Println("Populate time", reflect.TypeOf(component), et)
-		}
 		// Extract arguments
-		st = time.Now()
 		var args []interface{}
 		json.Unmarshal([]byte(r.PostFormValue("Args")), &args)
-		et = time.Since(st)
-		if BENCH_HANDLERS {
-			log.Println("Extract args time", reflect.TypeOf(component), et)
-		}
 		// Call action
-		st = time.Now()
 		if _component, ok := component.(ImplementsActions); ok {
 			_component.Actions(dp)[aname](args...)
 		} else if _component, ok := component.(ImplementsActionsWithoutPage); ok {
@@ -101,17 +80,12 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		} else {
 			panic("Component not implements Actions, unexpected behavior")
 		}
-		et = time.Since(st)
-		if BENCH_HANDLERS {
-			log.Println("Action time", reflect.TypeOf(component), et)
-		}
 		// If new components registered, trigger async
-		st = time.Now()
 		subset := 0
 		for {
-			cslLock.RLock()
+			cslrw.RLock()
 			regc := csl[dp][subset:]
-			cslLock.RUnlock()
+			cslrw.RUnlock()
 			subset += len(regc)
 			if len(regc) == 0 {
 				break
@@ -121,12 +95,7 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 					wg.Add(1)
 					go func(wg *sync.WaitGroup, err chan error, c ImplementsAsync, dp Page) {
 						defer wg.Done()
-						st := time.Now()
 						_err := c.Async(dp)
-						et := time.Since(st)
-						if BENCH_LOWLEVEL {
-							log.Println("Async time", reflect.TypeOf(component), et)
-						}
 						if _err != nil {
 							err <- _err
 						}
@@ -135,12 +104,7 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 					wg.Add(1)
 					go func(wg *sync.WaitGroup, err chan error, c ImplementsAsyncWithoutPage) {
 						defer wg.Done()
-						st := time.Now()
 						_err := c.Async()
-						et := time.Since(st)
-						if BENCH_LOWLEVEL {
-							log.Println("Async time", reflect.TypeOf(component), et)
-						}
 						if _err != nil {
 							err <- _err
 						}
@@ -149,31 +113,17 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 			}
 			wg.Wait()
 		}
-		et = time.Since(st)
-		if BENCH_HANDLERS {
-			log.Println("Nested async time", et)
-		}
 		// Extact flags
 		redirected := GetContext(dp, "internal:redirected")
 		// Render page
 		if redirected == nil {
 			// Prepare template
-			st = time.Now()
 			t := dp.Template()
 			t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, cname)))
-			et = time.Since(st)
-			if BENCH_HANDLERS {
-				log.Println("Template prepare time", reflect.TypeOf(component), et)
-			}
 			// Render component
-			st = time.Now()
 			terr := t.Execute(rw, component)
 			if terr != nil {
 				panic(terr)
-			}
-			et = time.Since(st)
-			if BENCH_HANDLERS {
-				log.Println("Executiton time", reflect.TypeOf(component), et)
 			}
 		}
 		// Clear context
