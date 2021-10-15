@@ -11,6 +11,7 @@ import (
 var insights = []*Insights{}
 var insightsrw = sync.RWMutex{}
 
+// Insights data type
 type Insights struct {
 	InsightsTiming
 
@@ -19,6 +20,7 @@ type Insights struct {
 	Nested []*Insights
 }
 
+// InsightsTiming data type
 type InsightsTiming struct {
 	Init       time.Duration
 	Async      time.Duration
@@ -27,7 +29,7 @@ type InsightsTiming struct {
 }
 
 // NewInsights creates new insights instance for provided object pointer,
-//  saves insights pointer to local store and returns it.
+// saves insights pointer to local store and returns it
 // Oldest insights are cutted in case of store overflow (INSIGHTS_LIMIT config)
 func NewInsights(p interface{}) *Insights {
 	// Init new insights
@@ -66,6 +68,7 @@ func GetInsightsByID(id string) *Insights {
 	return nil
 }
 
+// Update the Insights value
 func (i *Insights) Update(t InsightsTiming) {
 	if t.Init != 0 {
 		i.InsightsTiming.Init = t.Init
@@ -81,6 +84,7 @@ func (i *Insights) Update(t InsightsTiming) {
 	}
 }
 
+// GetOrCreateNested attempts to return existing nested insights, or returns new ones
 func (i *Insights) GetOrCreateNested(p interface{}) *Insights {
 	// Try to return existing nested insights
 	for _, ci := range i.Nested {

@@ -59,7 +59,7 @@ func RegisterComponent(p Page, c Component) Component {
 	return c
 }
 
-// Alias for RegisterComponent
+// RegC is an alias for RegisterComponent
 var RegC = RegisterComponent
 
 // RenderPage is a main entrypoint of rendering. Responsible for rendering and components lifecycle

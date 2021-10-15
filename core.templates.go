@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// This functions is responsible for integration of library functionality into template rendering
+// TFuncMap is responsible for integration of library functionality into template rendering
 // You need to use this function while template building (or mix with your own)
 func TFuncMap() template.FuncMap {
 	return template.FuncMap{
