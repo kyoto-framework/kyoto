@@ -5,3 +5,5 @@ github.com/yuriizinets/kyoto v0.0.0-20211014070234-f65ffdfd01ff h1:OCeefxBExtLNZ
 github.com/yuriizinets/kyoto v0.0.0-20211014070234-f65ffdfd01ff/go.mod h1:5mMUtxQ1AdsJNmpDih3NQC4PJWq1kbqx9IrRs+06ZRg=
 github.com/yuriizinets/kyoto v0.0.0-20211015082429-59b43c333fe4 h1:vifMxE+7UfZ4d5Pj2DQiiaNuUgXxsbncrp2pjwdl3lU=
 github.com/yuriizinets/kyoto v0.0.0-20211015082429-59b43c333fe4/go.mod h1:5mMUtxQ1AdsJNmpDih3NQC4PJWq1kbqx9IrRs+06ZRg=
+github.com/yuriizinets/kyoto v0.0.0-20211015094138-cc888002dec6 h1:e2T6ERcZeLG+R3D93tZ+6eDUTKDVHsOanq8RQBw3FTc=
+github.com/yuriizinets/kyoto v0.0.0-20211015094138-cc888002dec6/go.mod h1:5mMUtxQ1AdsJNmpDih3NQC4PJWq1kbqx9IrRs+06ZRg=

@@ -16,6 +16,8 @@ var cslrw = &sync.RWMutex{}
 
 // RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
+	// Extract insights
+	insights := GetInsights(p)
 	// Init csl store
 	cslrw.Lock()
 	if _, ok := csl[p]; !ok {
@@ -39,15 +41,19 @@ func RegisterComponent(p Page, c Component) Component {
 	if _c, ok := c.(ImplementsInit); ok {
 		st := time.Now()
 		_c.Init(p)
-		GetInsights(p).GetOrCreateNested(_c).Update(InsightsTiming{
-			Init: time.Since(st),
-		})
+		if insights != nil {
+			GetInsights(p).GetOrCreateNested(_c).Update(InsightsTiming{
+				Init: time.Since(st),
+			})
+		}
 	} else if _c, ok := c.(ImplementsInitWithoutPage); ok {
 		st := time.Now()
 		_c.Init()
-		GetInsights(p).GetOrCreateNested(_c).Update(InsightsTiming{
-			Init: time.Since(st),
-		})
+		if insights != nil {
+			GetInsights(p).GetOrCreateNested(_c).Update(InsightsTiming{
+				Init: time.Since(st),
+			})
+		}
 	}
 	// Return component for external assignment
 	return c
