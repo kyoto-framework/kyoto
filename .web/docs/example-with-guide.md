@@ -25,23 +25,6 @@ func main() {
 }
 ```
 
-## Page handler
-
-After that, we need to define generic page handler.  
-Kyoto is not providing own page handler, because you can use any serving basis, not only `net/http`.
-Instead of that, Kyoto provides PageHandlerFactory, helper for creating own page handler.
-
-```go
-func pagehandler(p kyoto.Page) http.HandlerFunc {
-    return func(rw http.ResponseWriter, r *http.Request) {
-        kyoto.PageHandlerFactory(p, map[string]interface{}{
-            "internal:rw": rw,
-            "internal:r":  r,
-        })(rw, r)
-    }
-}
-```
-
 ## Page
 
 Now, we can define our page.  
@@ -152,11 +135,11 @@ page.index.html
 
 ## Attaching page
 
-For attaching your page, now you can simply use page handler bellow `Routes` comment in your main function.
+For attaching your page, now you can simply use built-in page handler (`kyoto.PageHandler`), bellow `Routes` comment in your main function.
 
 ```go
 ...
-mux.HandleFunc("/", pagehandler(&PageIndex{}))
+mux.HandleFunc("/", kyoto.PageHandler(&PageIndex{}))
 ...
 ```
 
