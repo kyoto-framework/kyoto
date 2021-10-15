@@ -27,7 +27,8 @@ func (p *PageIndex) Template() *template.Template {
 
 func (p *PageIndex) Meta() kyoto.Meta {
 	return kyoto.Meta{
-		Title: "kyoto - Mind Blowing Way to Build Frontend",
+		Title:       "kyoto - Mind Blowing Way to Build Frontend",
+		Description: "SEO friendly, SSR-first Go Frontent Framework. Bring components experience to the server side!",
 	}
 }
 
