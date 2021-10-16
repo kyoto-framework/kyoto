@@ -18,6 +18,7 @@ type PageIndex struct {
 	DevPromo   kyoto.Component
 	Details    kyoto.Component
 	About      kyoto.Component
+	Comparison kyoto.Component
 	FAQ        kyoto.Component
 }
 
@@ -27,8 +28,8 @@ func (p *PageIndex) Template() *template.Template {
 
 func (p *PageIndex) Meta() kyoto.Meta {
 	return kyoto.Meta{
-		Title:       "kyoto - Mind Blowing Way to Build Frontend",
-		Description: "SEO friendly, SSR-first Go Frontent Framework. Bring components experience to the server side!",
+		Title:       "kyoto - SSR-first Frontend Library",
+		Description: "SEO friendly, SSR-first Go Frontent Library. Bring components experience to the server side!",
 	}
 }
 
@@ -144,7 +145,6 @@ func (p *PageIndex) Init() {
 		LinkTitle:   "Check Documentation",
 		LinkHref:    "/docs/",
 	})
-
 	p.Details = kyoto.RegC(p, &ComponentBlockFeaturesMore{
 		Title:    "core features",
 		Subtitle: "A Better Way to Build Your Frontend",
@@ -215,12 +215,60 @@ func (p *PageIndex) Init() {
 			},
 		},
 	})
+	p.Comparison = kyoto.RegC(p, &ComponentBlockFAQ{
+		Title: "Alternatives?",
+		Entries: []ComponentBlockFAQEntry{
+			{
+				Question: "Notes",
+				Answer: "<ul class=\"list-disc list-inside\">" +
+					"<li>I'm not going to compare languages pros & cons, just purpose and ideology</li>" +
+					"<li>Also, I'm not going to take into account existing codebases</li>" +
+					"</ul>",
+			},
+			{
+				Question: "Laravel Livewire",
+				Answer: "Laravel is awesome on my opinion and livewire makes it even more awesome! Nice choise for people who want to have \"battries included\" framework. " +
+					"Kyoto is not a framework, it's just a small library and tries to solve another kind of problem - components and asynchronous operations organization. " +
+					"Features like context, Server Side Actions, Server Side State, Insights, are just extensions to Core library purpose. " +
+					"Also, Kyoto not delivered with batteries \"included\", it gives more control to developer. <br><br> " +
+					"Differences (Kyoto vs Livewire):" +
+					"<ul class=\"list-disc list-inside\">" +
+					"<li>Minimalistic over \"batteries included\"</li>" +
+					"<li>Another approach regarding client-server communication</li>" +
+					"<li>Another purpose</li>" +
+					"</ul>",
+			},
+			{
+				Question: "Elixir Phoenix",
+				Answer: "To be honest, I'm far away from Elixir and Erlang ecosystem generally. If you have some time to tell me more about Phoenix, I'll be very grateful! <br><br> " +
+					"Differences (Kyoto vs Phoenix):" +
+					"<ul class=\"list-disc list-inside\">" +
+					"<li>Need more details</li>" +
+					"</ul>",
+			},
+			{
+				Question: "JavaScript Frameworks",
+				Answer: "The most delicious piece of cake. Please, check \"Motivation\" part. I'd like to notice, that Kyoto not tries to replace popular PWA/SPA approach, " +
+					"but to reduce it usage where it's not needed. If any of JS Frameworks works for you, so, why not? <br><br> " +
+					"Differences (Kyoto vs JS Frameworks):" +
+					"<ul class=\"list-disc list-inside\">" +
+					"<li>Give more control to developer</li>" +
+					"<li>Reduce amount of dependencies</li>" +
+					"<li>Make SSR and debugging easier</li>" +
+					"</ul>",
+			},
+			{
+				Question: "Any other?",
+				Answer:   "Just create an issue or contact with email if you'll find something interseting!",
+			},
+		},
+	})
 	p.FAQ = kyoto.RegC(p, &ComponentBlockFAQ{
 		Title: "Frequently-asked questions",
 		Entries: []ComponentBlockFAQEntry{
 			{
 				Question: "We already have ongoing projects. Should we rewrite everything?",
-				Answer:   "No! Just simply define handlers, and use this library for creating new pages.",
+				Answer:   "No! You can easily integrate library for creating new pages.",
 			},
 			{
 				Question: "Is this library ready for production?",

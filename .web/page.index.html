@@ -10,12 +10,13 @@
     {{ template "ComponentNavbar" .Navbar }}
     <!-- Hero section -->
     <section class="pt-40 md:pt-64 pb-16 px-4 text-center hero">
-        <h1 class="text-4xl md:text-6xl font-semibold font-serif">Mind Blowing Way to Build Frontend</h1>
+        <h1 class="text-4xl md:text-6xl font-semibold font-serif">SSR-first Frontend Library</h1>
         <h2 class="mt-4">
             Keep your Go stack united with the Server Side Components
         </h2>
         <div class="hidden md:block mt-10 py-2 max-w-screen-sm mx-auto font-mono bg-gray-100 dark:bg-gray-900 rounded-lg">
-            go get github.com/yuriizinets/kyoto
+            <span class="text-gray-500">$ go get</span>
+            <span>github.com/yuriizinets/kyoto</span>
         </div>
         <div class="mt-10">
             <a href="/docs/get-started.html" target="_blank" class="py-3 px-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition ease-in duration-200">Get started</a>
@@ -44,10 +45,6 @@
     <section class="my-24">
         {{ template "ComponentContent" .DevPromo }}
     </section>
-    <!-- Sponsors section -->
-    <section class="my-24">
-        {{ template "ComponentSponsors" .Sponsors }}
-    </section>
     <!-- Details section -->
     <section class="my-24">
         {{ template "ComponentBlockFeaturesMore" .Details }}
@@ -56,9 +53,17 @@
     <section class="my-24">
         {{ template "ComponentBlockFAQ" .About }}
     </section>
+    <!-- Comparison -->
+    <section class="my-24">
+        {{ template "ComponentBlockFAQ" .Comparison }}
+    </section>
     <!-- Statistics section -->
     <section class="mb-24">
         {{ template "ComponentBlockStatistics" .Statistics }}
+    </section>
+    <!-- Sponsors section -->
+    <section class="my-24">
+        {{ template "ComponentSponsors" .Sponsors }}
     </section>
     <!-- FAQ -->
     <section class="py-8 px-4">
