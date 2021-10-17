@@ -35,7 +35,7 @@ func (p *PageIndex) Init() {
 	})
 	p.DescriptionDemoUUID = kyoto.RegC(p, &ComponentContent{
 		Title:       "Async method",
-		Description: "With async method you're able to fetch all needed data concurrently without worring about goroutines. All needed async methods are triggered on page render as separate goroutines.",
+		Description: "With async method you're able to fetch all needed data concurrently without worrying about goroutines. All needed async methods are triggered on page render as separate goroutines.",
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.uuid.go",
