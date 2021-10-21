@@ -52,9 +52,6 @@ func TFuncMap() template.FuncMap {
 			builder := fmt.Sprintf(`name='%s' state='%s'`, name, state)
 			return template.HTMLAttr(builder)
 		},
-		"componentname": func(c Component) string {
-			return reflect.ValueOf(c).Elem().Type().Name()
-		},
 		"action": func(action string, args ...interface{}) template.JS {
 			formattedargs := []string{}
 			for _, arg := range args {
