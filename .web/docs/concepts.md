@@ -53,15 +53,15 @@ After component registration, you can use all lifecycle features. Let's explore 
 - Asynchronous operations step. Triggered concurrently after all initializations are done. You can integrate your component into this step with `Aync` method
 - After asynchronous operations step. Triggered after all concurrent operations are done. You can integrate your component into this step with `AfterAsync` method
 
-You can find detailed usage examples in [Core Features](/core-features) section.  
-This overview not includes features from [Extended Features](/extended-features) section, because most of them not related to lifecycle directly.
+You can find detailed usage examples in [Core Features](/docs/core-features) section.  
+This overview not includes features from [Extended Features](/docs/extended-features) section, because most of them not related to lifecycle directly.
 
 ## Methods overloading
 
 This library can handle different method signatures. Under the hood it tries to cast your component to different interfaces, depending on current lifecycle step. This approach allows to reduce code complexity and extend library features with minimal pain.  
 For example, you can use `Async(p kyoto.Page)` or `Async()` signature depending on your needs.  
 
-You can find detailed usage examples in [Core Features](/core-features) section.  
+You can find detailed usage examples in [Core Features](/docs/core-features) section.  
 
 ## Interfaces
 
@@ -69,26 +69,26 @@ This library strongly relies on interfaces. For methods overloading, lifecycle i
 List of all (or almost all) available interfaces:
 
 - `ImplementsInit` - interface for checking implementation of initialization method.  
-  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Part of [lifecycle](/docs/concepts/#rendering-lifecycle).  
   - Appliable for components.
 - `ImplementsInitWithoutPage` - same as `ImplementsInit`, but without `kyoto.Page` argument.  
-  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Part of [lifecycle](/docs/concepts/#rendering-lifecycle).  
   - Appliable for both pages and components.
 - `ImplementsMeta` - interface for checking implementation of meta builder.  
   - Appliable for pages.
 - `ImplementsAsync` - interface for checking implementation of asynchronous method.  
-  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Part of [lifecycle](/docs/concepts/#rendering-lifecycle).  
   - Appliable for components.
 - `ImplementsAsyncWithoutPage` - same as `ImplementsAsync`, but without `kyoto.Page` argument.  
-  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Part of [lifecycle](/docs/concepts/#rendering-lifecycle).  
   - Appliable for components.
 - `ImplementsAfterAsync` - interface for checking implementation of after async method.  
-  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Part of [lifecycle](/docs/concepts/#rendering-lifecycle).  
   - Appliable for components.
 - `ImplementsAfterAsyncWithoutPage` - same as `ImplementsAfterAsync`, but without `kyoto.Page` argument.  
-  - Part of [lifecycle](/concepts/#rendering-lifecycle).  
+  - Part of [lifecycle](/docs/concepts/#rendering-lifecycle).  
   - Appliable for components.
-- `ImplementsAtions` - interface for checking implementation of [Server Side Actions](/extended-features/#server-side-actions).  
+- `ImplementsAtions` - interface for checking implementation of [Server Side Actions](/docs/extended-features/#server-side-actions).  
   - Appliable for components.
 
 You can find complete list of interfaces here:

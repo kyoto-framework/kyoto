@@ -45,81 +45,81 @@ module.exports = {
                 children: [
                     {
                         text: 'Structures',
-                        link: '/concepts/#structures'
+                        link: '/docs/concepts/#structures'
                     },
                     {
                         text: 'Rendering lifecycle',
-                        link: '/concepts/#rendering-lifecycle'
+                        link: '/docs/concepts/#rendering-lifecycle'
                     },
                     {
                         text: 'Lifecycle integration',
-                        link: '/concepts/#lifecycle-integration'
+                        link: '/docs/concepts/#lifecycle-integration'
                     },
                     {
                         text: 'Methods overloading',
-                        link: '/concepts/#methods-overloading'
+                        link: '/docs/concepts/#methods-overloading'
                     },
                 ]
             },
             {
                 text: 'Core Features',
-                link: '/core-features',
+                link: '/docs/core-features',
                 children: [
                     {
                         text: 'Page rendering',
-                        link: '/core-features/#page-rendering'
+                        link: '/docs/core-features/#page-rendering'
                     },
                     {
                         text: 'Built-in handler',
-                        link: '/core-features/#built-in-handler'
+                        link: '/docs/core-features/#built-in-handler'
                     },
                     {
                         text: 'Context management',
-                        link: '/core-features/#context-management'
+                        link: '/docs/core-features/#context-management'
                     },
                     {
                         text: 'Component lifecycle',
-                        link: '/core-features/#component-lifecycle'
+                        link: '/docs/core-features/#component-lifecycle'
                     }
                 ]
             },
             {
                 text: 'Extended Features',
-                link: '/extended-features',
+                link: '/docs/extended-features',
                 children: [
                     {
                         text: 'Server Side Actions',
-                        link: '/extended-features/#server-side-actions',
+                        link: '/docs/extended-features/#server-side-actions',
                         children: [
                             {
                                 text: 'Installation',
-                                link: '/extended-features/#ssa-installation'
+                                link: '/docs/extended-features/#ssa-installation'
                             },
                             {
                                 text: 'Usage',
-                                link: '/extended-features/#ssa-usage'
+                                link: '/docs/extended-features/#ssa-usage'
                             },
                             {
                                 text: 'Lifecycle',
-                                link: '/extended-features/#ssa-lifecycle'
+                                link: '/docs/extended-features/#ssa-lifecycle'
                             },
                             {
                                 text: 'Notes',
-                                link: '/extended-features/#ssa-notes'
+                                link: '/docs/extended-features/#ssa-notes'
                             }
                         ]
                     },
                     {
                         text: 'Server Side State',
-                        link: '/extended-features/#server-side-state'
+                        link: '/docs/extended-features/#server-side-state'
                     },
                     {
                         text: 'Meta builder',
-                        link: '/extended-features/#meta-builder'
+                        link: '/docs/extended-features/#meta-builder'
                     },
                     {
                         text: 'Insights',
-                        link: '/extended-features/#insights'
+                        link: '/docs/extended-features/#insights'
                     }
                 ]
             },
@@ -135,7 +135,7 @@ module.exports = {
             },
             {
                 text: 'Example with guide',
-                link: '/example-with-guide'
+                link: '/docs/example-with-guide'
             }
         ]
     },

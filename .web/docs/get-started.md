@@ -31,4 +31,4 @@ func IndexPageHandler(g *gin.Context) {
 }
 ```
 
-Check [Page rendering](/core-features/#page-rendering) section for details.
+Check [Page rendering](/docs/core-features/#page-rendering) section for details.
