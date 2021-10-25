@@ -1,13 +1,16 @@
 
 ![background](https://webstockreview.net/images/japan-clipart-pagoda-png-19.png)
 
-# kyoto
+<h1 align="center">kyoto</h1>
+<p align="center">
+    An HTML render engine concept that brings frontend-like components experience to the server side with native <code>html/template</code> on steroids. Supports any serving basis (<code>net/http</code>/<code>gin</code>/etc), that provides <code>io.Writer</code> in response.
+</p>
 
 ![License](https://img.shields.io/github/license/yuriizinets/kyoto)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yuriizinets/kyoto)](https://goreportcard.com/report/github.com/yuriizinets/kyoto)
 [![Go Reference](https://pkg.go.dev/badge/github.com/yuriizinets/kyoto.svg)](https://pkg.go.dev/github.com/yuriizinets/kyoto)
 
-An HTML render engine concept that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (`net/http`/`gin`/etc), that provides io.Writer in response.
+
 
 > **Disclaimer**  
 > This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/yuriizinets/kyoto/issues/new)
