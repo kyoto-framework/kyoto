@@ -36,7 +36,7 @@ import (
 	"html/template"
 
 	"github.com/yuriizinets/kyoto"
-    "github.com/yuriizinets/"
+	"github.com/yuriizinets/"
 )
 
 type PageIndex struct {
