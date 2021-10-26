@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /dk.svg
+heroImage: /kyoto.svg
 heroText: kyoto
 tagline: Keep your Go stack united with Server Side Components
 actions:

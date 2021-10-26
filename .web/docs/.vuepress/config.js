@@ -3,7 +3,7 @@ module.exports = {
     title: 'kyoto',
     description: 'Keep your Go stack united with Server Side Components',
 
-    base: '/',
+    base: '/docs/',
 
     themeConfig: {
         navbar: [
