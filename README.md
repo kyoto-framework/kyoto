@@ -49,7 +49,7 @@ func (p *PageIndex) Template() *template.Template {
 
 func (p *PageIndex) Init() {
 	p.Navbar = kyoto.RegC(p, &twui.AppUINavNavbar{
-        Logo: `<img src="/static/img/kyoto.svg" class="h-8 w-8 scale-150" />`,
+		Logo: `<img src="/static/img/kyoto.svg" class="h-8 w-8 scale-150" />`,
 		Links: []twui.AppUINavNavbarLink{
 			{Text: "Kyoto", Href: "https://github.com/yuriizinets/kyoto"},
 			{Text: "UIKit", Href: "https://github.com/yuriizinets/kyoto-uikit"},
