@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:dynamics": "esbuild --bundle --minify --outfile=dist/dynamics.js src/dynamics.ts",
-    "build": "npm run build:dynamics"
+    "dynamics:build": "esbuild --bundle --minify --outfile=dist/dynamics.js src/dynamics.ts",
+    "dynamics:pack": "node package.js",
+    "build": "npm run dynamics:build"
   },
   "keywords": [],
   "author": "",
