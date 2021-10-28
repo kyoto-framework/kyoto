@@ -10,16 +10,7 @@ import (
 )
 
 func ssatemplate(p kyoto.Page) *template.Template {
-	return template.Must(template.New("SSA").Funcs(kyoto.Funcs()).ParseGlob("*.html"))
-}
-
-func ssahandler() http.HandlerFunc {
-	return func(rw http.ResponseWriter, r *http.Request) {
-		kyoto.SSAHandlerFactory(ssatemplate, map[string]interface{}{
-			"internal:rw": rw,
-			"internal:r":  r,
-		})(rw, r)
-	}
+	return template.Must(template.New("SSA").Funcs(kyoto.TFuncMap()).ParseGlob("*.html"))
 }
 
 func main() {
@@ -33,7 +24,7 @@ func main() {
 	// Routes
 	mux.HandleFunc("/", kyoto.PageHandler(&PageIndex{}))
 	// SSA plugin
-	mux.HandleFunc("/SSA/", ssahandler())
+	mux.HandleFunc("/SSA/", kyoto.SSAHandler(ssatemplate))
 
 	// Run
 	if os.Getenv("PORT") == "" {

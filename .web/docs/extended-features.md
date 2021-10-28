@@ -11,30 +11,25 @@ Frontend only recieves ready for use HTML markup.
 
 ### SSA Installation
 
-For using SSA, you need to define and register SSA handler, and include communication layer on target page.  
+For using SSA, you need to define template builder, register SSA handler, and include communication layer on target page.  
 
-For creating SSA handler, you can use high-level SSA handler factory:
+Here is how you can create template builder:
 
 ```go
-func ssahandler() http.HandlerFunc {
-    return func(rw http.ResponseWriter, r *http.Request) {
-        kyoto.SSAHandlerFactory(ssatemplate, map[string]interface{}{
-            "internal:rw": rw,
-            "internal:r":  r,
-        })(rw, r)
-    }
+func ssatemplate(p kyoto.Page) *template.Template {
+    return template.Must(template.New("SSA").Funcs(kyoto.TFuncMap()).ParseGlob("*.html"))
 }
 ```
 
-After creation of SSA handler, you need to register it under `/SSA/` route.
+After creation of template builder, you need to register SSA handler under `/SSA/` route.
 
 ```go
 ...
 
-mux.HandleFunc("/SSA/", ssahandler())
+mux.HandleFunc("/SSA/", kyoto.SSAHandler(ssatemplate))
 
 // In case of default http mux, use this
-http.HandleFunc("/SSA/", ssahandler())
+http.HandleFunc("/SSA/", kyoto.SSAHandler(ssatemplate))
 
 ...
 ```

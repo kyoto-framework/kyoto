@@ -16,14 +16,13 @@ type ActionMap map[string]Action
 // TemplateBuilder is used to build templates.
 type TemplateBuilder func(p Page) *template.Template
 
-// SSA page placeholder
-
-type dummypage struct {
+// DummyPage is an SSA page placeholder
+type DummyPage struct {
 	TemplateBuilder TemplateBuilder
 }
 
 // Template returns a template
-func (p *dummypage) Template() *template.Template {
+func (p *DummyPage) Template() *template.Template {
 	return p.TemplateBuilder(p)
 }
 

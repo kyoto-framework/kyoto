@@ -212,16 +212,16 @@ func Redirect(rp *RedirectParameters) {
 		r = GetContext(rp.Page, rp.RequestKey).(*http.Request)
 	}
 	// Do actual redirect in case of usual response
-	if _, ssa := rp.Page.(*dummypage); !ssa {
+	if _, ssa := rp.Page.(*DummyPage); !ssa {
 		http.Redirect(rw, r, rp.Target, rp.StatusCode)
 	} else { // Special header in case of SSA
 		rw.Header().Add("X-Redirect", rp.Target)
 	}
 }
 
-// PageHandler is an opinionated net/http handler.
+// PageHandler is an opinionated page net/http handler.
 // Context:
-// - internal:rw - http.ResponseWritr
+// - internal:rw - http.ResponseWriter
 // - internal:r - *http.Request
 func PageHandler(p Page) http.HandlerFunc {
 	// Return handler
