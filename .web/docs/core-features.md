@@ -1,13 +1,12 @@
 # Core Features
 
-This part of documentation holds core library features.  
-This features are pillars for implementing other functionality and using this library. They implement and hold the most basic, low-level needs such as rendering lifecycle, context operations, handling requests.
+These core library features are the pillarstoes for implementing other functionality and using the library. They implement and hold the most basic, low-level needs such as rendering lifecycle, context operations, and handling requests.
 
-## Page rendering
+## Page Rendering
 
 The most important part of the library.  
-Low-level function, responsible for page rendering directly into `io.Writer`.  
-Under the hood, executes full rendering [lifecycle](/docs/concepts/#rendering-lifecycle). Library has more high-level wrappers with context setters and another features, but all of them rely on this function. Accepts 2 parameters - page pointer and `io.Writer`.  
+A low-level function, responsible for rendering the page directly into `io.Writer`.  
+Under the hood, executes full rendering [lifecycle](/docs/concepts/#rendering-lifecycle). Library has more high-level wrappers with context setters and another features, but all of them rely on this function. Accepts 2 parameters - page pointer and `io.Writer`.
 
 First of all, let's create a page structure
 
@@ -36,7 +35,7 @@ func (*PageIndex) Template() *template.Template {
 }
 ```
 
-After creating page structure, it's time to create template
+After creating the page structure, it's time to create template
 
 `page.index.html`
 
@@ -51,7 +50,7 @@ After creating page structure, it's time to create template
 </html>
 ```
 
-Now you can use rendering function
+Now you can use the rendering function
 
 ```go
 func ExampleHandler(rw http.ResponseWriter, r *http.Request) {
@@ -128,11 +127,11 @@ That's it! Now you have component instance, included into lifecycle and rendered
 
 :::
 
-## Built-in handler
+## Built-in Handler
 
-High-level function, returns `http.HandlerFunc` that can be used directly by `net/http` or compatible framework.  
+High-level function, returns `http.HandlerFunc` that can be used directly by `net/http` or a compatible framework.  
 Takes 1 paramter - page pointer.  
-Under the hood writes 2 context variables, that you can use with `GetContext`:  
+Under the hood writes 2 context variables, that you can use with `GetContext`:
 
 - `internal:rw` - `http.ResponseWriter`
 - `internal:r` - `*http.Request`
@@ -148,9 +147,9 @@ func main() {
 }
 ```
 
-## Context management
+## Context Management
 
-You can use `kyoto.SetContext`, `kyoto.GetContext` and `kyoto.DelContext` for managing your context.  
+You can use `kyoto.SetContext`, `kyoto.GetContext` and `kyoto.DelContext` for managing your context.
 
 Context uses page instance as namespace for correct concurrency handling on requests level (page instance is creating for each new request).
 Context can be used for passing additional state (f.e.`http.Request`, `gin.Context`) which can be accessed inside of lifecycle methods, like `Init` or `Async`.  
@@ -175,8 +174,8 @@ func (p *PageIndex) Init() {
 ...
 ```
 
-Most of the component methods have overload option with page argument. In this way you don't need to store page pointer in the component itself. Check full [interfaces specification](/docs/concepts/#interfaces) in the [Concepts](/concepts) section.  
-Example of overloaded asynchronous method:  
+Most of the component methods have an overload option with a page argument. This way you don't need to store the page pointer in the component itself. Check full [interfaces specification](/docs/concepts/#interfaces) in the [Concepts](/concepts) section.  
+Example of overloaded asynchronous method:
 
 ```go
 ...
@@ -188,15 +187,15 @@ func (*ComponentExample) Async(p kyoto.Page) error {
 ...
 ```
 
-## Component lifecycle
+## Component Lifecycle
 
 This section extends [Lifecycle integration](/docs/concepts/#lifecycle-integration) documentation with examples.
 
 ### Init
 
-`Init` method is triggering on initialization lifecycle step.  
+`Init` method is triggering on initialization lifecycle step.
 
-Usage:  
+Usage:
 
 ```go
 ...
@@ -222,10 +221,11 @@ func (*ComponentExample) Init(p kyoto.Page) {
 
 ### Async
 
-`Async` method is triggering on asynchronous operations lifecycle step. You need to return an error in case of async operation failure.  
-> Very useful in case of time-consuming operations, when you need to fetch data from external API or database.  
+`Async` method is triggering an asynchronous operations lifecycle step. You need to return an error in case of async operation failure.
 
-Usage:  
+> Very useful in case of time-consuming operations, when you need to fetch data from external API or database.
+
+Usage:
 
 ```go
 ...
@@ -253,7 +253,7 @@ func (*ComponentExample) Async(p kyoto.Page) error {
 
 ### AfterAsync
 
-`AfterAsync` method is triggering after asynchronous operations lifecycle step.  
+`AfterAsync` method is triggering after asynchronous operations lifecycle step.
 
 Usage:
 

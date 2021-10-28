@@ -7,11 +7,11 @@ This features are optional, but make library feature-rich.
 
 Server Side Actions (SSA) very similar to component methods in traditional frontend frameworks.
 Main difference - all actions are executed on server side, code placed only on server and client has only thin communication layer.
-Frontend only recieves ready for use HTML markup.  
+Frontend only recieves ready for use HTML markup.
 
 ### SSA Installation
 
-For using SSA, you need to define template builder, register SSA handler, and include communication layer on target page.  
+For using SSA, you need to define template builder, register SSA handler, and include communication layer on target page.
 
 Here is how you can create template builder:
 
@@ -51,7 +51,7 @@ This can be done with `dynamics` template function, provided by `kyoto.Funcs()` 
 
 ### SSA Usage
 
-#### Actions definition
+#### Actions Definition
 
 Now you can implement `Actions` method to define own component's methods.  
 This method must return `kyoto.ActionMap`, map which holds your methods. Each method accepts dynamic arguments amount with `...interface{}`.
@@ -84,7 +84,7 @@ func (c *ComponentExample) Actions(p kyoto.Page) kyoto.ActionMap {
 }
 ```
 
-#### Component attributes injection
+#### Component Attributes Injection
 
 You need to include component attributes into your top-level node with `componentattrs` template function. This function accepts component as argument.  
 This includes different internal library data and component state.
@@ -101,9 +101,9 @@ Usage:
 
 #### `action` usage
 
-Library provides multiple ways of action triggering. One of them - `action` template function. This function accepts multiple arguments: first arguments is always action name, all arguments after that will be passed as `...interface{}` to action arguments.  
+Library provides multiple ways of action triggering. One of them - `action` template function. This function accepts multiple arguments: first arguments is always action name, all arguments after that will be passed as `...interface{}` to action arguments.
 
-> Please note, that you can use `action` template function only in event handlers, like `onclick="..."`.  
+> Please note, that you can use `action` template function only in event handlers, like `onclick="..."`.
 
 Usage:
 
@@ -152,7 +152,7 @@ Usage:
 
 ### SSA Lifecycle
 
-SSA has own lifecycle, which is a bit different in comparison with page rendering  
+SSA has own lifecycle, which is a bit different in comparison with page rendering
 
 - Creating request on client side with communication layer
 - Extracting action data from request on server side
@@ -185,7 +185,7 @@ This feature is useful in case of large state payloads.
 Instead of saving state inline as html tag, store state on server side and inject state hash as html tag.
 Using this, you will decrease amount of data sent with SSA request and total HTML document size.
 
-## Meta builder
+## Meta Builder
 
 ::: warning
 Not stable. In active development.
