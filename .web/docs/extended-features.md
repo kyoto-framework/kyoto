@@ -174,6 +174,12 @@ SSA has own lifecycle, which is a bit different in comparison with page renderin
 
 - You may have problems on morph stage. It requires correct HTML structure and may cause unexpected behavior in some cases. Use `ssa-replace` attribute in your top-level node to explicitly switch to HTML replacement mode
 
+### SSA Limitations
+
+- Your component must to be JSON serializable. This is related to how Actions feature works under the hood. Component state is stored directly in DOM and can be used by client-size operations like binding.
+- Avoid using of interface types in components with Actions. In that way your component will become incompatible with JSON serialization process.
+- Avoid huge states. This will increase total page size and will slow down Actions operations. You can always avoid field JSON serialization with `json:"-"` if it's not needed to be stored. F.e. in case of list/table data, we're trying to avoid storing rows in state and using database directly instead.
+
 ## Server Side State
 
 ::: danger

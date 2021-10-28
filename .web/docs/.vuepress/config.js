@@ -106,6 +106,10 @@ module.exports = {
                             {
                                 text: 'Notes',
                                 link: '/extended-features/#ssa-notes'
+                            },
+                            {
+                                text: 'Limitations',
+                                link: '/extended-features/#ssa-limitations'
                             }
                         ]
                     },
@@ -130,6 +134,10 @@ module.exports = {
                     {
                         text: 'Dealing with Go packages',
                         link: '/additional-notes/#dealing-with-go-packages'
+                    },
+                    {
+                        text: 'Downsides of the library',
+                        link: '/additional-notes/#downsides-of-the-library'
                     }
                 ]
             },
