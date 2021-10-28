@@ -1,10 +1,10 @@
 package kyoto
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"net/url"
 	"reflect"
 	"strings"
 )
@@ -46,8 +46,7 @@ func TFuncMap() template.FuncMap {
 			if err != nil {
 				panic(err)
 			}
-			state := string(statebytes)
-			state = url.QueryEscape(state)
+			state := base64.StdEncoding.EncodeToString(statebytes)
 			// Build attributes
 			builder := fmt.Sprintf(`name='%s' state='%s'`, name, state)
 			return template.HTMLAttr(builder)
