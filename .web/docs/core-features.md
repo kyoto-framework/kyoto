@@ -41,12 +41,12 @@ After creating the page structure, it's time to create template
 
 ```html
 <html>
-    <head>
-        <title>kyoto page</title>
-    </head>
-    <body>
-        ...
-    </body>
+  <head>
+    <title>kyoto page</title>
+  </head>
+  <body>
+    Hello World!
+  </body>
 </html>
 ```
 
@@ -55,6 +55,18 @@ Now you can use the rendering function
 ```go
 func ExampleHandler(rw http.ResponseWriter, r *http.Request) {
     RenderPage(rw, &PageIndex{})
+}
+```
+
+For example in a `main.go`
+
+```go
+func main() {
+	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+		kyoto.RenderPage(rw, &PageIndex{})
+	})
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 ```
 
@@ -68,7 +80,7 @@ Please note that component template definition must to much with actual componen
 package main
 
 import (
-    "crypto/rand"
+    "math/rand"
     "strconv"
 )
 
@@ -85,7 +97,7 @@ func (c *ComponentRand) Init() {
 
 ```html
 {{ define "ComponentRand" }}
-    <div>Random number: {{ .Content }}</div>
+<div>Random number: {{ .Content }}</div>
 {{ end }}
 ```
 
@@ -105,8 +117,12 @@ type PageIndex struct {
     Rand kyoto.Component
 }
 
+func (*PageIndex) Template() *template.Template {
+	return template.Must(template.New("page.index.html").Funcs(kyoto.TFuncMap()).ParseGlob("*.html"))
+}
+
 func (p *PageIndex) Init() {
-    p.Rand = kyoto.RegC(p &ComponentRand{})
+    p.Rand = kyoto.RegC(p, &ComponentRand{})
 }
 ```
 
@@ -114,12 +130,12 @@ func (p *PageIndex) Init() {
 
 ```html
 <html>
-    <head>
-        <title>kyoto page</title>
-    </head>
-    <body>
-        {{ template "ComponentRand" .Rand }}
-    </body>
+  <head>
+    <title>kyoto page</title>
+  </head>
+  <body>
+    {{ template "ComponentRand" .Rand }}
+  </body>
 </html>
 ```
 
