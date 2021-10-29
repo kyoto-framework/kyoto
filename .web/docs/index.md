@@ -7,6 +7,6 @@ actions:
   - text: Prologue
     link: /prologue
     type: secondary
-  - text: Get started
-    link: /get-started
+  - text: Getting started
+    link: /getting-started
 ---

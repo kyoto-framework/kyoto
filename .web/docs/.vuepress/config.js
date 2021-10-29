@@ -22,20 +22,20 @@ module.exports = {
                 link: '/prologue'
             },
             {
-                text: 'Get Started',
-                link: '/get-started',
+                text: 'Getting Started',
+                link: '/getting-started',
                 children: [
                     {
                         text: 'Quick Start',
-                        link: '/get-started/#quick-start'
+                        link: '/getting-started/#quick-start'
                     },
                     {
                         text: 'Installation',
-                        link: '/get-started/#installation'
+                        link: '/getting-started/#installation'
                     },
                     {
                         text: 'Integration',
-                        link: '/get-started/#integration'
+                        link: '/getting-started/#integration'
                     },
                 ],
             },
