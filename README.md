@@ -20,12 +20,12 @@
 ## Installation
 
 As simple as `go get github.com/yuriizinets/kyoto`  
-Check documentation page for quick start: [https://kyoto.codes/docs/get-started.html](https://kyoto.codes/docs/get-started.html)
+Check documentation page for quick start: [https://kyoto.codes/docs/getting-started.html](https://kyoto.codes/docs/getting-started.html)
 
 ## Usage
 
 Kyoto project setup may seem complicated and unusual at first sight.  
-It's highly recommended to follow documentation while using library: [https://kyoto.codes/docs/get-started.html](https://kyoto.codes/docs/get-started.html)  
+It's highly recommended to follow documentation while using library: [https://kyoto.codes/docs/getting-started.html](https://kyoto.codes/docs/getting-started.html)  
 
 This example is not completely independent and just shows what the code looks like when using kyoto:
 
