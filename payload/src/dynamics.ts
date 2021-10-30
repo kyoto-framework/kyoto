@@ -112,11 +112,11 @@ export function Bind(self: HTMLElement, field: string) {
         throw new Error('Bind call error: component state is underfined')
     }
     // Load state
-    let state = JSON.parse(decodeURIComponent(root.getAttribute('state') as string))
+    let state = JSON.parse(atob(root.getAttribute('state') as string))
     // Set value
     state[field] = (self as HTMLInputElement).value
     // Set state
-    root.setAttribute('state', JSON.stringify(state))
+    root.setAttribute('state', btoa(JSON.stringify(state)))
 }
 
 export function FormSubmit(self: HTMLElement, e: Event) {
@@ -131,7 +131,7 @@ export function FormSubmit(self: HTMLElement, e: Event) {
         throw new Error('Bind call error: component state is underfined')
     }
     // Load state
-    let state = JSON.parse(decodeURIComponent(root.getAttribute('state') as string))
+    let state = JSON.parse(atob(root.getAttribute('state') as string))
     // Update state with form data
     let form = new FormData((e.target as HTMLFormElement))
     let formdata = Object.fromEntries(form.entries())
@@ -139,7 +139,7 @@ export function FormSubmit(self: HTMLElement, e: Event) {
         state[pair[0]] = pair[1]
     })
     // Set state
-    root.setAttribute('state', JSON.stringify(state))
+    root.setAttribute('state', btoa(JSON.stringify(state)))
     // Trigger "Submit" action
     Action(root, 'Submit')
     // Fix for ...?

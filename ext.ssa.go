@@ -1,12 +1,12 @@
 package kyoto
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
 	"net/http"
-	"net/url"
 	"reflect"
 	"strings"
 	"sync"
@@ -47,8 +47,8 @@ func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 		_component.Init()
 	}
 	// Populate component state
-	state, _ := url.QueryUnescape(p.State)
-	if err := json.Unmarshal([]byte(state), &component); err != nil {
+	state, _ := base64.StdEncoding.DecodeString(p.State)
+	if err := json.Unmarshal(state, &component); err != nil {
 		panic(err)
 	}
 	// Call action
