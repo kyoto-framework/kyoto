@@ -63,7 +63,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
         id: action.includes(':') ? action.split(':')[0] : undefined,
     })
     // Set loading state
-    TriggerLoaders(self)
+    _TriggerLoaders(self)
     // Prepare form data
     let formdata = new FormData()
     formdata.set('State', root.getAttribute('state') || '{}')
@@ -86,7 +86,6 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
         }
         // Handle replace case
         if (root.hasAttribute('ssa:replace')) {
-            console.log('Replace detected')
             root.outerHTML = data
             return
         }
@@ -150,7 +149,7 @@ export function FormSubmit(self: HTMLElement, e: Event) {
     return false
 }
 
-function TriggerLoaders(self: HTMLElement) {
+function _TriggerLoaders(self: HTMLElement) {
     // Find component root
     let root = _LocateRoot({
         starter: self,
@@ -161,11 +160,8 @@ function TriggerLoaders(self: HTMLElement) {
     loader.forEach(element => {
         // Check attribute value
         let loadertype = element.getAttribute('ssa:oncall.display')
-        // Show element, if value is empty
-        if (loadertype == "") {
-            element.setAttribute("style", "display: block");
-        } else {
-            // Set display value if exist
+        // Set display value if exist
+        if (loadertype != "") {
             element.setAttribute("style", "display: " + loadertype);
         }
     });
