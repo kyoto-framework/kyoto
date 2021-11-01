@@ -1,0 +1,13 @@
+{{ define "ComponentDemoLoading" }}
+<div {{ componentattrs . }} class="bg-gray-100 rounded p-4">
+    <div class="text-2xl font-semibold">Loading States Demo</div>
+    <div class="py-2 w-full flex flex-col items-center">
+        <button onclick="{{ action `Start` }}" class="flex justify-center mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-32">
+            <div ssa:oncall.display="none">
+                Start
+            </div>
+            <svg ssa:oncall.display style="display: none;" xmlns="http://www.w3.org/2000/svg" class="animate-spin h-6 w-6" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="12" height="12" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z" fill="white"/></svg>    
+        </button>
+    </div>
+</div>
+{{ end }}

@@ -9,6 +9,7 @@
     {{ dynamics }}
 </head>
 <body>
+    <div></div>
     <section class="my-24 px-4">
         {{ template "ComponentHero" .Hero }}
     </section>
@@ -66,6 +67,14 @@
         </div>
         <div class="w-full md:w-1/2">
             {{ template "ComponentContent" .DescriptionDemoNesting }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoLoading" .DemoLoading }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoLoading }}
         </div>
     </section>
 </body>

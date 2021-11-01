@@ -22,6 +22,8 @@ type PageIndex struct {
 	DemoRedirect                  kyoto.Component
 	DescriptionDemoNesting        kyoto.Component
 	DemoNesting                   kyoto.Component
+	DescriptionDemoLoading        kyoto.Component
+	DemoLoading                   kyoto.Component
 }
 
 func (p *PageIndex) Template() *template.Template {
@@ -147,4 +149,19 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoNesting = kyoto.RegC(p, &ComponentDemoNestingFirst{})
+	p.DescriptionDemoLoading = kyoto.RegC(p, &ComponentContent{
+		Title:       "Loading states",
+		Description: "There are cases when the page may not react immediately to a user event (like a click). We provide a way to easily display loading states.",
+		Links: []ComponentContentLink{
+			{
+				Title: "component.demo.loading.go",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.loading.go",
+			},
+			{
+				Title: "component.demo.loading.html",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.loading.html",
+			},
+		},
+	})
+	p.DemoLoading = kyoto.RegC(p, &ComponentDemoLoading{})
 }
