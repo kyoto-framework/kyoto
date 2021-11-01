@@ -199,4 +199,5 @@ Widget on page, that can be included with inisghts template function. Widget inc
 Not implemented yet. Check [issue](https://github.com/yuriizinets/kyoto/issues/26) state
 :::
 
-Widget on page, that can be included with inisghts template function. Widget includes general page render information, like errors, overall lifecycle timings, etc. Also, widget includes list of each rendered component with lifecycle timings (init, async, afterasync, etc). On hover, highlights component on page.
+Feature integrated into rendering lifecycle. Saves and displays timings for each lifecycle step, for the whole page and for separate components.  
+To enable this feature, you can set library `INSIGHTS` flag to true. Then, you can set `INSIGHTS_CLI` to true for printing rendering stats into terminal.
