@@ -139,7 +139,7 @@ func (p *PageIndex) Init() {
 	})
 	p.DevPromo = kyoto.RegC(p, &ComponentContent{
 		Title:       "Developer friendly",
-		Description: "This library was created to solve developer problems first. Use full power of Go, build your parallel development process around components system, deliver your webpages fast! Feel free to use landing page of this library as starter project.",
+		Description: "This library was created to solve developer problems first. Use full power of Go, build your parallel development process around components system, deliver your webpages fast!",
 		Photo:       "/static/img/content/developer.svg",
 		Reverse:     true,
 		LinkTitle:   "Check Documentation",

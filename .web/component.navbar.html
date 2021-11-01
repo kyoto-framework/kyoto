@@ -1,7 +1,7 @@
 {{ define "ComponentNavbar" }}
 <!-- Navbar -->
-<nav class="fixed top-0 left-0 right-0 z-10 py-3 px-4 flex items-center justify-between flex-wrap font-mono bg-white dark:bg-black dark:text-white bg-opacity-60 dark:bg-opacity-60 backdrop-blur-lg">
-    <div class="hidden md:flex items-center gap-4 w-2/5">
+<nav class="fixed top-0 left-0 right-0 z-10 py-3 px-4 flex items-center justify-between flex-wrap bg-white dark:bg-black dark:text-white bg-opacity-60 dark:bg-opacity-60 backdrop-blur-lg">
+    <div class="hidden md:flex items-center gap-4 w-2/5 font-semibold">
         {{ range .Left }}
             <a href="{{ .Href }}" {{ if .AriaLabel }} aria-label="{{ .AriaLabel }}" {{ end }} class="hover:underline">
                 {{ .Image }}
@@ -15,7 +15,7 @@
         </button>
     </div>
     <a href="/" class="flex items-center flex-shrink-0">
-        <span class="ml-2 text-xl font-bold hover:underline">kyoto</span>
+        <span class="ml-2 text-xl font-mono font-bold hover:underline">kyoto</span>
     </a>
     <div class="hidden md:flex items-center justify-end gap-4 w-2/5">
         {{ range .Right }}
