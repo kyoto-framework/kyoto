@@ -2,7 +2,7 @@
 home: true
 heroImage: /kyoto.svg
 heroText: kyoto
-tagline: Keep your Go stack united with Server Side Components
+tagline: Golang SSR-first Frontend Library
 actions:
   - text: Prologue
     link: /prologue

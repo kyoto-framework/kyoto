@@ -1,4 +1,4 @@
-name: Web Workflow
+name: Docs Workflow
 
 on:
   push:
@@ -27,8 +27,8 @@ jobs:
     - name: Build and Push
       run: |
         (
-          export CPATH=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${REPOSITORY_NAME,,};
-          cd .web;
+          export CPATH=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${REPOSITORY_NAME,,}-docs;
+          cd .docs;
           docker build -t $CPATH:latest .;
           docker push $CPATH:latest;
         )

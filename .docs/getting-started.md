@@ -5,7 +5,8 @@ If you want to implement your own project from scratch, or extend an already exi
 
 ## Quick Start
 
-The quickest way to get started with `kyoto` is to clone a ready-made demo project, such as [`kyoto-hn`](https://github.com/yuriizinets/kyoto-hn), and try to expore/modify things inside.
+The quickest way to get started with `kyoto` is to use a starter project.  
+[https://github.com/yuriizinets/kyoto-starter](https://github.com/yuriizinets/kyoto-starter)
 
 ## Installation
 
@@ -31,4 +32,4 @@ func IndexPageHandler(g *gin.Context) {
 }
 ```
 
-Check the [Page rendering](/docs/core-features/#page-rendering) section for details.
+Check the [Page rendering](/core-features/#page-rendering) section for details.
