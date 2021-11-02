@@ -35,7 +35,7 @@ http.HandleFunc("/SSA/", kyoto.SSAHandler(ssatemplate))
 ```
 
 And now, we need to include thin communication layer, implemented with JS, into target page.  
-This can be done with `dynamics` template function, provided by `kyoto.Funcs()` function (check [Page rendering](/docs/core-features/#page-rendering) for details)
+This can be done with `dynamics` template function, provided by `kyoto.Funcs()` function (check [Page rendering](/core-features/#page-rendering) for details)
 
 ```html
 <html>

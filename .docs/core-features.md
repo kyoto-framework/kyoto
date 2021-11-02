@@ -6,7 +6,7 @@ These core library features are the pillarstoes for implementing other functiona
 
 The most important part of the library.  
 A low-level function, responsible for rendering the page directly into `io.Writer`.  
-Under the hood, executes full rendering [lifecycle](/docs/concepts/#rendering-lifecycle). Library has more high-level wrappers with context setters and another features, but all of them rely on this function. Accepts 2 parameters - page pointer and `io.Writer`.
+Under the hood, executes full rendering [lifecycle](/concepts/#rendering-lifecycle). Library has more high-level wrappers with context setters and another features, but all of them rely on this function. Accepts 2 parameters - page pointer and `io.Writer`.
 
 First of all, let's create a page structure
 
@@ -102,7 +102,7 @@ func (c *ComponentRand) Init() {
 ```
 
 After component creation, let's register and include it into page.  
-Check [Lifecycle integration](/docs/concepts/#lifecycle-integration) section for detailed documentation.
+Check [Lifecycle integration](/concepts/#lifecycle-integration) section for detailed documentation.
 
 `page.index.go`
 
@@ -190,7 +190,7 @@ func (p *PageIndex) Init() {
 ...
 ```
 
-Most of the component methods have an overload option with a page argument. This way you don't need to store the page pointer in the component itself. Check full [interfaces specification](/docs/concepts/#interfaces) in the [Concepts](/concepts) section.  
+Most of the component methods have an overload option with a page argument. This way you don't need to store the page pointer in the component itself. Check full [interfaces specification](/concepts/#interfaces) in the [Concepts](/concepts) section.  
 Example of overloaded asynchronous method:
 
 ```go
@@ -205,7 +205,7 @@ func (*ComponentExample) Async(p kyoto.Page) error {
 
 ## Component Lifecycle
 
-This section extends [Lifecycle integration](/docs/concepts/#lifecycle-integration) documentation with examples.
+This section extends [Lifecycle integration](/concepts/#lifecycle-integration) documentation with examples.
 
 ### Init
 

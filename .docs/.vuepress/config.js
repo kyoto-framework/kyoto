@@ -1,9 +1,7 @@
 
 module.exports = {
     title: 'kyoto',
-    description: 'Keep your Go stack united with Server Side Components',
-
-    base: '/docs/',
+    description: 'Golang SSR-first Frontend Library',
 
     themeConfig: {
         navbar: [
