@@ -31,3 +31,43 @@ For contributors:
 - Don't do work that's already done
 - Don't force developers to use a specific solution (Gin/Chi/GORM/sqlx/etc). Let them choose
 - Rely on the server to do the rendering, minimum JS specifics or client-side only behavior
+
+## Alternatives?
+
+### Notes
+
+- I'm not going to compare languages pros & cons, just purpose and ideology
+- Also, I'm not going to take into account existing codebases
+
+
+### Laravel Livewire
+
+Laravel is awesome on my opinion and livewire makes it even more awesome! Nice choise for people who want to have "battries included" framework. Kyoto is not a framework, it's just a small library and tries to solve another kind of problem - components and asynchronous operations organization. Features like context, Server Side Actions, Server Side State, Insights, are just extensions to Core library purpose. Also, Kyoto not delivered with batteries "included", it gives more control to developer.
+
+Differences (Kyoto vs Livewire):
+
+- Minimalistic over "batteries included"
+- Another approach regarding client-server communication
+- Another purpose
+
+### Elixir Phoenix
+
+To be honest, I'm far away from Elixir and Erlang ecosystem generally. If you have some time to tell me more about Phoenix, I'll be very grateful! 
+
+Differences (Kyoto vs Phoenix):
+
+- Need more details
+
+### JavaScript Frameworks
+
+The most delicious piece of cake. Please, check "Motivation" part. I'd like to notice, that Kyoto not tries to replace popular PWA/SPA approach, but to reduce it usage where it's not needed. If any of JS Frameworks works for you, so, why not?
+
+Differences (Kyoto vs JS Frameworks):
+
+- Give more control to developer
+- Reduce amount of dependencies
+- Make SSR and debugging easier
+
+### Any other?
+
+Just create an issue or contact with email if you'll find something interseting!
