@@ -62,6 +62,8 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
         depth: action.split('').filter(x => x === '$').length,
         id: action.includes(':') ? action.split(':')[0] : undefined,
     })
+    // Set loading state
+    _TriggerLoaders(self)
     // Prepare form data
     let formdata = new FormData()
     formdata.set('State', root.getAttribute('state') || '{}')
@@ -83,7 +85,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
             return
         }
         // Handle replace case
-        if (root.hasAttribute('ssa-replace')) {
+        if (root.hasAttribute('ssa:replace')) {
             root.outerHTML = data
             return
         }
@@ -145,6 +147,24 @@ export function FormSubmit(self: HTMLElement, e: Event) {
     // Fix for ...?
     // Can't remember the issue
     return false
+}
+
+function _TriggerLoaders(self: HTMLElement) {
+    // Find component root
+    let root = _LocateRoot({
+        starter: self,
+    })
+    // Find loader elements
+    // Need escape for escaping (for payload wrapper)
+    let loader = root.querySelectorAll('[ssa\\\\:oncall\\\\.display]')
+    loader.forEach(element => {
+        // Check attribute value
+        let loadertype = element.getAttribute('ssa:oncall.display')
+        // Set display value if exist
+        if (loadertype != "") {
+            element.setAttribute("style", "display: " + loadertype);
+        }
+    });
 }
 
 
