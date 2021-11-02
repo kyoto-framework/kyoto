@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img width="400" src="https://raw.githubusercontent.com/yuriizinets/kyoto/master/.web/docs/.vuepress/public/kyoto.svg" />
+    <img width="400" src="https://raw.githubusercontent.com/yuriizinets/kyoto/master/.docs/.vuepress/public/kyoto.svg" />
 </p>
 
 <h1 align="center">kyoto</h1>
