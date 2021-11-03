@@ -14,23 +14,24 @@ import (
 func TFuncMap() template.FuncMap {
 	return template.FuncMap{
 		"meta": func(p Page) template.HTML {
-			builder := ""
+			builder := strings.Builder{}
+
 			meta := Meta{}
 			if p, ok := p.(ImplementsMeta); ok {
 				meta = p.Meta()
 			}
 			if meta.Title != "" {
-				builder += "<title>" + meta.Title + "</title>\n"
+				builder.WriteString("<title>" + meta.Title + "</title>\n")
 			}
 			if meta.Canonical != "" {
-				builder += `<link rel="canonical" href="` + meta.Canonical + `">` + "\n"
+				builder.WriteString(`<link rel="canonical" href="` + meta.Canonical + `">` + "\n")
 			}
 			if len(meta.Hreflangs) != 0 {
 				for _, hreflang := range meta.Hreflangs {
-					builder += `<link rel="alternate" hreflang="` + hreflang.Lang + `" href="` + hreflang.Href + `">` + "\n"
+					builder.WriteString(`<link rel="alternate" hreflang="` + hreflang.Lang + `" href="` + hreflang.Href + `">` + "\n")
 				}
 			}
-			return template.HTML(builder)
+			return template.HTML(builder.String())
 		},
 		"dynamics": func() template.HTML {
 			return template.HTML(ssaclient)
