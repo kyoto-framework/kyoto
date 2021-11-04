@@ -52,6 +52,35 @@ function _NameCleanup(action: string): string {
     return action
 }
 
+// Updates display parameter for component DOM elements according to provided config
+function _TriggerLoaders(self: HTMLElement) {
+    // Find component root
+    let root = _LocateRoot({
+        starter: self,
+    })
+    // Find loader elements
+    // Need escape for escaping (for payload wrapper)
+    let loader = root.querySelectorAll('[ssa\\\\:oncall\\\\.display]')
+    loader.forEach(element => {
+        // Check attribute value
+        let loadertype = element.getAttribute('ssa:oncall.display')
+        // Set display value if exist
+        if (loadertype != "") {
+            element.setAttribute("style", "display: " + loadertype);
+        }
+    });
+}
+
+// Finds elements with onload attribute and executes provided action (without arguments)
+export function _OnLoad() {
+    document.querySelectorAll('[ssa\\\\:onload]').forEach(element => {
+        let action = element.getAttribute('ssa:onload')
+        if (action && action != "") {
+            Action(element as HTMLElement, action)
+        }
+    });
+}
+
 
 // Public
 
@@ -149,24 +178,6 @@ export function FormSubmit(self: HTMLElement, e: Event) {
     return false
 }
 
-function _TriggerLoaders(self: HTMLElement) {
-    // Find component root
-    let root = _LocateRoot({
-        starter: self,
-    })
-    // Find loader elements
-    // Need escape for escaping (for payload wrapper)
-    let loader = root.querySelectorAll('[ssa\\\\:oncall\\\\.display]')
-    loader.forEach(element => {
-        // Check attribute value
-        let loadertype = element.getAttribute('ssa:oncall.display')
-        // Set display value if exist
-        if (loadertype != "") {
-            element.setAttribute("style", "display: " + loadertype);
-        }
-    });
-}
-
 
 // Export to global
 
@@ -183,3 +194,5 @@ window._LocaleRoot = _LocateRoot
 window.Action = Action
 window.Bind = Bind
 window.FormSubmit = FormSubmit
+
+document.addEventListener('DOMContentLoaded', _OnLoad)

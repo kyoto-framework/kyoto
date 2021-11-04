@@ -1,5 +1,5 @@
 {{ define "ComponentDemoCounter" }}
-<div {{ componentattrs . }} class="bg-gray-100 rounded p-4">
+<div {{ componentattrs . }} class="bg-gray-100 rounded p-4" ssa:onload="Increment">
     <div class="text-2xl font-semibold">Counter Demo</div>
     <div class="py-2 w-full flex flex-col items-center">
         <div class="text-2xl">{{ .Count }}</div>
