@@ -12,6 +12,8 @@ type PageIndex struct {
 	DemoUUID                      kyoto.Component
 	DescriptionDemoCounter        kyoto.Component
 	DemoCounter                   kyoto.Component
+	DescriptionDemoPoll           kyoto.Component
+	DemoPoll                      kyoto.Component
 	DescriptionDemoCalc           kyoto.Component
 	DemoCalc                      kyoto.Component
 	DescriptionDemoAutocomplete   kyoto.Component
@@ -65,6 +67,22 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoCounter = kyoto.RegC(p, &ComponentDemoCounter{})
+
+	p.DescriptionDemoPoll = kyoto.RegC(p, &ComponentContent{
+		Title:       "Server Side Actions (SSA)",
+		Description: "Component methods, executed and rendered entirely on server side. Frontend only gets ready for use HTML response.",
+		Links: []ComponentContentLink{
+			{
+				Title: "component.demo.poll.go",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.poll.go",
+			},
+			{
+				Title: "component.demo.poll.html",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.poll.html",
+			},
+		},
+	})
+	p.DemoPoll = kyoto.RegC(p, &ComponentDemoPoll{})
 	p.DescriptionDemoCalc = kyoto.RegC(p, &ComponentContent{
 		Title:       "State binding",
 		Description: "Not all actions can be done on server side. Some things needs to be done on client side, like state binding. Kyoto library provides some primitives to make life easier.",
