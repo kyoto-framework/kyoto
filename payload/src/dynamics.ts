@@ -1,6 +1,5 @@
 import morphdom from 'morphdom';
 
-
 // Internals
 
 interface LocateParameters {
@@ -81,6 +80,21 @@ export function _OnLoad() {
     });
 }
 
+export function _Poll() {
+    document.querySelectorAll('[ssa\\\\:poll]').forEach(element => {
+        let action = element.getAttribute('ssa:poll')
+        let interval = element.getAttribute('ssa:poll.interval')
+
+        if (action && action != "") {
+            if (interval && interval != "") {
+                setInterval(() => {
+                    Action(element as HTMLElement, action)
+                }, interval)
+            }
+        }
+    });
+}
+
 
 // Public
 
@@ -121,7 +135,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
         // Morph
         try {
             morphdom(root, data)
-        } 
+        }
         catch (e: any) {
             console.log('Fallback from morphdom to root.outerHTML due to error', e)
             root.outerHTML = data
@@ -196,3 +210,4 @@ window.Bind = Bind
 window.FormSubmit = FormSubmit
 
 document.addEventListener('DOMContentLoaded', _OnLoad)
+document.addEventListener('DOMContentLoaded', _Poll)
