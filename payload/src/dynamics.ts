@@ -77,18 +77,20 @@ export function _OnLoad() {
         if (action && action != "") {
             Action(element as HTMLElement, action)
         }
-	});
+    });
+}
 
-	document.querySelectorAll('[ssa\\\\:poll]').forEach(element => {
-		console.log(element)
-		let action = element.getAttribute('ssa:poll')
-		let interval = element.getAttribute('ssa:poll.interval')
+export function _Poll() {
+    document.querySelectorAll('[ssa\\\\:poll]').forEach(element => {
+        let action = element.getAttribute('ssa:poll')
+        let interval = element.getAttribute('ssa:poll.interval')
 
-		if (action && action != "") {
-			console.log("have action")
-			window.setInterval(() => {
-				Action(element as HTMLElement, action)
-			}, interval)
+        if (action && action != "") {
+            if (interval && interval != "") {
+                setInterval(() => {
+                    Action(element as HTMLElement, action)
+                }, interval)
+            }
         }
     });
 }
@@ -208,3 +210,4 @@ window.Bind = Bind
 window.FormSubmit = FormSubmit
 
 document.addEventListener('DOMContentLoaded', _OnLoad)
+document.addEventListener('DOMContentLoaded', _Poll)
