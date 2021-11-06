@@ -82,15 +82,13 @@ export function _OnLoad() {
 
 export function _Poll() {
     document.querySelectorAll('[ssa\\\\:poll]').forEach(element => {
-        let action = element.getAttribute('ssa:poll')
+        let action = element.getAttribute('ssa:poll') || ''
         let interval = element.getAttribute('ssa:poll.interval')
 
-        if (action && action != "") {
-            if (interval && interval != "") {
-                setInterval(() => {
-                    Action(element as HTMLElement, action)
-                }, interval)
-            }
+        if (action && action != "" && interval && interval != "") {
+            setInterval(() => {
+                Action(element as HTMLElement, action)
+            }, parseInt(interval))
         }
     });
 }

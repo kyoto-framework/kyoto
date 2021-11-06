@@ -69,8 +69,8 @@ func (p *PageIndex) Init() {
 	p.DemoCounter = kyoto.RegC(p, &ComponentDemoCounter{})
 
 	p.DescriptionDemoPoll = kyoto.RegC(p, &ComponentContent{
-		Title:       "Server Side Actions (SSA)",
-		Description: "Component methods, executed and rendered entirely on server side. Frontend only gets ready for use HTML response.",
+		Title:       "SSA Polling",
+		Description: "Calling SSA with internal",
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.poll.go",
