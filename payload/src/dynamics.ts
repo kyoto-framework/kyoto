@@ -109,18 +109,18 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
     let formdata = new FormData()
     formdata.set('State', root.getAttribute('state') || '{}')
     formdata.set('Args', JSON.stringify(args))
+    // Build URL
+    let url = `/SSA`
+    url += `/${root.getAttribute('name')}`  // Component name
+    url += `/${root.getAttribute('state') || '{}'}` // Component state
+    url += `/${_NameCleanup(action)}` // Action name
+    url += `/${JSON.stringify(args)}` // Action arguments
     // Make request
-    fetch(`/SSA/${root.getAttribute('name')}/${_NameCleanup(action)}`, {
-        method: 'POST',
-        body: formdata
-    }).then(resp => {
-        // Handle redirect header
-        if (resp.headers.get('X-Redirect')) {
-            window.location.href = resp.headers.get('X-Redirect') as string
-            return ''
-        }
-        return resp.text()
-    }).then(data => {
+    let es = new EventSource(url)
+    // Handle response chunks
+    es.onmessage = (event: MessageEvent) => {
+        // Extract data
+        let data = event.data
         // Handle no data case
         if (!data) {
             return
@@ -138,9 +138,11 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
             console.log('Fallback from morphdom to root.outerHTML due to error', e)
             root.outerHTML = data
         }
-    }).catch(err => {
-        console.log(err)
-    })
+    }
+    es.onerror = (event: Event) => {
+        // Closing connection on end or err
+        es.close()
+    }
 }
 
 export function Bind(self: HTMLElement, field: string) {
