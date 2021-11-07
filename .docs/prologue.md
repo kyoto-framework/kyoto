@@ -68,6 +68,8 @@ Differences (Kyoto vs JS Frameworks):
 - Reduce amount of dependencies
 - Make SSR and debugging easier
 
+![meme](https://imgur.com/RN4YbvR.png)
+
 ### Any other?
 
 Just create an issue or contact with email if you'll find something interseting!
