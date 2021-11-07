@@ -17,7 +17,7 @@
 
 ## Why I need this?
 
-- Get rid of spagetti inside of handlers
+- Get rid of spaghetti inside of handlers
 - Organize code into configurable components structure
 - Simple and straightforward page rendering lifecycle
 - Asynchronous DTO without goroutine mess
