@@ -26,6 +26,8 @@ type PageIndex struct {
 	DemoNesting                   kyoto.Component
 	DescriptionDemoLoading        kyoto.Component
 	DemoLoading                   kyoto.Component
+	DescriptionDemoFlush          kyoto.Component
+	DemoFlush                     kyoto.Component
 }
 
 func (p *PageIndex) Template() *template.Template {
@@ -182,4 +184,19 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoLoading = kyoto.RegC(p, &ComponentDemoLoading{})
+	p.DescriptionDemoFlush = kyoto.RegC(p, &ComponentContent{
+		Title:       "UI flush",
+		Description: "",
+		Links: []ComponentContentLink{
+			{
+				Title: "component.demo.flush.go",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.flush.go",
+			},
+			{
+				Title: "component.demo.flush.html",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.flush.html",
+			},
+		},
+	})
+	p.DemoFlush = kyoto.RegC(p, &ComponentDemoFlush{})
 }

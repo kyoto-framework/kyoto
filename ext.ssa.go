@@ -1,6 +1,7 @@
 package kyoto
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -21,8 +22,8 @@ var ssacstorerw = &sync.RWMutex{}
 type SSAParameters struct {
 	Component string
 	Action    string
-	State     string // In encoded state
-	Args      []interface{}
+	State     string // JSON string
+	Args      string // JSON string
 }
 
 // RenderSSA is a low-level component rendering function for SSA. Responsible for rendering and components SSA lifecycle
@@ -47,15 +48,19 @@ func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 		_component.Init()
 	}
 	// Populate component state
-	state, _ := base64.StdEncoding.DecodeString(p.State)
-	if err := json.Unmarshal(state, &component); err != nil {
+	if err := json.Unmarshal([]byte(p.State), &component); err != nil {
+		panic(err)
+	}
+	// Decode arguments
+	args := []interface{}{}
+	if err := json.Unmarshal([]byte(p.Args), &args); err != nil {
 		panic(err)
 	}
 	// Call action
 	if _component, ok := component.(ImplementsActions); ok {
-		_component.Actions(dp)[p.Action](p.Args...)
+		_component.Actions(dp)[p.Action](args...)
 	} else if _component, ok := component.(ImplementsActionsWithoutPage); ok {
-		_component.Actions()[p.Action](p.Args...)
+		_component.Actions()[p.Action](args...)
 	} else {
 		panic("Component not implements Actions, unexpected behavior")
 	}
@@ -92,19 +97,45 @@ func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 		}
 		wg.Wait()
 	}
-	// Extact flags
-	redirected := GetContext(dp, "internal:redirected")
-	// Render page
-	if redirected == nil {
-		// Prepare template
-		t := dp.Template()
-		t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, p.Component)))
-		// Render component
-		terr := t.Execute(w, component)
-		if terr != nil {
-			panic(terr)
-		}
+	// Flush redirect
+	if target := GetContext(dp, "internal:redirect"); target != nil {
+		fmt.Fprintf(w, "data: %s\n\n", "ssa:redirect="+target.(string))
+	} else {
+		// Final flush
+		SSAFlush(dp, component)
 	}
+}
+
+// SSAFlush is a low-level function for rendering and flushing component UI to the client
+func SSAFlush(p Page, c Component) {
+	// Pass if redirected
+	if redirected := GetContext(p, "internal:redirect"); redirected != nil {
+		return
+	}
+	// Cast dummy page
+	dp := p.(*DummyPage)
+	// Extract needed context
+	rw := GetContext(dp, "internal:rw").(http.ResponseWriter)
+	params := GetContext(dp, "internal:ssa:p").(*SSAParameters)
+	rwf := rw.(http.Flusher)
+	// Prepare template
+	t := dp.Template()
+	t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, params.Component)))
+	// Render
+	buffer := bytes.Buffer{}
+	err := t.Execute(&buffer, c)
+	if err != nil {
+		panic(err)
+	}
+	html := buffer.String()
+	html = strings.ReplaceAll(html, "\n", "")
+	// Write SSE
+	_, err = fmt.Fprintf(rw, "data: %v\n\n", html)
+	if err != nil {
+		panic(err)
+	}
+	// Flush
+	rwf.Flush()
 }
 
 // SSAHandler is an opinionated SSA net/http handler.
@@ -113,6 +144,10 @@ func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 // - internal:r - *http.Request
 func SSAHandler(tb TemplateBuilder) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
+		// Set server-sent events headers
+		rw.Header().Set("Content-Type", "text/event-stream")
+		rw.Header().Set("Cache-Control", "no-cache")
+		rw.Header().Set("Connection", "keep-alive")
 		// Init dummy page
 		dp := &DummyPage{
 			TemplateBuilder: tb,
@@ -120,15 +155,17 @@ func SSAHandler(tb TemplateBuilder) http.HandlerFunc {
 		// Extract SSA parameters
 		params := SSAParameters{}
 		tokens := strings.Split(r.URL.Path, "/")
-		var args []interface{}
-		json.Unmarshal([]byte(r.PostFormValue("Args")), &args)
+		var _state, _args []byte
+		_state, _ = base64.StdEncoding.DecodeString(tokens[3])
+		_args, _ = base64.StdEncoding.DecodeString(tokens[5])
 		params.Component = tokens[2]
-		params.Action = tokens[3]
-		params.State = r.PostFormValue("State")
-		params.Args = args
+		params.State = string(_state)
+		params.Action = tokens[4]
+		params.Args = string(_args)
 		// Set context
 		SetContext(dp, "internal:rw", rw)
 		SetContext(dp, "internal:r", r)
+		SetContext(dp, "internal:ssa:p", &params)
 		// Render SSA
 		RenderSSA(rw, dp, params)
 		// Del context
@@ -165,12 +202,13 @@ func SSAHandlerFactory(tb TemplateBuilder, context map[string]interface{}) http.
 		// Extract SSA parameters
 		params := SSAParameters{}
 		tokens := strings.Split(r.URL.Path, "/")
-		var args []interface{}
-		json.Unmarshal([]byte(r.PostFormValue("Args")), &args)
+		var _state, _args []byte
+		_state, _ = base64.StdEncoding.DecodeString(tokens[3])
+		_args, _ = base64.StdEncoding.DecodeString(tokens[5])
 		params.Component = tokens[2]
-		params.Action = tokens[3]
-		params.State = r.PostFormValue("State")
-		params.Args = args
+		params.State = string(_state)
+		params.Action = tokens[4]
+		params.Args = string(_args)
 		// Set context
 		SetContext(dp, "internal:rw", rw)
 		SetContext(dp, "internal:r", r)

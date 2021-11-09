@@ -174,7 +174,7 @@ func RenderPage(w io.Writer, p Page) {
 	delete(csl, p)
 	cslrw.Unlock()
 	// Extract flags
-	redirected := GetContext(p, "internal:redirected")
+	redirected := GetContext(p, "internal:redirect")
 	// Execute template
 	if redirected == nil {
 		st := time.Now()
@@ -200,8 +200,8 @@ func RenderPage(w io.Writer, p Page) {
 
 // Redirect is a wrapper around http.Redirect for correct work inside of SSC
 func Redirect(rp *RedirectParameters) {
-	// Write redirected flag
-	SetContext(rp.Page, "internal:redirected", true)
+	// Write redirect value
+	SetContext(rp.Page, "internal:redirect", rp.Target)
 	// Extract r/rw
 	rw := rp.ResponseWriter
 	r := rp.Request
@@ -214,8 +214,6 @@ func Redirect(rp *RedirectParameters) {
 	// Do actual redirect in case of usual response
 	if _, ssa := rp.Page.(*DummyPage); !ssa {
 		http.Redirect(rw, r, rp.Target, rp.StatusCode)
-	} else { // Special header in case of SSA
-		rw.Header().Add("X-Redirect", rp.Target)
 	}
 }
 
