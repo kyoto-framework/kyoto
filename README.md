@@ -5,27 +5,42 @@
 
 <h1 align="center">kyoto</h1>
 <p align="center">
-    An HTML render engine concept that brings frontend-like components experience to the server side with native <code>html/template</code> on steroids. Supports any serving basis (<code>net/http</code>/<code>gin</code>/etc), that provides <code>io.Writer</code> in response.
+    Library that brings frontend-like components experience to the server side with native <code>html/template</code> on steroids. Supports any serving basis (<code>net/http</code>/<code>gin</code>/etc), that provides <code>io.Writer</code> in response.
 </p>
 
 ![License](https://img.shields.io/github/license/yuriizinets/kyoto)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yuriizinets/kyoto)](https://goreportcard.com/report/github.com/yuriizinets/kyoto)
 [![Go Reference](https://pkg.go.dev/badge/github.com/yuriizinets/kyoto.svg)](https://pkg.go.dev/github.com/yuriizinets/kyoto)
 
-
-
 > **Disclaimer**  
 > This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/yuriizinets/kyoto/issues/new)
+
+## Why I need this?
+
+- Get rid of spaghetti inside of handlers
+- Organize code into configurable components structure
+- Simple and straightforward page rendering lifecycle
+- Asynchronous DTO without goroutine mess
+- Built-in dynamics like Hotwire or Laravel Livewire
+- Everyting on top of well-known `html/template`
+- Get control over project setup: 0 external dependencies, just `kyoto` itself
+
+## Why not?
+
+- In active development (not production ready)
+- Not situable for pretty dynamic frontends
+- You want to develop SPA/PWA
+- You're just feeling OK with JS frameworks
 
 ## Installation
 
 As simple as `go get github.com/yuriizinets/kyoto`  
-Check documentation page for quick start: [https://kyoto.codes/docs/getting-started.html](https://kyoto.codes/docs/getting-started.html)
+Check documentation page for quick start: [https://kyoto.codes/getting-started.html](https://kyoto.codes/getting-started.html)
 
 ## Usage
 
 Kyoto project setup may seem complicated and unusual at first sight.  
-It's highly recommended to follow documentation while using library: [https://kyoto.codes/docs/getting-started.html](https://kyoto.codes/docs/getting-started.html)  
+It's highly recommended to follow documentation while using library: [https://kyoto.codes/getting-started.html](https://kyoto.codes/getting-started.html)  
 
 This example is not completely independent and just shows what the code looks like when using kyoto:
 
@@ -75,8 +90,7 @@ func (p *PageIndex) Init() {
 
 ## References
 
-Project main page: https://kyoto.codes/  
-Documentation: https://kyoto.codes/docs/  
+Documentation: https://kyoto.codes/  
 UIKit: https://github.com/yuriizinets/kyoto-uikit  
 Demo project, Hacker News client made with kyoto: https://hn.kyoto.codes/  
 Demo project, features overview: https://github.com/yuriizinets/kyoto/tree/master/.demo  

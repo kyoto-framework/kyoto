@@ -14,7 +14,7 @@ function _LocateRoot(parameters: LocateParameters): HTMLElement {
     if (parameters.id) {
         let element = document.getElementById(parameters.id)
         if (!element) {
-            throw new Error(`Error while locating root: can't find direct with ${parameters}`)
+            throw new Error(`Error while locating root with id: can't find direct with ${parameters}`)
         }
         root = element
     } else {
@@ -52,11 +52,7 @@ function _NameCleanup(action: string): string {
 }
 
 // Updates display parameter for component DOM elements according to provided config
-function _TriggerLoaders(self: HTMLElement) {
-    // Find component root
-    let root = _LocateRoot({
-        starter: self,
-    })
+function _TriggerLoaders(root: HTMLElement) {
     // Find loader elements
     // Need escape for escaping (for payload wrapper)
     let loader = root.querySelectorAll('[ssa\\\\:oncall\\\\.display]')
