@@ -105,16 +105,12 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
     })
     // Set loading state
     _TriggerLoaders(self)
-    // Prepare form data
-    let formdata = new FormData()
-    formdata.set('State', root.getAttribute('state') || '{}')
-    formdata.set('Args', JSON.stringify(args))
     // Build URL
     let url = `/SSA`
     url += `/${root.getAttribute('name')}`  // Component name
     url += `/${root.getAttribute('state') || '{}'}` // Component state
     url += `/${_NameCleanup(action)}` // Action name
-    url += `/${JSON.stringify(args)}` // Action arguments
+    url += `/${btoa(JSON.stringify(args))}` // Action arguments
     // Make request
     let es = new EventSource(url)
     // Handle response chunks
@@ -123,6 +119,12 @@ export function Action(self: HTMLElement, action: string, ...args: Array<string>
         let data = event.data
         // Handle no data case
         if (!data) {
+            return
+        }
+        // Handle redirect case
+        if (data.startsWith('ssa:redirect=')) {
+            let redirect = data.replace('ssa:redirect=', '')
+            window.location.href = redirect
             return
         }
         // Handle replace case
