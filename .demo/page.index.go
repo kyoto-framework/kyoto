@@ -28,6 +28,8 @@ type PageIndex struct {
 	DemoLoading                   kyoto.Component
 	DescriptionDemoFlush          kyoto.Component
 	DemoFlush                     kyoto.Component
+	DescriptionDemoIntersect      kyoto.Component
+	DemoIntersect                 kyoto.Component
 }
 
 func (p *PageIndex) Template() *template.Template {
@@ -199,4 +201,19 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoFlush = kyoto.RegC(p, &ComponentDemoFlush{})
+	p.DescriptionDemoIntersect = kyoto.RegC(p, &ComponentContent{
+		Title:       "Intersect",
+		Description: "",
+		Links: []ComponentContentLink{
+			{
+				Title: "component.demo.flush.go",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.intersect.go",
+			},
+			{
+				Title: "component.demo.flush.html",
+				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.intersect.html",
+			},
+		},
+	})
+	p.DemoIntersect = kyoto.RegC(p, &ComponentDemoIntersect{})
 }

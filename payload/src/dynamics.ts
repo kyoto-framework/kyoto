@@ -76,6 +76,7 @@ export function _OnLoad() {
     });
 }
 
+// Find elements with poll attribute and executes provided action with interval
 export function _Poll() {
     document.querySelectorAll('[ssa\\\\:poll]').forEach(element => {
         let action = element.getAttribute('ssa:poll') || ''
@@ -89,10 +90,28 @@ export function _Poll() {
     });
 }
 
+// Find elements with onintersect attribute and executes provided action on intersection
+export function _OnIntersect() {
+    document.querySelectorAll('[ssa\\\\:onintersect]').forEach(element => {
+        let action = element.getAttribute('ssa:onintersect') || ''
+        let threshold = element.getAttribute('ssa:onintersect.threshold') || '1.0'
+        if (action != '') {
+            let observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.intersectionRatio >= parseFloat(threshold)) {
+                        Action(element as HTMLElement, action, parseFloat(threshold))
+                    }
+                })
+            }, { threshold: parseFloat(threshold) })
+            observer.observe(element)
+        }
+    });
+}
+
 
 // Public
 
-export function Action(self: HTMLElement, action: string, ...args: Array<string>) {
+export function Action(self: HTMLElement, action: string, ...args: Array<any>) {
     // Determine component root
     let root = _LocateRoot({
         starter: self,
@@ -208,4 +227,5 @@ window.Bind = Bind
 window.FormSubmit = FormSubmit
 
 document.addEventListener('DOMContentLoaded', _OnLoad)
+document.addEventListener('DOMContentLoaded', _OnIntersect)
 document.addEventListener('DOMContentLoaded', _Poll)
