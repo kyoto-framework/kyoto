@@ -119,7 +119,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>) {
         id: action.includes(':') ? action.split(':')[0] : undefined,
     })
     // Set loading state
-    _TriggerLoaders(self)
+    _TriggerLoaders(root)
     // Build URL
     let url = `/SSA`
     url += `/${root.getAttribute('name')}`  // Component name
