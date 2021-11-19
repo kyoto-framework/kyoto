@@ -111,55 +111,59 @@ export function _OnIntersect() {
 
 // Public
 
-export function Action(self: HTMLElement, action: string, ...args: Array<any>) {
-    // Determine component root
-    let root = _LocateRoot({
-        starter: self,
-        depth: action.split('').filter(x => x === '$').length,
-        id: action.includes(':') ? action.split(':')[0] : undefined,
+export function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise<void> {
+    return new Promise((resolve, reject) => {
+        // Determine component root
+        let root = _LocateRoot({
+            starter: self,
+            depth: action.split('').filter(x => x === '$').length,
+            id: action.includes(':') ? action.split(':')[0] : undefined,
+        })
+        // Set loading state
+        _TriggerLoaders(root)
+        // Build URL
+        let url = `/SSA`
+        url += `/${root.getAttribute('name')}`  // Component name
+        url += `/${root.getAttribute('state') || '{}'}` // Component state
+        url += `/${_NameCleanup(action)}` // Action name
+        url += `/${btoa(JSON.stringify(args))}` // Action arguments
+        // Make request
+        let es = new EventSource(url)
+        // Handle response chunks
+        es.onmessage = (event: MessageEvent) => {
+            // Extract data
+            let data = event.data
+            // Handle no data case
+            if (!data) {
+                return
+            }
+            // Handle redirect case
+            if (data.startsWith('ssa:redirect=')) {
+                let redirect = data.replace('ssa:redirect=', '')
+                window.location.href = redirect
+                return
+            }
+            // Handle replace case
+            if (root.hasAttribute('ssa:replace')) {
+                root.outerHTML = data
+                return
+            }
+            // Morph
+            try {
+                morphdom(root, data)
+            }
+            catch (e: any) {
+                console.log('Fallback from morphdom to root.outerHTML due to error', e)
+                root.outerHTML = data
+            }
+        }
+        es.onerror = (event: Event) => {
+            // Closing connection on end or err
+            es.close()
+            // Resolve promise
+            resolve()
+        }
     })
-    // Set loading state
-    _TriggerLoaders(root)
-    // Build URL
-    let url = `/SSA`
-    url += `/${root.getAttribute('name')}`  // Component name
-    url += `/${root.getAttribute('state') || '{}'}` // Component state
-    url += `/${_NameCleanup(action)}` // Action name
-    url += `/${btoa(JSON.stringify(args))}` // Action arguments
-    // Make request
-    let es = new EventSource(url)
-    // Handle response chunks
-    es.onmessage = (event: MessageEvent) => {
-        // Extract data
-        let data = event.data
-        // Handle no data case
-        if (!data) {
-            return
-        }
-        // Handle redirect case
-        if (data.startsWith('ssa:redirect=')) {
-            let redirect = data.replace('ssa:redirect=', '')
-            window.location.href = redirect
-            return
-        }
-        // Handle replace case
-        if (root.hasAttribute('ssa:replace')) {
-            root.outerHTML = data
-            return
-        }
-        // Morph
-        try {
-            morphdom(root, data)
-        }
-        catch (e: any) {
-            console.log('Fallback from morphdom to root.outerHTML due to error', e)
-            root.outerHTML = data
-        }
-    }
-    es.onerror = (event: Event) => {
-        // Closing connection on end or err
-        es.close()
-    }
 }
 
 export function Bind(self: HTMLElement, field: string) {
