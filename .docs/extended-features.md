@@ -163,11 +163,11 @@ SSA has own lifecycle, which is a bit different in comparison with page renderin
 - Calling action
 - If new components where registed while action execution, do asynchronous operations for them (overall async process is the same as for page rendering)
 - Rendering component and returning HTML to client side
-- Morphing recieved HTML with component, or replacing in case of morph failure or explicit `ssa:replace` attribute
+- Morphing recieved HTML with component, or replacing in case of morph failure or explicit `ssa:render.mode="replace"` attribute
 
 ### SSA Notes
 
-- You may have problems on morph stage. It requires correct HTML structure and may cause unexpected behavior in some cases. Use `ssa:replace` attribute in your top-level node to explicitly switch to HTML replacement mode
+- You may have problems on morph stage. It requires correct HTML structure and may cause unexpected behavior in some cases. Use `ssa:render.mode="replace"` attribute in your top-level node to explicitly switch to HTML replacement mode
 
 ### SSA Limitations
 

@@ -144,7 +144,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>): 
                 return
             }
             // Handle replace case
-            if (root.hasAttribute('ssa:replace')) {
+            if (root.getAttribute('ssa:render.mode') == 'replace') {
                 root.outerHTML = data
                 return
             }
