@@ -206,11 +206,11 @@ func (p *PageIndex) Init() {
 		Description: "",
 		Links: []ComponentContentLink{
 			{
-				Title: "component.demo.flush.go",
+				Title: "component.demo.intersect.go",
 				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.intersect.go",
 			},
 			{
-				Title: "component.demo.flush.html",
+				Title: "component.demo.intersect.html",
 				Href:  "https://github.com/yuriizinets/kyoto/blob/master/.demo/component.demo.intersect.html",
 			},
 		},
