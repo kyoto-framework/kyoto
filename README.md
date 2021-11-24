@@ -90,10 +90,10 @@ func (p *PageIndex) Init() {
 
 ## References
 
-Documentation: https://kyoto.codes/  
-UIKit: https://github.com/kyoto-framework/uikit  
-Demo project, Hacker News client made with kyoto: https://hn.kyoto.codes/  
-Demo project, features overview: https://github.com/kyoto-framework/kyoto/tree/master/.demo  
+Documentation: [https://kyoto.codes/](https://kyoto.codes/)  
+UIKit: [https://github.com/kyoto-framework/uikit](https://github.com/kyoto-framework/uikit)  
+Demo project, Hacker News client made with kyoto: [https://hn.kyoto.codes/](https://hn.kyoto.codes/)  
+Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/master/.demo](https://github.com/kyoto-framework/kyoto/tree/master/.demo)  
 
 ## Support
 
