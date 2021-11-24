@@ -28,7 +28,6 @@ jobs:
       run: |
         (
           export CPATH=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${REPOSITORY_NAME,,}-docs;
-          cd .docs;
-          docker build -t $CPATH:latest .;
+          docker build -f Dockerfile.docs -t $CPATH:latest .;
           docker push $CPATH:latest;
         )
