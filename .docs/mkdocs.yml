@@ -1,0 +1,67 @@
+site_name: kyoto
+site_url: https://kyoto.codes/
+site_author: Yurii Zinets
+site_description: >-
+  Library that brings frontend-like components experience to the server side
+
+repo_url: https://github.com/yuriizinets/kyoto
+repo_name: yuriizinets/kyoto
+edit_uri: ""
+
+theme:
+  name: material
+  logo: assets/kyoto.svg
+  palette:
+    - scheme: default
+      primary: black
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  features:
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - content.code.annotate
+  
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets
+  - pymdownx.details
+  - admonition
+
+nav:
+  - Home: index.md
+  - Prologue: prologue.md
+  - Getting started:
+    - getting-started/index.md
+    - With starter: getting-started/with-starter.md
+    - From scratch: getting-started/from-scratch.md
+    - Integration: getting-started/integration.md
+    - Example with guide: getting-started/example-with-guide.md
+  - Concepts:
+    - concepts/index.md
+    - Structures: concepts/structures.md
+    - Rendering lifecycle: concepts/rendering-lifecycle.md
+    - Lifecycle integration: concepts/lifecycle-integration.md
+    - Methods overloading: concepts/methods-overloading.md
+  - Core Features:
+    - core-features/index.md
+    - Page rendering: core-features/page-rendering.md
+    - Built-in handler: core-features/built-in-handler.md
+    - Context management: core-features/context-management.md
+    - Component lifecycle: core-features/component-lifecycle.md
+  - Extended Features:
+    - extended-features/index.md
+    - Server Side Actions: extended-features/server-side-actions.md
+    - Server Side State: extended-features/server-side-state.md
+    - Meta builder: extended-features/meta-builder.md
+    - Insights: extended-features/insights.md

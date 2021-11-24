@@ -1,10 +1,10 @@
+
 # Prologue
 
 This library implements an HTML render engine concept that brings frontend-like components experience to the server side with native `html/template` on steroids. Supports any serving basis (`net/http`/`gin`/etc), that provides io.Writer in response.
 
-::: warning
-This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/yuriizinets/kyoto/issues/new)
-:::
+!!! warning
+    This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/yuriizinets/kyoto/issues/new)
 
 ## Motivation
 
@@ -39,7 +39,6 @@ For contributors:
 - I'm not going to compare languages pros & cons, just purpose and ideology
 - Also, I'm not going to take into account existing codebases
 
-
 ### Laravel Livewire
 
 Laravel is awesome on my opinion and livewire makes it even more awesome! Nice choise for people who want to have "battries included" framework. Kyoto is not a framework, it's just a small library and tries to solve another kind of problem - components and asynchronous operations organization. Features like context, Server Side Actions, Server Side State, Insights, are just extensions to Core library purpose. Also, Kyoto not delivered with batteries "included", it gives more control to developer.
@@ -52,7 +51,7 @@ Differences (Kyoto vs Livewire):
 
 ### Elixir Phoenix
 
-To be honest, I'm far away from Elixir and Erlang ecosystem generally. If you have some time to tell me more about Phoenix, I'll be very grateful! 
+To be honest, I'm far away from Elixir and Erlang ecosystem generally. If you have some time to tell me more about Phoenix, I'll be very grateful!  
 
 Differences (Kyoto vs Phoenix):
 
