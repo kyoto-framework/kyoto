@@ -1,7 +1,7 @@
 
 # Example with guide
 
-This guide is extended version of "[from scratch](from-scratch.md)" documentation and will show minimal setup with page, multiple component instances, lifecycle integration and `net/http` setup. This guide will rely on demo project setup, that can be found [here](https://github.com/yuriizinets/kyoto/tree/master/.demo).  
+This guide is extended version of "[from scratch](from-scratch.md)" documentation and will show minimal setup with page, multiple component instances, lifecycle integration and `net/http` setup. This guide will rely on demo project setup, that can be found [here](https://github.com/kyoto-framework/kyoto/tree/master/.demo).  
 
 ## Entry point
 
@@ -46,7 +46,7 @@ package main
 
 import (
     "html/template"
-    "github.com/yuriizinets/kyoto"
+    "github.com/kyoto-framework/kyoto"
 )
 
 type PageIndex struct {}

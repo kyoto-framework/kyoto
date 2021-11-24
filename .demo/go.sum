@@ -1,2 +1,2 @@
-github.com/yuriizinets/kyoto v0.0.0-20211014070234-f65ffdfd01ff h1:OCeefxBExtLNZAbz5nb+JWR24UY1qmWUVjtIzR62dgg=
-github.com/yuriizinets/kyoto v0.0.0-20211014070234-f65ffdfd01ff/go.mod h1:5mMUtxQ1AdsJNmpDih3NQC4PJWq1kbqx9IrRs+06ZRg=
+github.com/kyoto-framework/kyoto v0.0.0-20211014070234-f65ffdfd01ff h1:OCeefxBExtLNZAbz5nb+JWR24UY1qmWUVjtIzR62dgg=
+github.com/kyoto-framework/kyoto v0.0.0-20211014070234-f65ffdfd01ff/go.mod h1:5mMUtxQ1AdsJNmpDih3NQC4PJWq1kbqx9IrRs+06ZRg=

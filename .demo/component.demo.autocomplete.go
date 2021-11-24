@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/yuriizinets/kyoto"
+	"github.com/kyoto-framework/kyoto"
 )
 
 type ComponentDemoAutocomplete struct {

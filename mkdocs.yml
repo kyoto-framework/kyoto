@@ -4,8 +4,8 @@ site_author: Yurii Zinets
 site_description: >-
   Library that brings frontend-like components experience to the server side
 
-repo_url: https://github.com/yuriizinets/kyoto
-repo_name: yuriizinets/kyoto
+repo_url: https://github.com/kyoto-framework/kyoto
+repo_name: kyoto-framework/kyoto
 edit_uri: ""
 
 theme:

@@ -9,7 +9,7 @@ First, you need to clone starter as your new project.
 `<app name>` - your new project name
 
 ```bash
-git clone --recursive https://github.com/yuriizinets/kyoto-starter <app name>
+git clone --recursive https://github.com/kyoto-framework/starter <app name>
 ```
 
 Then, we need to install node dependencies and build css.  
@@ -29,5 +29,5 @@ git remote set-url origin <repo>
 ## What's included?
 
 - `kyoto` - core library
-- `kyoto-uikit` - [UI Kit](https://github.com/yuriizinets/kyoto-uikit), built on top of `kyoto`
+- `uikit` - [UI Kit](https://github.com/kyoto-framework/uikit), built on top of `kyoto`
 - `tailwindcss` - [Tailwind CSS](https://imgur.com/RN4YbvR.png) library

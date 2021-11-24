@@ -3,7 +3,7 @@ package main
 import (
 	"strconv"
 
-	"github.com/yuriizinets/kyoto"
+	"github.com/kyoto-framework/kyoto"
 )
 
 type ComponentDemoCalc struct {

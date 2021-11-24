@@ -1,6 +1,6 @@
 package main
 
-import "github.com/yuriizinets/kyoto"
+import "github.com/kyoto-framework/kyoto"
 
 type ComponentDemoRedirect struct {
 	Page kyoto.Page `json:"-"`

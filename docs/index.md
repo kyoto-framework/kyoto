@@ -2,7 +2,7 @@
 # Home
 
 <p align="center">
-    <img width="400" src="https://raw.githubusercontent.com/yuriizinets/kyoto/master/docs/assets/kyoto.svg" />
+    <img width="400" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/assets/kyoto.svg" />
 </p>
 
 <h1 align="center">kyoto</h1>
@@ -10,12 +10,12 @@
     Library that brings frontend-like components experience to the server side with native <code>html/template</code> on steroids. Supports any serving basis (<code>net/http</code>/<code>gin</code>/etc), that provides <code>io.Writer</code> in response.
 </p>
 
-![License](https://img.shields.io/github/license/yuriizinets/kyoto)
-[![Go Report Card](https://goreportcard.com/badge/github.com/yuriizinets/kyoto)](https://goreportcard.com/report/github.com/yuriizinets/kyoto)
-[![Go Reference](https://pkg.go.dev/badge/github.com/yuriizinets/kyoto.svg)](https://pkg.go.dev/github.com/yuriizinets/kyoto)
+![License](https://img.shields.io/github/license/kyoto-framework/kyoto)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kyoto-framework/kyoto)](https://goreportcard.com/report/github.com/kyoto-framework/kyoto)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg)](https://pkg.go.dev/github.com/kyoto-framework/kyoto)
 
 > **Disclaimer**  
-> This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/yuriizinets/kyoto/issues/new)
+> This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
 
 
 ## Why I need this?
@@ -37,7 +37,7 @@
 
 ## Installation
 
-As simple as `go get github.com/yuriizinets/kyoto`  
+As simple as `go get github.com/kyoto-framework/kyoto`  
 Check documentation page for quick start: [https://kyoto.codes/getting-started.html](https://kyoto.codes/getting-started.html)
 
 ## Usage
@@ -53,8 +53,8 @@ package main
 import (
 	"html/template"
 
-	"github.com/yuriizinets/kyoto"
-	"github.com/yuriizinets/kyoto-uikit/twui"
+	"github.com/kyoto-framework/kyoto"
+	"github.com/kyoto-framework/uikit/twui"
 )
 
 type PageIndex struct {
@@ -69,10 +69,10 @@ func (p *PageIndex) Init() {
 	p.Navbar = kyoto.RegC(p, &twui.AppUINavNavbar{
 		Logo: `<img src="/static/img/kyoto.svg" class="h-8 w-8 scale-150" />`,
 		Links: []twui.AppUINavNavbarLink{
-			{Text: "Kyoto", Href: "https://github.com/yuriizinets/kyoto"},
-			{Text: "UIKit", Href: "https://github.com/yuriizinets/kyoto-uikit"},
-			{Text: "Charts", Href: "https://github.com/yuriizinets/kyoto-charts"},
-			{Text: "Starter", Href: "https://github.com/yuriizinets/kyoto-starter"},
+			{Text: "Kyoto", Href: "https://github.com/kyoto-framework/kyoto"},
+			{Text: "UIKit", Href: "https://github.com/kyoto-framework/uikit"},
+			{Text: "Charts", Href: "https://github.com/kyoto-framework/kyoto-charts"},
+			{Text: "Starter", Href: "https://github.com/kyoto-framework/starter"},
 		},
 		Profile: twui.AppUINavNavbarProfile{
 			Enabled: true,
@@ -80,7 +80,7 @@ func (p *PageIndex) Init() {
 					<svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
 				`,
 			Links: []twui.AppUINavNavbarLink{
-				{Text: "GitHub", Href: "https://github.com/yuriizinets/kyoto/discussions/40"},
+				{Text: "GitHub", Href: "https://github.com/kyoto-framework/kyoto/discussions/40"},
 				{Text: "Telegram", Href: "https://t.me/yuriizinets"},
 				{Text: "Email", Href: "mailto:yurii.zinets@icloud.com"},
 			},
@@ -92,11 +92,11 @@ func (p *PageIndex) Init() {
 
 ## References
 
-GitHub: [https://github.com/yuriizinets/kyoto](https://github.com/yuriizinets/kyoto)  
+GitHub: [https://github.com/kyoto-framework/kyoto](https://github.com/kyoto-framework/kyoto)  
 Documentation: [https://kyoto.codes/](https://kyoto.codes/)  
-UIKit: [https://github.com/yuriizinets/kyoto-uikit](https://github.com/yuriizinets/kyoto-uikit)  
+UIKit: [https://github.com/kyoto-framework/uikit](https://github.com/kyoto-framework/uikit)  
 Demo project, Hacker News client made with kyoto: [https://hn.kyoto.codes/](https://hn.kyoto.codes/)  
-Demo project, features overview: [https://github.com/yuriizinets/kyoto/tree/master/.demo](https://hn.kyoto.codes/)  
+Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/master/.demo](https://hn.kyoto.codes/)  
 
 ## Support
 

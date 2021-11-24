@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/yuriizinets/kyoto"
+	"github.com/kyoto-framework/kyoto"
 )
 
 type ComponentDemoFlush struct {

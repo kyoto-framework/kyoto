@@ -11,7 +11,7 @@ First of all, let's create a page structure
 package main
 
 import (
-    "github.com/yuriizinets/kyoto"
+    "github.com/kyoto-framework/kyoto"
 )
 
 type PageIndex struct {}
@@ -98,7 +98,7 @@ func main() {
 
     import (
         "html/template"
-        "github.com/yuriizinets/kyoto"
+        "github.com/kyoto-framework/kyoto"
     )
 
     type PageIndex struct {
