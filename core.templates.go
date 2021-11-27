@@ -60,7 +60,7 @@ func TComponentAttrs(c Component) template.HTMLAttr {
 	if err != nil {
 		panic(err)
 	}
-	state := base64.StdEncoding.EncodeToString(statebytes)
+	state := strings.ReplaceAll(base64.StdEncoding.EncodeToString(statebytes), "/", "%2F")
 	// Build attributes
 	builder := fmt.Sprintf(`name='%s' state='%s'`, name, state)
 	return template.HTMLAttr(builder)

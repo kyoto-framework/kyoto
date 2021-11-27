@@ -126,7 +126,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>): 
         url += `/${root.getAttribute('name')}`  // Component name
         url += `/${root.getAttribute('state') || '{}'}` // Component state
         url += `/${_NameCleanup(action)}` // Action name
-        url += `/${btoa(JSON.stringify(args))}` // Action arguments
+        url += `/${btoa(JSON.stringify(args).replaceAll('/', '%2F'))}` // Action arguments
         // Make request
         let es = new EventSource(url)
         // Handle response chunks
@@ -182,7 +182,7 @@ export function Bind(self: HTMLElement, field: string) {
     // Set value
     state[field] = (self as HTMLInputElement).value
     // Set state
-    root.setAttribute('state', btoa(JSON.stringify(state)))
+    root.setAttribute('state', btoa(JSON.stringify(state).replaceAll('/', '%2F')))
 }
 
 export function FormSubmit(self: HTMLElement, e: Event) {
@@ -205,7 +205,7 @@ export function FormSubmit(self: HTMLElement, e: Event) {
         state[pair[0]] = pair[1]
     })
     // Set state
-    root.setAttribute('state', btoa(JSON.stringify(state)))
+    root.setAttribute('state', btoa(JSON.stringify(state).replaceAll('/', '%2F')))
     // Trigger "Submit" action
     Action(root, 'Submit')
     // Fix for ...?

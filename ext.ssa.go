@@ -156,8 +156,8 @@ func SSAHandler(tb TemplateBuilder) http.HandlerFunc {
 		params := SSAParameters{}
 		tokens := strings.Split(r.URL.Path, "/")
 		var _state, _args []byte
-		_state, _ = base64.StdEncoding.DecodeString(tokens[3])
-		_args, _ = base64.StdEncoding.DecodeString(tokens[5])
+		_state, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[3], "%2F", "/"))
+		_args, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[5], "%2F", "/"))
 		params.Component = tokens[2]
 		params.State = string(_state)
 		params.Action = tokens[4]

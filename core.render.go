@@ -82,6 +82,10 @@ func RenderPage(w io.Writer, p Page) {
 			})
 		}
 	}
+	// Check redirect
+	if redirected := GetContext(p, "internal:redirect"); redirected != nil {
+		return
+	}
 	// Trigger async in goroutines
 	st := time.Now()
 	subset := 0
