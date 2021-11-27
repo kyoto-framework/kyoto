@@ -55,15 +55,24 @@ type RedirectParameters struct {
 }
 
 // Page contains only must-have methods
-type Page interface {
-	// Template builder
-	Template() *template.Template
-}
+type Page interface{}
 
 // Component containts only must-have methods
 type Component interface{}
 
 // Extensions
+
+type ImplementsTemplate interface {
+	Template(Page) *template.Template
+}
+
+type ImplementsTemplateWithoutPage interface {
+	Template() *template.Template
+}
+
+type ImplementsRender interface {
+	Render() string
+}
 
 // ImplementsInit interface for implementing init
 type ImplementsInit interface {

@@ -176,16 +176,20 @@ func RenderPage(w io.Writer, p Page) {
 	// Extract flags
 	redirected := GetContext(p, "internal:redirect")
 	// Execute template
-	if redirected == nil {
+	if redirected == nil && len(err) == 0 {
 		st := time.Now()
-		terr := p.Template().Execute(w, reflect.ValueOf(p).Elem())
+		if _p, ok := p.(ImplementsTemplateWithoutPage); ok {
+			err := _p.Template().Execute(w, reflect.ValueOf(p).Elem())
+			if err != nil {
+				panic(err)
+			}
+		} else if _p, ok := p.(ImplementsRender); ok {
+			w.Write([]byte(_p.Render()))
+		}
 		if insights != nil {
 			insights.Update(InsightsTiming{
 				Render: time.Since(st),
 			})
-		}
-		if terr != nil {
-			panic(terr)
 		}
 	}
 	// Print insights
