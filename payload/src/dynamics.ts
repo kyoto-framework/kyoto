@@ -126,7 +126,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>): 
         url += `/${root.getAttribute('name')}`  // Component name
         url += `/${root.getAttribute('state') || '{}'}` // Component state
         url += `/${_NameCleanup(action)}` // Action name
-        url += `/${btoa(JSON.stringify(args).replaceAll('/', '%2F'))}` // Action arguments
+        url += `/${btoa(JSON.stringify(args).replaceAll('/', '-'))}` // Action arguments
         // Make request
         let es = new EventSource(url)
         // Handle response chunks
