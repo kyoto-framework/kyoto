@@ -47,11 +47,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.uuid.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.uuid.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.uuid.go",
 			},
 			{
 				Title: "component.demo.uuid.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.uuid.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.uuid.html",
 			},
 		},
 	})
@@ -62,11 +62,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.counter.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.counter.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.counter.go",
 			},
 			{
 				Title: "component.demo.counter.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.counter.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.counter.html",
 			},
 		},
 	})
@@ -78,11 +78,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.poll.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.poll.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.poll.go",
 			},
 			{
 				Title: "component.demo.poll.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.poll.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.poll.html",
 			},
 		},
 	})
@@ -93,11 +93,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.calc.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.calc.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.calc.go",
 			},
 			{
 				Title: "component.demo.calc.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.calc.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.calc.html",
 			},
 		},
 	})
@@ -108,11 +108,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.autocomplete.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.autocomplete.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.autocomplete.go",
 			},
 			{
 				Title: "component.demo.autocomplete.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.autocomplete.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.autocomplete.html",
 			},
 		},
 	})
@@ -132,11 +132,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.email.validator.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.email.validator.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.email.validator.go",
 			},
 			{
 				Title: "component.demo.email.validator.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.email.validator.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.email.validator.html",
 			},
 		},
 	})
@@ -147,11 +147,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.redirect.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.redirect.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.redirect.go",
 			},
 			{
 				Title: "component.demo.redirect.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.redirect.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.redirect.html",
 			},
 		},
 	})
@@ -162,11 +162,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.nesting.first.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.nesting.first.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.nesting.first.go",
 			},
 			{
 				Title: "component.demo.nesting.first.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.nesting.first.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.nesting.first.html",
 			},
 		},
 	})
@@ -177,11 +177,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.loading.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.loading.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.loading.go",
 			},
 			{
 				Title: "component.demo.loading.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.loading.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.loading.html",
 			},
 		},
 	})
@@ -192,11 +192,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.flush.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.flush.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.flush.go",
 			},
 			{
 				Title: "component.demo.flush.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.flush.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.flush.html",
 			},
 		},
 	})
@@ -207,11 +207,11 @@ func (p *PageIndex) Init() {
 		Links: []ComponentContentLink{
 			{
 				Title: "component.demo.intersect.go",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.intersect.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.intersect.go",
 			},
 			{
 				Title: "component.demo.intersect.html",
-				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/.demo/component.demo.intersect.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.intersect.html",
 			},
 		},
 	})
