@@ -8,8 +8,13 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="h-screen w-screen flex items-center justify-center">
+    <div class="h-screen w-screen flex flex-col items-center justify-center">
         <div class="text-3xl font-semibold">This page is rendered without templates</div>
+        <div class="text-2xl mt-8">Component example</div>
+        <div class="mt-4 mx-auto w-full max-w-xl">
+            {component-raw}
+        </div>
     </div>
+    {dynamics}
 </body>
 </html>

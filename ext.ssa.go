@@ -112,25 +112,30 @@ func SSAFlush(p Page, c Component) {
 	if redirected := GetContext(p, "internal:redirect"); redirected != nil {
 		return
 	}
-	// Cast dummy page
-	dp := p.(*DummyPage)
 	// Extract needed context
-	rw := GetContext(dp, "internal:rw").(http.ResponseWriter)
-	params := GetContext(dp, "internal:ssa:p").(*SSAParameters)
+	rw := GetContext(p, "internal:rw").(http.ResponseWriter)
+	params := GetContext(p, "internal:ssa:p").(*SSAParameters)
 	rwf := rw.(http.Flusher)
-	// Prepare template
-	t := dp.Template()
-	t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, params.Component)))
 	// Render
-	buffer := bytes.Buffer{}
-	err := t.Execute(&buffer, c)
-	if err != nil {
-		panic(err)
+	html := ""
+	if _c, ok := c.(ImplementsRender); ok { // Use Render if component implements Render
+		// Render
+		html = _c.Render()
+	} else { // Use template if component not implements Render
+		dp := p.(*DummyPage)
+		t := dp.Template()
+		t = template.Must(t.Parse(fmt.Sprintf(`{{ template "%s" . }}`, params.Component)))
+		buffer := bytes.Buffer{}
+		err := t.Execute(&buffer, c)
+		if err != nil {
+			panic(err)
+		}
+		html = buffer.String()
 	}
-	html := buffer.String()
+	// Remove newlines (not supported by SSA)
 	html = strings.ReplaceAll(html, "\n", "")
 	// Write SSE
-	_, err = fmt.Fprintf(rw, "data: %v\n\n", html)
+	_, err := fmt.Fprintf(rw, "data: %v\n\n", html)
 	if err != nil {
 		panic(err)
 	}

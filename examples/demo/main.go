@@ -23,7 +23,7 @@ func main() {
 
 	// Routes
 	mux.HandleFunc("/", kyoto.PageHandler(&PageIndex{}))
-	mux.HandleFunc("/raw", kyoto.PageHandler(&PageRaw{}))
+	mux.HandleFunc("/raw/", kyoto.PageHandler(&PageRaw{}))
 	// SSA plugin
 	mux.HandleFunc("/SSA/", kyoto.SSAHandler(ssatemplate))
 

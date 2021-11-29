@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"reflect"
 	"strings"
+	"time"
 )
 
 // TFuncMap is responsible for integration of library functionality into template rendering
@@ -21,6 +22,28 @@ func TFuncMap() template.FuncMap {
 		"bind":           TBind,
 		"formsubmit":     TFormSubmit,
 	}
+}
+
+func TRender(c Component) string {
+	// Get component insights
+	insights := GetInsights(c)
+	st := time.Now()
+	// Render
+	dom := ""
+	if _c, ok := c.(ImplementsRender); ok {
+		dom = _c.Render()
+	} else {
+		panic("Trying to render a component which is not implemented Render")
+	}
+	// Save render insights
+	if insights != nil {
+		insights.Update(InsightsTiming{
+			Render: time.Since(st),
+		})
+
+	}
+	// Return
+	return dom
 }
 
 func TMeta(p Page) template.HTML {

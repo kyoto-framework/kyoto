@@ -54,6 +54,11 @@ func GetInsights(p interface{}) *Insights {
 		if i.ID == InsightsID(p) {
 			return i
 		}
+		for _, ci := range i.Nested {
+			if ci.ID == InsightsID(p) {
+				return ci
+			}
+		}
 	}
 	return nil
 }
