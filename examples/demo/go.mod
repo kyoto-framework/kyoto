@@ -1,4 +1,4 @@
-module github.com/kyoto-framework/kyoto/.demo
+module github.com/kyoto-framework/kyoto/examples/demo
 
 go 1.17
 

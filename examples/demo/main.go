@@ -29,10 +29,10 @@ func main() {
 
 	// Run
 	if os.Getenv("PORT") == "" {
-		log.Println("Listening on localhost:25025")
+		log.Println("Listening on http://localhost:25025")
 		http.ListenAndServe("localhost:25025", mux)
 	} else {
-		log.Println("Listening on 0.0.0.0:" + os.Getenv("PORT"))
+		log.Println("Listening on http://0.0.0.0:" + os.Getenv("PORT"))
 		http.ListenAndServe(":"+os.Getenv("PORT"), mux)
 	}
 }
