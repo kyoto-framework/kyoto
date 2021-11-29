@@ -97,9 +97,11 @@ Usage:
 {{ end }}
 ```
 
-### `action` function usage
+### Features
 
-Library provides multiple ways of action triggering. One of them - `action` template function. This function accepts multiple arguments: first arguments is always action name, all arguments after that will be passed as `...interface{}` to action arguments.
+#### Actions
+
+Library provides multiple ways of action triggering. One of them - `action` template function. This function accepts multiple arguments: first argument is always action name, all arguments after that will be passed as `...interface{}` to action arguments.
 
 > Please note, that you can use `action` template function only in event handlers, like `onclick="..."`.
 
@@ -113,7 +115,7 @@ Usage:
 {{ end }}
 ```
 
-### `formsubmit` function usage
+#### Form handling
 
 `action` is not the only way to trigger an action. `formsubmit` allows to handle form submition. On trigger, it calls `Submit` action, defined in your `kyoto.ActionMap`.
 Instead of passing form values as arguments, library unpacks that data directly into component by name attribute.
@@ -132,7 +134,7 @@ Usage:
 </form>
 ```
 
-### `binding` function usage
+#### Input binding
 
 Not all operations needs to be done on server side. Some actions like inputs binding better to implement on client side to avoid delays and unnecessary server calls.
 For input binding, library provides `bind` template function. This function accepts one argument - target component field name.
@@ -144,6 +146,74 @@ Usage:
 <div {{ componentattrs . }}>
     <input value="{{ .InputData }}" oninput="{{ bind 'InputData' }}" />
     <button onclick="{{ action 'ExampleAction' }}">Click Me</button>
+</div>
+{{ end }}
+```
+
+#### On load trigger
+
+Library provides a way to trigger an action on page load. May be useful for components lazy loading. This feature is implemented as `ssa:onload` HTML attribute and accepts just an action name.
+
+Usage:  
+
+```html
+{{ define "ComponentExample" }}
+<div {{ componentattrs . }} ssa:onload="Load">
+    ...
+</div>
+{{ end }}
+```
+
+#### Intersection trigger
+
+You can use `ssa:onintersect` HTML attribute to trigger an action on element intersection.
+This functionality was built on top of the browser's built-in `IntersectionObserver`.  
+
+Usage:
+
+```html
+{{ define "ComponentExample" }}
+<div {{ componentattrs . }} ssa:onintersect="OnIntersect">
+    ...
+</div>
+{{ end }}
+```
+
+#### Control display on action call
+
+Because `kyoto` makes a roundtrip to the server every time an action is triggered on the page,
+there are cases when the page may not react immediately to a user event (like a click).
+That's why library provides a way to easily control display attribute on action call.
+You can use `ssa:oncall.display` HTML attribute to control display during action call.
+In the end of an action, layout will be restored.  
+
+!!! note
+    Don't forget to set default display for loading elements like spinners and loaders
+
+Usage:
+
+```html
+{{ define "ComponentExample" }}
+<div {{ componentattrs . }}>
+    <div ssa:oncall.display="block" style="display: none">
+        Loading ...
+    </div>
+    <button onclick="{{ action 'Load' }}">Load</button>
+</div>
+{{ end }}
+```
+
+### Control rendering mode
+
+There are cases when `morphdom` may fail. Then library falls back to `replace` mode instead, which just replaces element's `outerHTML`.
+To force library use replace mode, you can use `ssa:render.mode` HTML attribute.  
+
+Usage:
+
+```html
+{{ define "ComponentExample" }}
+<div {{ componentattrs . }} ssa:render.mode="replace">
+    ...
 </div>
 {{ end }}
 ```
@@ -162,10 +232,6 @@ SSA has own lifecycle, which is a bit different in comparison with page renderin
 - If new components where registed while action execution, do asynchronous operations for them (overall async process is the same as for page rendering)
 - Rendering component and returning HTML to client side
 - Morphing recieved HTML with component, or replacing in case of morph failure or explicit `ssa:render.mode="replace"` attribute
-
-## Notes
-
-- You may have problems on morph stage. It requires correct HTML structure and may cause unexpected behavior in some cases. Use `ssa:render.mode="replace"` attribute in your top-level node to explicitly switch to HTML replacement mode
 
 ## Limitations
 
