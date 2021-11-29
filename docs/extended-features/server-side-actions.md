@@ -89,7 +89,9 @@ Usage:
 
 ```html
 {{ define "ComponentExample" }}
-<div {{ componentattrs . }}>...</div>
+  <div {{ componentattrs . }}>
+    ...
+  </div>
 {{ end }}
 ```
 
@@ -120,10 +122,7 @@ Usage:
 
 ```html
 <form
-  {{
-  componentattrs
-  .
-  }}
+  {{ componentattrs . }}
   action="/"
   method="POST"
   onsubmit="{{ formsubmit }}"
@@ -196,7 +195,7 @@ You can use `ssa:oncall.display` HTML attribute to control display during action
 At the end of an action the layout will be restored.
 
 !!! note
-Don't forget to set default display for loading elements like spinners and loaders
+    Don't forget to set a default display for loading elements like spinners and loaders.
 
 Usage:
 

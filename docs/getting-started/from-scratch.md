@@ -53,8 +53,12 @@ func (p *PageIndex) Template() *template.Template {
 ```
 
 !!! note
-You can define bootstrap functions for easier template definitions. For example:
-`go func newtemplate(page string) *template.Template { return template.Must(template.New(page).Funcs(kyoto.Funcs()).ParseGlob("*.html")) } `
+    You can define bootstrap functions for easier template definitions. For example:
+    ```go
+    func newtemplate(page string) *template.Template {
+        return template.Must(template.New(page).Funcs(kyoto.Funcs()).ParseGlob("*.html"))
+    }
+    ```
 
 ## Page routing
 
