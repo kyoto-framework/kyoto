@@ -106,7 +106,3 @@ func TBind(field string) template.JS {
 func TFormSubmit() template.JS {
 	return template.JS("FormSubmit(this, event)")
 }
-
-// Deprecated: use TFuncMap instead.
-// Alias for TFuncMap
-var Funcs = TFuncMap
