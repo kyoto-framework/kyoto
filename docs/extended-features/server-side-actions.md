@@ -179,6 +179,21 @@ Usage:
 {{ end }}
 ```
 
+#### Poll trigger
+
+For components that must to be updated over the time (f.e. charts, stats, etc), library have polling mechanism, based on browser's built-in `setInternal`.  
+You can use this trigger with `ssa:poll` and `ssa:poll.interval` HTML attributes.
+
+Usage:
+
+```html
+{{ define "ComponentExample" }}
+<div {{ componentattrs . }} ssa:poll="Poll" ssa:poll.interval=1000>
+    ...
+</div>
+{{ end }}
+```
+
 #### Control display on action call
 
 Because `kyoto` makes a roundtrip to the server every time an action is triggered on the page,
