@@ -1,7 +1,6 @@
-
 # Integration
 
-It's easy to integrate `kyoto` into existing projects. There are 2 ways to integrate: define own generic page handler, or use low-level page rendering method. In most cases, the second method is the easiest (especially when no context is needed).  
+It's easy to integrate `kyoto` into existing projects. There are 2 ways to integrate: define your own generic page handler or use a low-level page rendering method. In most cases, the second method is the easiest (especially when no context is needed).
 
 Example with `net/http`:
 
@@ -19,4 +18,4 @@ func IndexPageHandler(g *gin.Context) {
 }
 ```
 
-Check the [Page rendering](#) section for details.
+Check the [Page Rendering](#) section for details.
