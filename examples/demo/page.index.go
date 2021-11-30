@@ -33,7 +33,7 @@ type PageIndex struct {
 }
 
 func (p *PageIndex) Template() *template.Template {
-	return template.Must(template.New("page.index.html").Funcs(kyoto.Funcs()).ParseGlob("*.html"))
+	return template.Must(template.New("page.index.html").Funcs(kyoto.TFuncMap()).ParseGlob("*.html"))
 }
 
 func (p *PageIndex) Init() {

@@ -183,7 +183,7 @@ func RenderPage(w io.Writer, p Page) {
 	if redirected == nil && len(err) == 0 {
 		st := time.Now()
 		if _p, ok := p.(ImplementsTemplateWithoutPage); ok {
-			err := _p.Template().Execute(w, reflect.ValueOf(p).Elem())
+			err := _p.Template().Execute(w, _p)
 			if err != nil {
 				panic(err)
 			}
