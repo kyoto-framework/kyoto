@@ -17,6 +17,7 @@ func main() {
 	// Set flags
 	kyoto.INSIGHTS = true
 	kyoto.INSIGHTS_CLI = true
+	kyoto.INSIGHTS_CLI_JSON = true
 
 	// Init mux
 	mux := http.NewServeMux()
