@@ -15,17 +15,17 @@ var insightsrw = sync.RWMutex{}
 type Insights struct {
 	InsightsTiming
 
-	ID     string
-	Name   string
-	Nested []*Insights
+	ID     string      `json:"id"`
+	Name   string      `json:"name"`
+	Nested []*Insights `json:"nested"`
 }
 
 // InsightsTiming data type
 type InsightsTiming struct {
-	Init       time.Duration
-	Async      time.Duration
-	AfterAsync time.Duration
-	Render     time.Duration
+	Init       time.Duration `json:"i"`
+	Async      time.Duration `json:"a"`
+	AfterAsync time.Duration `json:"aa"`
+	Render     time.Duration `json:"r"`
 }
 
 // NewInsights creates new insights instance for provided object pointer,

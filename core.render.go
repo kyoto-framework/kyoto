@@ -201,11 +201,9 @@ func RenderPage(w io.Writer, p Page) {
 	if INSIGHTS && INSIGHTS_CLI {
 		if INSIGHTS_CLI_JSON {
 			jsonInsights, err := json.Marshal(insights)
-
 			if err != nil {
 				panic(err)
 			}
-
 			log.Printf(" ---------------- insights %s %s", insights.ID, insights.Name)
 			log.Printf(string(jsonInsights))
 		} else {
