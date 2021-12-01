@@ -26,7 +26,7 @@ func main() {
 	mux.HandleFunc("/", kyoto.PageHandler(&PageIndex{}))
 	mux.HandleFunc("/raw/", kyoto.PageHandler(&PageRaw{}))
 	// SSA plugin
-	mux.HandleFunc("/SSA/", kyoto.SSAHandler(ssatemplate))
+	mux.HandleFunc("/demo/ssa/", kyoto.SSAHandler(ssatemplate))
 
 	// Run
 	if os.Getenv("PORT") == "" {

@@ -122,7 +122,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>): 
         // Set loading state
         _TriggerLoaders(root)
         // Build URL
-        let url = `/SSA`
+        let url = ssapath
         url += `/${root.getAttribute('name')}`  // Component name
         url += `/${root.getAttribute('state') || '{}'}` // Component state
         url += `/${_NameCleanup(action)}` // Action name
@@ -217,10 +217,12 @@ export function FormSubmit(self: HTMLElement, e: Event) {
 // Export to global
 
 declare global {
+    const ssapath: string
     interface Window {
-        _LocaleRoot: any;
-        Action: any,
-        Bind: any,
+        
+        _LocaleRoot: any
+        Action: any
+        Bind: any
         FormSubmit: any
     }
 }

@@ -67,8 +67,14 @@ func TMeta(p Page) template.HTML {
 	return template.HTML(builder.String())
 }
 
-func TDynamics() template.HTML {
-	return template.HTML(ssaclient)
+func TDynamics(path ...string) template.HTML {
+	if len(path) == 0 {
+		path = append(path, "/SSA")
+	}
+	builder := strings.Builder{}
+	builder.WriteString(fmt.Sprintf("<script>const ssapath = \"%s\"</script>", path[0]))
+	builder.WriteString(ssaclient)
+	return template.HTML(builder.String())
 }
 
 func TJSON(data interface{}) string {

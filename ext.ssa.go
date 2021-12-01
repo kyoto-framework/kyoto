@@ -161,11 +161,11 @@ func SSAHandler(tb TemplateBuilder) http.HandlerFunc {
 		params := SSAParameters{}
 		tokens := strings.Split(r.URL.Path, "/")
 		var _state, _args []byte
-		_state, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[3], "-", "/"))
-		_args, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[5], "-", "/"))
-		params.Component = tokens[2]
+		_state, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[len(tokens)-3], "-", "/"))
+		_args, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[len(tokens)-1], "-", "/"))
+		params.Component = tokens[len(tokens)-4]
 		params.State = string(_state)
-		params.Action = tokens[4]
+		params.Action = tokens[len(tokens)-2]
 		params.Args = string(_args)
 		// Set context
 		SetContext(dp, "internal:rw", rw)
