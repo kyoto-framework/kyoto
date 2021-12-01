@@ -1,6 +1,7 @@
 package kyoto
 
 import (
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -198,10 +199,21 @@ func RenderPage(w io.Writer, p Page) {
 	}
 	// Print insights
 	if INSIGHTS && INSIGHTS_CLI {
-		log.Printf(" ---------------- insights %s %s", insights.ID, insights.Name)
-		log.Printf("i:%s a:%s aa:%s r:%s", insights.Init, insights.Async, insights.AfterAsync, insights.Render)
-		for _, ci := range insights.Nested {
-			log.Printf("--- id:%s n:%s i:%s a:%s aa:%s r:%s", ci.ID, ci.Name, ci.Init, ci.Async, ci.AfterAsync, ci.Render)
+		if INSIGHTS_CLI_JSON {
+			jsonInsights, err := json.Marshal(insights)
+
+			if err != nil {
+				panic(err)
+			}
+
+			log.Printf(" ---------------- insights %s %s", insights.ID, insights.Name)
+			log.Printf(string(jsonInsights))
+		} else {
+			log.Printf(" ---------------- insights %s %s", insights.ID, insights.Name)
+			log.Printf("i:%s a:%s aa:%s r:%s", insights.Init, insights.Async, insights.AfterAsync, insights.Render)
+			for _, ci := range insights.Nested {
+				log.Printf("--- id:%s n:%s i:%s a:%s aa:%s r:%s", ci.ID, ci.Name, ci.Init, ci.Async, ci.AfterAsync, ci.Render)
+			}
 		}
 	}
 }
