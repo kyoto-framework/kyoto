@@ -41,6 +41,28 @@ function _LocateRoot(parameters: LocateParameters): HTMLElement {
     return root
 }
 
+function _Encode(v: string): string {
+    // Handle non-latin
+    v = unescape(encodeURIComponent(v))
+    // Encode to base64
+    v = btoa(v)
+    // Replace slashes
+    v = v.replaceAll('/', '-')
+    // Return
+    return v
+}
+
+function _Decode(v: string): string {
+    // Replace slashes
+    v = v.replaceAll('-', '/')
+    // Decode from base64
+    v = atob(v)
+    // Handle non-latin
+    v = decodeURIComponent(escape(v))
+    // Return
+    return v
+}
+
 function _NameCleanup(action: string): string {
     if (action.includes(':')) {
         action = action.split(':')[1]
@@ -126,7 +148,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>): 
         url += `/${root.getAttribute('name')}`  // Component name
         url += `/${root.getAttribute('state') || '{}'}` // Component state
         url += `/${_NameCleanup(action)}` // Action name
-        url += `/${btoa(JSON.stringify(args)).replaceAll('/', '-')}` // Action arguments
+        url += `/${_Encode(JSON.stringify(args))}` // Action arguments
         // Make request
         let es = new EventSource(url)
         // Handle response chunks
@@ -178,11 +200,11 @@ export function Bind(self: HTMLElement, field: string) {
         throw new Error('Bind call error: component state is underfined')
     }
     // Load state
-    let state = JSON.parse(atob(root.getAttribute('state') as string))
+    let state = JSON.parse(_Decode(root.getAttribute('state') as string))
     // Set value
     state[field] = (self as HTMLInputElement).value
     // Set state
-    root.setAttribute('state', btoa(JSON.stringify(state).replaceAll('/', '-')))
+    root.setAttribute('state', _Encode(JSON.stringify(state)))
 }
 
 export function FormSubmit(self: HTMLElement, e: Event) {
