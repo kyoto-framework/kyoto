@@ -144,9 +144,9 @@ export function _OnIntersect() {
 
 function _Morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions) {
     let afterMorphIgnore = new Array()
-    let newOptions = <MorphDomOptions>{}
+    let newOptions: MorphDomOptions = {}
     if (options) {
-        Object.keys(options).forEach(key=>newOptions[key]=options[key]);
+        newOptions = options
     }
     newOptions!.onBeforeElUpdated = function(fromEl, toEl) {
         if (fromEl.getAttribute('ssa:morph.ignore.attr') != null) {
