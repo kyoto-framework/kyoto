@@ -30,6 +30,8 @@ type PageIndex struct {
 	DemoFlush                     kyoto.Component
 	DescriptionDemoIntersect      kyoto.Component
 	DemoIntersect                 kyoto.Component
+	DescriptionDemoMorph          kyoto.Component
+	DemoMorph                     kyoto.Component
 }
 
 func (p *PageIndex) Template() *template.Template {
@@ -216,4 +218,19 @@ func (p *PageIndex) Init() {
 		},
 	})
 	p.DemoIntersect = kyoto.RegC(p, &ComponentDemoIntersect{})
+	p.DemoMorph = kyoto.RegC(p, &ComponentDemoMorph{})
+	p.DescriptionDemoMorph = kyoto.RegC(p, &ComponentContent{
+		Title:       "Morph controls",
+		Description: "",
+		Links: []ComponentContentLink{
+			{
+				Title: "component.demo.morph.go",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.morph.go",
+			},
+			{
+				Title: "component.demo.morph.html",
+				Href:  "https://github.com/kyoto-framework/kyoto/blob/master/examples/demo/component.demo.morph.html",
+			},
+		},
+	})
 }
