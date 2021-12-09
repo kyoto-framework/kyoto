@@ -1,0 +1,52 @@
+{{ define "ComponentDemoMorph" }}
+<div {{ componentattrs . }} class="bg-gray-100 rounded p-4" ssa:onload="Increment">
+    <div class="text-2xl font-semibold">Morphs</div>
+    <div class="py-2 w-full flex flex-col items-start">
+        <div class="py-2 text-xl font-medium">1. No modificators morph</div>
+        <!-- First element -->
+        <div class="pb-2 text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }} text-xl">
+            <span>Modify me {{ .Count }}</span>
+            <div class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}">
+                And modify my child  
+                <span class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}">
+                    {{ .Count }}
+                </span>
+            </div>
+        </div>
+        <div class="py-2 text-xl font-medium">2. Ignore only node (not childs) and ignore child of child</div>
+        <!-- Second element -->
+        <div class="pb-2 text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }} text-xl" ssa:morph.ignore.this>
+            <span>Ignore me {{ .Count }}</span>
+            <div class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}">
+                But modify my child  
+                <span class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}" ssa:morph.ignore>
+                    {{ .Count }}
+                </span>
+            </div>
+        </div>
+        <div class="py-2 text-xl font-medium">3. Ignore node and childs</div>
+        <!-- Third element -->
+        <div class="pb-2 text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }} text-xl" ssa:morph.ignore>
+            <span>Ignore me {{ .Count }}</span>
+            <div class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}">
+                And ignore my child  
+                <span class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}">
+                    {{ .Count }}
+                </span>
+            </div>
+        </div>
+        <div class="py-2 text-xl font-medium">4. Ignore only exact attribute</div>
+        <!-- Forth element -->
+        <div class="pb-2 text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }} text-xl">
+            <span>Modify me {{ .Count }}</span>
+            <div class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}" ssa:morph.ignore.attr='innerHTML'>
+                But ignore innerHTML of my child 
+                <span class="text-black {{ if .ColorNum }} text-blue-{{ .ColorNum }}00 {{ end }}">
+                    {{ .Count }}
+                </span>
+            </div>
+        </div>
+        <button onclick="{{ action `Increment` }}" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-64">Change color and increment</button>
+    </div>
+</div>
+{{ end }}

@@ -8,6 +8,18 @@ interface LocateParameters {
     id?: string  // direct call with <id>:<action>
 }
 
+interface MorphDomOptions {
+    getNodeKey?: (node: Node) => any;
+    onBeforeNodeAdded?: (node: Node) => Node;
+    onNodeAdded?: (node: Node) => Node;
+    onBeforeElUpdated?: (fromEl: HTMLElement, toEl: HTMLElement) => boolean;
+    onElUpdated?: (el: HTMLElement) => void;
+    onBeforeNodeDiscarded?: (node: Node) => boolean;
+    onNodeDiscarded?: (node: Node) => void;
+    onBeforeElChildrenUpdated?: (fromEl: HTMLElement, toEl: HTMLElement) => boolean;
+    childrenOnly?: boolean;
+}
+
 function _LocateRoot(parameters: LocateParameters): HTMLElement {
     let root: HTMLElement = parameters.starter
     // Direct call case
@@ -108,6 +120,43 @@ export function _OnIntersect() {
     });
 }
 
+function _Morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions) {
+    let afterMorphIgnore = new Array()
+    let newOptions = <MorphDomOptions>{}
+    if (options) {
+        Object.keys(options).forEach(key=>newOptions[key]=options[key]);
+    }
+    newOptions!.onBeforeElUpdated = function(fromEl, toEl) {
+        if (fromEl.getAttribute('ssa:morph.ignore.attr') != null) {
+            let attr = fromEl.getAttribute('ssa:morph.ignore.attr')
+            if (attr) {
+                if (attr == 'innerHTML') {
+                    toEl.innerHTML = fromEl.innerHTML
+                } else {
+                    let attrValue = fromEl.getAttribute(attr)
+                    if (attrValue) toEl.setAttribute(attr, attrValue)
+                }
+            }
+        }
+        if (fromEl.getAttribute('ssa:morph.ignore') != null) {
+            return false
+        }
+        if (fromEl.getAttribute('ssa:morph.ignore.this') != null && fromEl != fromNode) {
+            afterMorphIgnore.push({ fromEl, toEl })
+            return false
+        }
+        return true
+    }
+    morphdom(fromNode, toNode, newOptions)
+    if (afterMorphIgnore.length > 0) {
+        afterMorphIgnore.forEach(el => {
+            _Morph(el.fromEl, el.toEl, {
+                childrenOnly: true
+            })
+        })
+    }
+}
+
 
 // Public
 
@@ -150,7 +199,7 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>): 
             }
             // Morph
             try {
-                morphdom(root, data)
+                _Morph(root, data)
             }
             catch (e: any) {
                 console.log('Fallback from morphdom to root.outerHTML due to error', e)
