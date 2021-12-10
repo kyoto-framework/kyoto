@@ -8,10 +8,8 @@ import (
 )
 
 // Insights storage
-var (
-	insights   = []*Insights{}
-	insightsrw = sync.RWMutex{}
-)
+var insights = []*Insights{}
+var insightsrw = sync.RWMutex{}
 
 // Insights data type
 type Insights struct {

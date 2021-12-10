@@ -15,10 +15,8 @@ import (
 
 // SSA Component Store is a storage for component types.
 // When SSA is called, page's general lifecycle components store is not available (we have dummy page instead).
-var (
-	ssacstore   = map[string]reflect.Type{}
-	ssacstorerw = &sync.RWMutex{}
-)
+var ssacstore = map[string]reflect.Type{}
+var ssacstorerw = &sync.RWMutex{}
 
 // SSAParameters represents parameters, needed for handling SSA request
 type SSAParameters struct {
