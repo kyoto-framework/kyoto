@@ -72,7 +72,7 @@ func RenderPage(w io.Writer, p Page) {
 	}
 	// Async specific state
 	var wg sync.WaitGroup
-	var err = make(chan error, 1000)
+	err := make(chan error, 1000)
 	// Trigger init
 	if p, ok := p.(ImplementsInitWithoutPage); ok {
 		st := time.Now()

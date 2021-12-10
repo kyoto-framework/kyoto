@@ -96,7 +96,7 @@ func TComponentAttrs(c Component) template.HTMLAttr {
 }
 
 func TAction(action string, args ...interface{}) template.JS {
-	formattedargs := []string{}
+	var formattedargs []string
 	for _, arg := range args {
 		b, _ := json.Marshal(arg)
 		formattedargs = append(formattedargs, string(b))
