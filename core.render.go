@@ -12,8 +12,10 @@ import (
 
 // Component Store Lifecycle is a temporary storage for components processing
 // Will be cleared in the end of lifecycle
-var csl = map[Page][]Component{}
-var cslrw = &sync.RWMutex{}
+var (
+	csl   = map[Page][]Component{}
+	cslrw = &sync.RWMutex{}
+)
 
 // RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
