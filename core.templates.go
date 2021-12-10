@@ -110,5 +110,5 @@ func TBind(field string) template.JS {
 }
 
 func TFormSubmit() template.JS {
-	return template.JS("FormSubmit(this, event)")
+	return "FormSubmit(this, event)"
 }
