@@ -57,7 +57,7 @@ type RedirectParameters struct {
 // Page contains only must-have methods
 type Page interface{}
 
-// Component containts only must-have methods
+// Component contains only must-have methods
 type Component interface{}
 
 // Extensions
