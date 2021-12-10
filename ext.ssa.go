@@ -15,8 +15,10 @@ import (
 
 // SSA Component Store is a storage for component types.
 // When SSA is called, page's general lifecycle components store is not available (we have dummy page instead).
-var ssacstore = map[string]reflect.Type{}
-var ssacstorerw = &sync.RWMutex{}
+var (
+	ssacstore   = map[string]reflect.Type{}
+	ssacstorerw = &sync.RWMutex{}
+)
 
 // SSAParameters represents parameters, needed for handling SSA request
 type SSAParameters struct {
@@ -30,7 +32,7 @@ type SSAParameters struct {
 func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 	// Async specific state
 	var wg sync.WaitGroup
-	var err = make(chan error, 1000)
+	err := make(chan error, 1000)
 	// Find component type in store
 	ssacstorerw.RLock()
 	ctype, found := ssacstore[p.Component]
@@ -52,7 +54,7 @@ func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 		panic(err)
 	}
 	// Decode arguments
-	args := []interface{}{}
+	var args []interface{}
 	if err := json.Unmarshal([]byte(p.Args), &args); err != nil {
 		panic(err)
 	}

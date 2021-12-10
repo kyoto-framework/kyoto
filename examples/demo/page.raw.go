@@ -27,5 +27,5 @@ func (p *PageRaw) Render() string {
 	dom = strings.ReplaceAll(dom, "{component-raw}", kyoto.TRender(p.DemoCounter))
 	dom = strings.ReplaceAll(dom, "{dynamics}", string(kyoto.TDynamics("/demo/ssa")))
 	// Return
-	return string(dom)
+	return dom
 }

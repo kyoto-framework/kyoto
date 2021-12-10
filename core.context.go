@@ -1,10 +1,14 @@
 package kyoto
 
-import "sync"
+import (
+	"sync"
+)
 
 // Context used as scoped temporary store for data
-var context = map[Page]map[string]interface{}{}
-var contextrw = &sync.RWMutex{}
+var (
+	context   = map[Page]map[string]interface{}{}
+	contextrw = &sync.RWMutex{}
+)
 
 // SetContext of a page, page based key value store using a string as a key and an interface to store the data
 func SetContext(p Page, key string, value interface{}) {

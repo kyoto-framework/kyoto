@@ -33,5 +33,5 @@ func (c *ComponentDemoCounterRaw) Render() string {
 	dom = strings.ReplaceAll(dom, "{count}", strconv.Itoa(c.Count))
 	dom = strings.ReplaceAll(dom, "{increment}", string(kyoto.TAction("Increment")))
 	// Return
-	return string(dom)
+	return dom
 }
