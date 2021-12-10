@@ -32,7 +32,7 @@ type InsightsTiming struct {
 
 // NewInsights creates new insights instance for provided object pointer,
 // saves insights pointer to local store and returns it
-// Oldest insights are cutted in case of store overflow (INSIGHTS_LIMIT config)
+// The oldest insights are cut in case of store overflow (INSIGHTS_LIMIT config)
 func NewInsights(p interface{}) *Insights {
 	// Init new insights
 	i := &Insights{
