@@ -10,11 +10,17 @@ import (
 	"time"
 )
 
-// Component Store Lifecycle is a temporary storage for components processing
-// Will be cleared in the end of lifecycle
 var (
+	// Component Store Lifecycle is a temporary storage for components processing
+	// Will be cleared in the end of lifecycle
 	csl   = map[Page][]Component{}
 	cslrw = &sync.RWMutex{}
+
+	// OnError is an error processing function.
+	// Panic by default
+	OnError = func(p Page, err error) {
+		panic(err)
+	}
 )
 
 // RegisterComponent is used while defining components in the Init() section
@@ -138,6 +144,9 @@ func RenderPage(w io.Writer, p Page) {
 			}
 		}
 		wg.Wait()
+		if len(err) != 0 {
+			OnError(p, <-err)
+		}
 	}
 	if insights != nil {
 		insights.Update(InsightsTiming{
