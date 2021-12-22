@@ -113,6 +113,20 @@ Usage:
 {{ end }}
 ```
 
+#### Cross-component calls
+
+You can call other components' methods with different preffixes. `$` preffix allows you to call methods of a parent component. To call a components' method by it's id, you can use this syntax `ComponentID:MethodName`.  
+
+Usage:
+
+```html
+...
+<button onclick="{{ action '$MethodName' }}"> <!-- This will call a parent components' method -->
+<button onclick="{{ action 'SomeComponentID:MethodName' }}"> <!-- This will call a method for component with id 'SomeComponentID' -->
+...
+{{ end }}
+```
+
 #### Form Handling
 
 `action` is not the only way to trigger an action. `formsubmit` allows handling form submission. Upon trigger it calls the `Submit` action, defined in your `kyoto.ActionMap`.
@@ -206,6 +220,29 @@ Usage:
   <button onclick="{{ action 'Load' }}">Load</button>
 </div>
 {{ end }}
+```
+
+#### Multi-stage UI Updates
+
+You can push multiple component UI updates during single action call. Just call `kyoto.SSAFlash(page, component)` to initiate an update.  
+
+Usage:
+
+```go
+func (c *ComponentExample) Actions(p kyoto.Page) kyoto.ActionMap {
+    return kyoto.ActionMap{
+        "Load": func(args ...interface{}) {
+            // Update status UI
+            c.Status = "Loading ..."
+            kyoto.SSAFlash(p, c)
+            // Do some actions
+            // ...
+            // Update status UI again
+            c.Status = "Loaded"
+            kyoto.SSAFlash(p, c)
+        },
+    }
+}
 ```
 
 ### Control Rendering Mode
