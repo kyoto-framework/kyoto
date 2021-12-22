@@ -5,6 +5,8 @@ The most important part of the library.
 A low-level function, responsible for rendering the page directly into `io.Writer`.  
 Under the hood, executes full rendering lifecycle. Library has more high-level wrappers with context setters and another features, but all of them rely on this function. Accepts 2 parameters - page pointer and `io.Writer`.
 
+## Usage
+
 First of all, let's create a page structure
 
 ```go title="page.index.go"
@@ -55,11 +57,11 @@ For example:
 ...
 
 func main() {
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		kyoto.RenderPage(rw, &PageIndex{})
-	})
+    http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+        kyoto.RenderPage(rw, &PageIndex{})
+    })
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+    log.Fatal(http.ListenAndServe(":8080", nil))
 }
 ```
 
@@ -126,3 +128,57 @@ func main() {
     ```
 
     That's it! Now you have component instance, included into lifecycle and rendered on the page.
+
+## Alternative rendering
+
+Library gives an option to use own rendering function.
+It's enough to implement `ImplementsRender` interface and use `render` template function in case of components.  
+
+Let's assume we want to create a component without relying on the `html/template`.
+As a first step, let's create a component structure with a state. On initialization step we will generate a random number.  
+
+```go title="component.rand.go"
+package main
+
+type ComponentRand struct {
+    Content string
+}
+
+func (c *ComponentRand) Init() {
+    c.Content = strconv.Itoa(rand.Intn(1000))
+}
+```
+
+Second step is to implement `ImplementsRender` interface.  
+
+```go title="component.rand.go"
+...
+
+func (c *ComponentRand) Render() string {
+    return fmt.Sprintf(`
+        <div>Random number: %s</div>
+    `, c.Content)
+}
+```
+
+To use the component, just include it into page with `render` function. Please note that we don't need to provide any template definitions now.  
+
+```html title="page.index.html"
+<html>
+  <head>
+    <title>kyoto page</title>
+  </head>
+  <body>
+    {{ render .ComponentRand }}
+  </body>
+```
+
+Also, you can implement this interface in page structure in the same way.
+
+??? note "Custom template engine"
+    Right! With this approach, you can use any template engine.  
+    All template functions are available with `T` preffix, like `kyoto.TRender`.
+
+??? note "Components library"
+    This functionality is very suitable for components library.  
+    In this way you can avoid templates packaging problem.
