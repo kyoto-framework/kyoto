@@ -11,10 +11,11 @@ import (
 	"github.com/kyoto-framework/kyoto/templates"
 )
 
-func main() {
-	// Init mux
-	mux := http.NewServeMux()
+func setupRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("/", kyoto.PageHandler(PageIndex))
+}
 
+func setupActions(mux *http.ServeMux) {
 	// Register Actions handler
 	mux.HandleFunc("/SSA/", actions.Handler(func() *template.Template {
 		return template.Must(template.New("Actions").Funcs(templates.FuncMap()).ParseGlob("*.html"))
@@ -23,9 +24,15 @@ func main() {
 	actions.Register(
 		ComponentUUID(""),
 	)
+}
 
-	// Routes
-	mux.HandleFunc("/", kyoto.PageHandler(PageIndex))
+func main() {
+	// Init mux
+	mux := http.NewServeMux()
+
+	// Setup
+	setupActions(mux)
+	setupRoutes(mux)
 
 	// Run
 	if os.Getenv("PORT") == "" {
