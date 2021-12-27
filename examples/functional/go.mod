@@ -8,5 +8,5 @@ require (
 )
 
 replace (
-	github.com/kyoto-framework/kyoto => ../../kyoto
+	github.com/kyoto-framework/kyoto => ../../
 )
