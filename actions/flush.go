@@ -3,14 +3,16 @@ package actions
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strings"
 
 	"github.com/kyoto-framework/kyoto"
 )
 
-func Flush(b *kyoto.Builder) {
+func Flush(b *kyoto.Core) {
 	// Extract context
+	tb := b.Context.Get("internal:render:tb").(func() *template.Template)
 	rw := b.Context.GetResponseWriter()
 	rwf := rw.(http.Flusher)
 	// Gather state
@@ -21,7 +23,7 @@ func Flush(b *kyoto.Builder) {
 	}
 	// Render
 	buffer := bytes.Buffer{}
-	err := b.TB().Execute(&buffer, b.State.Export())
+	err := tb().Execute(&buffer, b.State.Export())
 	if err != nil {
 		panic(err)
 	}

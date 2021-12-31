@@ -20,15 +20,15 @@ func Handler(tb func() *template.Template) http.HandlerFunc {
 			panic(err)
 		}
 		// Prepare builder
-		b := kyoto.NewBuilder()
+		core := kyoto.NewCore()
 		// Inject component name into state
-		b.State.Set("internal:name", params.Component)
+		core.State.Set("internal:name", params.Component)
 		// Set context
-		b.Context.Set("internal:rw", rw)
-		b.Context.Set("internal:r", r)
-		b.Context.Set("internal:ssa:p", &params)
+		core.Context.Set("internal:rw", rw)
+		core.Context.Set("internal:r", r)
+		core.Context.Set("internal:render:p", &params)
 		// Set template builder
-		b.Template(func() *template.Template {
+		core.Context.Set("internal:render:tb", func() *template.Template {
 			return template.Must(tb().Parse(fmt.Sprintf(`{{ template "%s" . }}`, params.Component)))
 		})
 		// Find component and apply to builder
@@ -36,8 +36,8 @@ func Handler(tb func() *template.Template) http.HandlerFunc {
 		if component, found := registry[params.Component]; found {
 			// Switch behavior based on type of the component
 			switch component := component.(type) {
-			case func(*kyoto.Builder): // Function component
-				component(b)
+			case func(*kyoto.Core): // Function component
+				component(core)
 			default: // Not supported
 				panic("Component type is not supported")
 			}
@@ -46,8 +46,8 @@ func Handler(tb func() *template.Template) http.HandlerFunc {
 		}
 		registryrw.RUnlock()
 		// Patch scheduler with state population, action and flush jobs
-		Patch(b, params)
+		Patch(core, params)
 		// Execute
-		b.Execute()
+		core.Execute()
 	}
 }

@@ -1,4 +1,4 @@
-package templates
+package render
 
 import (
 	"encoding/json"

@@ -5,10 +5,12 @@ import (
 	"net/http"
 
 	"github.com/kyoto-framework/kyoto"
+	"github.com/kyoto-framework/kyoto/actions"
+	"github.com/kyoto-framework/kyoto/lifecycle"
 )
 
-func ComponentUUID(title string) func(*kyoto.Builder) {
-	return func(b *kyoto.Builder) {
+func ComponentUUID(title string) func(*kyoto.Core) {
+	return func(c *kyoto.Core) {
 		// Define UUID loader
 		var loader = func() error {
 			// Execute request
@@ -22,20 +24,20 @@ func ComponentUUID(title string) func(*kyoto.Builder) {
 			data := map[string]string{}
 			json.NewDecoder(resp.Body).Decode(&data)
 			// Set state
-			b.State.Set("UUID", data["uuid"])
+			c.State.Set("UUID", data["uuid"])
 			// Return
 			return nil
 		}
 
 		// Initialize empty state
-		b.Init(func() {
-			b.State.Set("Title", title)
-			b.State.Set("UUID", "")
+		lifecycle.Init(c, func() {
+			c.State.Set("Title", title)
+			c.State.Set("UUID", "")
 		})
 		// Load UUID after initialization
-		b.Async(loader)
+		lifecycle.Async(c, loader)
 		// Define reload action
-		b.Action("Reload", func(args ...interface{}) {
+		actions.Define(c, "Reload", func(args ...interface{}) {
 			loader()
 		})
 	}

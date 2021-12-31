@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Parameters represents parameters, needed for handling SSA request
+// Parameters represents parameters, needed for handling Actions request
 type Parameters struct {
 	Component string
 	Action    string
