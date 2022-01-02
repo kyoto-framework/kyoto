@@ -136,6 +136,9 @@ func SSAFlush(p Page, c Component) {
 	}
 	// Remove newlines (not supported by SSA)
 	html = strings.ReplaceAll(html, "\n", "")
+	html = strings.ReplaceAll(html, "\r", "")
+	html = strings.ReplaceAll(html, "\r\n", "")
+	html = strings.ReplaceAll(html, "\n\r", "")
 	// Write SSE
 	_, err := fmt.Fprintf(rw, "data: %v\n\n", html)
 	if err != nil {
