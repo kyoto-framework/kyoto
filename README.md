@@ -13,7 +13,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg)](https://pkg.go.dev/github.com/kyoto-framework/kyoto)
 
 > **Disclaimer**  
-> This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
+> This project is in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
 
 ## Why I need this?
 
@@ -22,7 +22,7 @@
 - Simple and straightforward page rendering lifecycle
 - Asynchronous DTO without goroutine mess
 - Built-in dynamics like Hotwire or Laravel Livewire
-- Everyting on top of well-known `html/template`
+- Everything on top of well-known `html/template`
 - Get control over project setup: 0 external dependencies, just `kyoto` itself
 
 ## Why not?
