@@ -28,9 +28,12 @@ func ComponentName(component interface{}) string {
 	if reflect.TypeOf(component).Kind() == reflect.Map {
 		return component.(map[string]interface{})["internal:name"].(string)
 	}
-	// In case of passed struct component
-	// ...
-	panic("ComponentName is called with incorrect component type: " + reflect.TypeOf(component).String())
+	// In case of passed struct pointer
+	if reflect.TypeOf(component).Kind() == reflect.Ptr && reflect.TypeOf(component).Elem().Kind() == reflect.Struct {
+		return reflect.TypeOf(component).Elem().Name()
+	}
+	// Default is panic
+	panic("Unable to get component name")
 }
 
 func ComponentSerialize(component interface{}) string {

@@ -19,7 +19,7 @@ func Handler(tb func() *template.Template) http.HandlerFunc {
 		if err != nil {
 			panic(err)
 		}
-		// Prepare builder
+		// Prepare core
 		core := kyoto.NewCore()
 		// Inject component name into state
 		core.State.Set("internal:name", params.Component)
@@ -31,7 +31,7 @@ func Handler(tb func() *template.Template) http.HandlerFunc {
 		core.Context.Set("internal:render:tb", func() *template.Template {
 			return template.Must(tb().Parse(fmt.Sprintf(`{{ template "%s" . }}`, params.Component)))
 		})
-		// Find component and apply to builder
+		// Find component and apply to core
 		registryrw.RLock()
 		if component, found := registry[params.Component]; found {
 			// Switch behavior based on type of the component

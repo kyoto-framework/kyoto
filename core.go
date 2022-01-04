@@ -18,7 +18,7 @@ func NewCore() *Core {
 	// Init schedule
 	_scheduler := scheduler.New()
 	_scheduler.Workers = 10
-	// Return new builder
+	// Return new core
 	return &Core{
 		State:     _state,
 		Context:   _context,
@@ -27,43 +27,37 @@ func NewCore() *Core {
 }
 
 // Workers is a method for setting scheduler workers count (10 by default)
-func (b *Core) Workers(num int) {
-	b.Scheduler.Workers = num
+func (core *Core) Workers(num int) {
+	core.Scheduler.Workers = num
 }
 
-func (b *Core) Component(alias string, component interface{}) {
-	// Create custom builder for component to scope state
-	_b := NewCore()
-	_b.Scheduler = b.Scheduler
-	_b.Context = b.Context
+func (core *Core) Component(alias string, component func(*Core)) {
+	// Create custom core for component to scope state
+	_core := NewCore()
+	_core.Scheduler = core.Scheduler
+	_core.Context = core.Context
 	// Inject component name into state
-	_b.State.Set("internal:name", helpers.ComponentName(component))
-	// Switch behavior based on type of component
-	switch component := component.(type) {
-	case func(*Core): // Function component
-		// Execute builder receiver
-		component(_b)
-	default: // Not supported
-		panic("Component type is not supported")
-	}
+	_core.State.Set("internal:name", helpers.ComponentName(component))
+	// Execute core receiver
+	component(_core)
 	// Schedule a job for state gathering
-	b.Scheduler.Add(scheduler.Job{
+	core.Scheduler.Add(scheduler.Job{
 		Group:   "state",
 		Depends: []string{"afterasync"},
 		Func: func() error {
 			// Gather state
-			b.State.Set(alias, _b.State.Export())
+			core.State.Set(alias, _core.State.Export())
 			return nil
 		},
 	})
 }
 
 // Execute is a method to trigger scheduler execution
-func (b *Core) Execute() {
+func (core *Core) Execute() {
 	// Execute scheduler
-	b.Scheduler.Execute()
+	core.Scheduler.Execute()
 	// Analyze errors
-	for job, res := range b.Scheduler.Results {
+	for job, res := range core.Scheduler.Results {
 		if res != nil {
 			panic("Error in job " + job + ": " + res.Error())
 		}

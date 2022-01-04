@@ -8,10 +8,12 @@ import (
 
 	"github.com/kyoto-framework/kyoto/actions"
 	"github.com/kyoto-framework/kyoto/render"
+	"github.com/kyoto-framework/kyoto/smode"
 )
 
 func setupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/", render.PageHandler(PageIndex))
+	mux.HandleFunc("/smode/", render.PageHandler(smode.Adapt(&PageSMode{})))
 }
 
 func setupActions(mux *http.ServeMux) {

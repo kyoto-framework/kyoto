@@ -1,0 +1,6 @@
+{{ define "ComponentUUIDStruct" }}
+<div {{ componentattrs . }}>
+    {{ .Title }}: {{ .UUID }}
+    <button onclick="{{ action `Reload` }}">Reload</button>
+</div>
+{{ end }}
