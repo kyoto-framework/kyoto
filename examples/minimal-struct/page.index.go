@@ -8,9 +8,10 @@ import (
 )
 
 type PageIndex struct {
-	Title string
-	UUID1 smode.Component
-	UUID2 smode.Component
+	Title     string
+	UUID1     smode.Component
+	UUID2     smode.Component
+	UserAgent smode.Component
 }
 
 func (p *PageIndex) Template() *template.Template {
@@ -25,4 +26,5 @@ func (p *PageIndex) Init() {
 	p.UUID2 = smode.RegC(p, &ComponentUUID{
 		Title: "Second UUID",
 	})
+	p.UserAgent = smode.RegC(p, &ComponentUserAgent{})
 }

@@ -16,5 +16,6 @@ func PageIndex(c *kyoto.Core) {
 		c.State.Set("Title", "Kyoto in a functional way")
 		c.Component("UUID1", ComponentUUID("First UUID"))
 		c.Component("UUID2", ComponentUUID("Second UUID"))
+		c.Component("UserAgent", ComponentUserAgent)
 	})
 }
