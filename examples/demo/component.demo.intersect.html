@@ -1,0 +1,8 @@
+{{ define "ComponentDemoIntersect" }}
+<div {{ componentattrs . }} class="bg-gray-100 rounded p-4" ssa:onintersect="Increment">
+    <div class="text-2xl font-semibold">Intersect Demo</div>
+    <div class="py-2 w-full flex flex-col items-center">
+        <div class="text-2xl">{{ .Count }}</div>
+    </div>
+</div>
+{{ end }}

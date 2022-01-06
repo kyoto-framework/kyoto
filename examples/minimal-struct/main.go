@@ -12,8 +12,9 @@ import (
 )
 
 func setupRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/", render.PageHandler(PageIndex))
-	mux.HandleFunc("/smode/", render.PageHandler(smode.Adapt(&PageSMode{})))
+	mux.HandleFunc("/", render.PageHandler(smode.Adapt(
+		&PageIndex{},
+	)))
 }
 
 func setupActions(mux *http.ServeMux) {
@@ -23,7 +24,7 @@ func setupActions(mux *http.ServeMux) {
 	}))
 	// Register Actions components
 	actions.Register(
-		ComponentUUID(""),
+		smode.Adapt(&ComponentUUID{}),
 	)
 }
 

@@ -7,12 +7,24 @@ import (
 	"github.com/kyoto-framework/kyoto/smode"
 )
 
-type ComponentUUIDStruct struct {
+type ComponentUUID struct {
 	Title string
 	UUID  string
 }
 
-func (c *ComponentUUIDStruct) Load() error {
+func (c *ComponentUUID) Async() error {
+	return c.load()
+}
+
+func (c *ComponentUUID) Actions() smode.ActionMap {
+	return smode.ActionMap{
+		"Reload": func(args ...interface{}) {
+			c.load()
+		},
+	}
+}
+
+func (c *ComponentUUID) load() error {
 	// Execute request
 	resp, err := http.Get("http://httpbin.org/uuid")
 	if err != nil {
@@ -27,16 +39,4 @@ func (c *ComponentUUIDStruct) Load() error {
 	c.UUID = data["uuid"]
 	// Return
 	return nil
-}
-
-func (c *ComponentUUIDStruct) Async() error {
-	return c.Load()
-}
-
-func (c *ComponentUUIDStruct) Actions() smode.ActionMap {
-	return smode.ActionMap{
-		"Reload": func(args ...interface{}) {
-			c.Load()
-		},
-	}
 }

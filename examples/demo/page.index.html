@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - kyoto</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    {{ dynamics `/demo/ssa` }}
+</head>
+<body>
+    <section class="my-24 px-4">
+        {{ template "ComponentHero" .Hero }}
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoUUID" .DemoUUID }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoUUID }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoCounter" .DemoCounter }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoCounter }}
+        </div>
+    </section>
+
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoPoll" .DemoPoll}}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoPoll }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoCalc" .DemoCalc }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoCalc }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoAutocomplete" .DemoAutocomplete }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoAutocomplete }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoEmailValidator" .DemoEmailValidator }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoEmailValidator }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoRedirect" .DemoRedirect }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoRedirect }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoNestingFirst" .DemoNesting }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoNesting }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoLoading" .DemoLoading }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoLoading }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoFlush" .DemoFlush }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoFlush }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoIntersect" .DemoIntersect }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoIntersect }}
+        </div>
+    </section>
+    <section class="my-24 px-4 max-w-screen-xl mx-auto flex items-center justify-center gap-8">
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentDemoMorph" .DemoMorph }}
+        </div>
+        <div class="w-full md:w-1/2">
+            {{ template "ComponentContent" .DescriptionDemoMorph }}
+        </div>
+    </section>
+</body>
+</html>

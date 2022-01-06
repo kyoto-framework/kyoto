@@ -1,4 +1,4 @@
-module github.com/kyoto-framework/kyoto/examples/functional
+module github.com/kyoto-framework/kyoto/examples/minimal-func
 
 go 1.17
 
