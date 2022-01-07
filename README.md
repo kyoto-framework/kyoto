@@ -4,13 +4,17 @@
 </p>
 
 <h1 align="center">kyoto</h1>
+
 <p align="center">
-    Library that brings frontend-like components experience to the server side with native <code>html/template</code> on steroids. Supports any serving basis (<code>net/http</code>/<code>gin</code>/etc), that provides <code>io.Writer</code> in response.
+	<img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
+	<img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
+	<img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
 </p>
 
-![License](https://img.shields.io/github/license/kyoto-framework/kyoto)
-[![Go Report Card](https://goreportcard.com/badge/github.com/kyoto-framework/kyoto)](https://goreportcard.com/report/github.com/kyoto-framework/kyoto)
-[![Go Reference](https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg)](https://pkg.go.dev/github.com/kyoto-framework/kyoto)
+<p align="center">
+	Extendable Go library for creating fast, SSR-first frontend avoiding plain <code>html/template</code> approach downsides.
+</p>
+
 
 > **Disclaimer**  
 > This project is in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
