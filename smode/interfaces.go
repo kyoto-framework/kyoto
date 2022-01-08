@@ -39,3 +39,11 @@ type ImplementsAfterAsync interface {
 type ImplementsAfterAsyncWithPage interface {
 	AfterAsync(p Page)
 }
+
+type ImplementsActions interface {
+	Actions() ActionMap
+}
+
+type ImplementsActionsWithPage interface {
+	Actions(p Page) ActionMap
+}

@@ -23,8 +23,8 @@ func setupActions(mux *http.ServeMux) {
 		return template.Must(template.New("Actions").Funcs(render.FuncMap()).ParseGlob("*.html"))
 	}))
 	// Register Actions components
-	actions.Register(
-		smode.Adapt(&ComponentUUID{}),
+	smode.Register(
+		&ComponentUUID{},
 	)
 }
 

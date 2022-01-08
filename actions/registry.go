@@ -19,3 +19,11 @@ func Register(components ...interface{}) {
 	}
 
 }
+
+func RegisterWithName(name string, component interface{}) {
+	// Acquire write lock
+	registryrw.Lock()
+	defer registryrw.Unlock()
+	// Register component
+	registry[name] = component
+}

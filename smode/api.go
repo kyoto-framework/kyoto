@@ -1,7 +1,10 @@
 package smode
 
 import (
+	"reflect"
+
 	"github.com/kyoto-framework/kyoto"
+	"github.com/kyoto-framework/kyoto/actions"
 	"github.com/kyoto-framework/kyoto/helpers"
 	"github.com/kyoto-framework/kyoto/lifecycle"
 	"github.com/kyoto-framework/kyoto/render"
@@ -52,6 +55,25 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 				return nil
 			})
 		}
+		// Adapt actions
+		if _item, ok := item.(ImplementsActions); ok {
+			for name, action := range _item.Actions() {
+				// Wrap action with struct population.
+				// This "hack" is required because Core receiver is called before action patch,
+				// so we can't override state population
+				_action := func(args ...interface{}) {
+					for k, v := range core.State.Export() {
+						field := reflect.ValueOf(item).Elem().FieldByName(k)
+						if field.CanSet() {
+							field.Set(reflect.ValueOf(v))
+						}
+					}
+					action(args...)
+				}
+				// Register action
+				actions.Define(core, name, _action)
+			}
+		}
 		// Schedule state export
 		core.Scheduler.Add(scheduler.Job{
 			Group:   "state",
@@ -95,4 +117,17 @@ func RegC(page Page, component Component) Component {
 	delete(pmap, component)
 	// Return a state of the component
 	return _core.State.Export()
+}
+
+func Register(components ...interface{}) {
+	for _, component := range components {
+		switch c := component.(type) {
+		case func(*kyoto.Core):
+			// Register builder
+			actions.RegisterWithName(helpers.ComponentName(component), c)
+		case Component:
+			// Register struct with adapt
+			actions.RegisterWithName(helpers.ComponentName(component), Adapt(c))
+		}
+	}
 }
