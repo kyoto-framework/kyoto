@@ -12,29 +12,35 @@
 </p>
 
 <p align="center">
-	Extendable Go library for creating fast, SSR-first frontend avoiding plain <code>html/template</code> approach downsides.
+	Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
 </p>
 
+> **Disclaimer №1**  
+> High entry threshold. You must understand what problems are you trying to solve before using.
 
-> **Disclaimer**  
+> **Disclaimer №2**  
 > This project is in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
 
-## Why I need this?
+## Motivation
 
+When our team migrated from JS framework to vanilla Go templating (we had a lot of reasons), we faced a set of tipical inconveniences during development. Copy-paste of DTO calls, markups, spaghetti inside of handlers, etc. Also, the goroutine system might be quite verbose in some places. That's why we decided to bring the best from two worlds and create a small library.
+
+## What kyoto proposes?
+
+- Organize code into configurable and standalone components structure
 - Get rid of spaghetti inside of handlers
-- Organize code into configurable components structure
-- Simple and straightforward page rendering lifecycle
-- Asynchronous DTO without goroutine mess
+- Simple asynchronous page rendering lifecycle
 - Built-in dynamics like Hotwire or Laravel Livewire
-- Everything on top of well-known `html/template`
-- Get control over project setup: 0 external dependencies, just `kyoto` itself
+- Built-in rendering based on `html/template`
+- Full control over project setup (minimal dependencies)
+- Extensible architecture (everyone can create own extensions for library)
 
-## Why not?
+## Reasons to opt out
 
 - In active development (not production ready)
-- Not situable for pretty dynamic frontends
 - You want to develop SPA/PWA
 - You're just feeling OK with JS frameworks
+- Not situable for a frontend with a lot of client-side logic
 
 ## Installation
 
@@ -91,7 +97,6 @@ func (p *PageIndex) Init() {
 
 ```
 
-
 ## References
 
 Documentation: [https://kyoto.codes/](https://kyoto.codes/)  
@@ -101,7 +106,9 @@ Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/
 
 ## Support
 
-<a target="_blank" href="https://www.buymeacoffee.com/yuriizinets"><img alt="Buy me a Coffee" src="https://github.com/egonelbre/gophers/blob/master/.thumb/animation/buy-morning-coffee-3x.gif?raw=true"></a>
+Any project support is appreciated! Donations will help us to keep high updates frequency. If you would like to avoid using listed methods, contact us directly with [info@kyoto.codes](mailto:info@kyoto.codes)  
 
+Bitcoin: `bc1qgxe4u799f8pdyzk65sqpq28xj0yc6g05ckhvkk`  
+Ethereum: `0xEB2f24e830223bE081264e0c81fb5FD4DDD2B7B0`
 
-Or directly with Bitcoin: `bc1qgxe4u799f8pdyzk65sqpq28xj0yc6g05ckhvkk`
+Open Collective: `https://opencollective.com/kyoto-framework`
