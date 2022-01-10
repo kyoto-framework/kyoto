@@ -17,18 +17,12 @@ func NewCore() *Core {
 	_context := NewStore()
 	// Init schedule
 	_scheduler := scheduler.New()
-	_scheduler.Workers = 10
 	// Return new core
 	return &Core{
 		State:     _state,
 		Context:   _context,
 		Scheduler: _scheduler,
 	}
-}
-
-// Workers is a method for setting scheduler workers count (10 by default)
-func (core *Core) Workers(num int) {
-	core.Scheduler.Workers = num
 }
 
 func (core *Core) Component(alias string, component func(*Core)) {
@@ -41,7 +35,7 @@ func (core *Core) Component(alias string, component func(*Core)) {
 	// Execute core receiver
 	component(_core)
 	// Schedule a job for state gathering
-	core.Scheduler.Add(scheduler.Job{
+	core.Scheduler.Add(&scheduler.Job{
 		Group:   "state",
 		Depends: []string{"afterasync"},
 		Func: func() error {

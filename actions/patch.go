@@ -11,7 +11,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 		panic("No template specified for page")
 	}
 	// Patch and cleanup existing jobs
-	jobs := []scheduler.Job{}
+	jobs := []*scheduler.Job{}
 	for _, job := range core.Scheduler.Jobs {
 		if job.Name == "empty" {
 			jobs = append(jobs, job)
@@ -29,7 +29,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 	}
 	core.Scheduler.Jobs = jobs
 	// Add state population job
-	core.Scheduler.Add(scheduler.Job{
+	core.Scheduler.Add(&scheduler.Job{
 		Group:   "populate",
 		Depends: []string{"init"},
 		Func: func() error {
@@ -40,7 +40,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 		},
 	})
 	// Add action job
-	core.Scheduler.Add(scheduler.Job{
+	core.Scheduler.Add(&scheduler.Job{
 		Group:   "action",
 		Depends: []string{"populate"},
 		Func: func() error {
@@ -49,7 +49,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 		},
 	})
 	// Add final flush job
-	core.Scheduler.Add(scheduler.Job{
+	core.Scheduler.Add(&scheduler.Job{
 		Group:   "flush",
 		Depends: []string{"action"},
 		Func: func() error {

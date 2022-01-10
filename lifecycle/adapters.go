@@ -7,7 +7,7 @@ import (
 
 func Init(b *kyoto.Core, init func()) {
 	Patch(b)
-	b.Scheduler.Add(scheduler.Job{
+	b.Scheduler.Add(&scheduler.Job{
 		Group: "init",
 		Func: func() error {
 			init()
@@ -18,7 +18,7 @@ func Init(b *kyoto.Core, init func()) {
 
 func Async(b *kyoto.Core, async func() error) {
 	Patch(b)
-	b.Scheduler.Add(scheduler.Job{
+	b.Scheduler.Add(&scheduler.Job{
 		Group:   "async",
 		Depends: []string{"init"},
 		Func:    async,
@@ -27,7 +27,7 @@ func Async(b *kyoto.Core, async func() error) {
 
 func AfterAsync(b *kyoto.Core, afterasync func() error) {
 	Patch(b)
-	b.Scheduler.Add(scheduler.Job{
+	b.Scheduler.Add(&scheduler.Job{
 		Group:   "afterasync",
 		Depends: []string{"async"},
 		Func:    afterasync,

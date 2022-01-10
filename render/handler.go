@@ -31,7 +31,7 @@ func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 			}
 		}
 		// Schedule a render job
-		core.Scheduler.Add(scheduler.Job{
+		core.Scheduler.Add(&scheduler.Job{
 			Group:   "render",
 			Depends: groups,
 			Func: func() error {

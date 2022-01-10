@@ -75,7 +75,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			}
 		}
 		// Schedule state export
-		core.Scheduler.Add(scheduler.Job{
+		core.Scheduler.Add(&scheduler.Job{
 			Group:   "state",
 			Depends: []string{"afterasync"},
 			Func: func() error {
@@ -86,7 +86,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			},
 		})
 		// Schedule global cmap cleanup
-		core.Scheduler.Add(scheduler.Job{
+		core.Scheduler.Add(&scheduler.Job{
 			Group:   "cleanup",
 			Depends: []string{"render"},
 			Func: func() error {

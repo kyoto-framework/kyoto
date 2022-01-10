@@ -16,7 +16,8 @@ func ComponentUUID(title string) func(*kyoto.Core) {
 			// Execute request
 			resp, err := http.Get("http://httpbin.org/uuid")
 			if err != nil {
-				return err
+				c.State.Set("UUID", "Error while retrieving UUID")
+				return nil
 			}
 			// Defer closing of response body
 			defer resp.Body.Close()
