@@ -111,4 +111,4 @@ Any project support is appreciated! Donations will help us to keep high updates 
 Bitcoin: `bc1qgxe4u799f8pdyzk65sqpq28xj0yc6g05ckhvkk`  
 Ethereum: `0xEB2f24e830223bE081264e0c81fb5FD4DDD2B7B0`
 
-Open Collective: `https://opencollective.com/kyoto-framework`
+Open Collective: [https://opencollective.com/kyoto-framework](https://opencollective.com/kyoto-framework)
