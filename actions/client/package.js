@@ -5,7 +5,7 @@ var data;
 try {
   data = fs.readFileSync("dist/dynamics.js", "utf8");
   data =
-    'package kyoto\n\nvar Client = "<script>' +
+    'package actions\n\nvar Client = "<script>' +
     data.toString().replaceAll('"', '\\"').split("\n").join("") +
     '</script>"\n';
 } catch (err) {
