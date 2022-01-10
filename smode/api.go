@@ -2,6 +2,7 @@ package smode
 
 import (
 	"reflect"
+	"sync"
 
 	"github.com/kyoto-framework/kyoto"
 	"github.com/kyoto-framework/kyoto/actions"
@@ -12,8 +13,10 @@ import (
 )
 
 var (
-	cmap = map[interface{}]*kyoto.Core{}
-	pmap = map[Component]Page{}
+	cmap  = map[interface{}]*kyoto.Core{}
+	pmap  = map[Component]Page{}
+	cmapm = sync.Mutex{}
+	pmapm = sync.Mutex{}
 )
 
 func Adapt(item interface{}) func(*kyoto.Core) {
@@ -90,7 +93,9 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			Group:   "cleanup",
 			Depends: []string{"render"},
 			Func: func() error {
+				cmapm.Lock()
 				delete(cmap, item)
+				cmapm.Unlock()
 				return nil
 			},
 		})
@@ -114,7 +119,9 @@ func RegC(page Page, component Component) Component {
 		Adapt(c)(_core)
 	}
 	// Remove component/page mapping from temporary store
+	pmapm.Lock()
 	delete(pmap, component)
+	pmapm.Unlock()
 	// Return a state of the component
 	return _core.State.Export()
 }
