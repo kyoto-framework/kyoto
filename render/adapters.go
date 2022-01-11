@@ -15,7 +15,7 @@ func Renderer(b *kyoto.Core, renderer func(rw http.ResponseWriter) error) {
 	b.Context.Set("internal:render:rnd", renderer)
 }
 
-func Redirect(b *kyoto.Core, url string, code int) {
-	b.Context.Set("internal:render:redirect", url)
+func Redirect(b *kyoto.Core, target string, code int) {
+	b.Context.Set("internal:render:redirect", target)
 	b.Context.Set("internal:render:redirectCode", code)
 }

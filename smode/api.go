@@ -141,3 +141,10 @@ func Register(components ...interface{}) {
 		}
 	}
 }
+
+func Redirect(page Page, target string, code int) {
+	// Extract core
+	core := cmap[page]
+	// Redirect
+	render.Redirect(core, target, code)
+}
