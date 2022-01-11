@@ -36,6 +36,14 @@ func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 			Group:   "render",
 			Depends: groups,
 			Func: func() error {
+				if redirect := core.Context.Get("internal:render:redirect"); redirect != nil { // Check redirect
+					code := 302
+					if redirectCode := core.Context.Get("internal:render:redirectCode"); redirectCode != nil {
+						code = redirectCode.(int)
+					}
+					http.Redirect(rw, r, redirect.(string), code)
+					return nil
+				}
 				if renderer := core.Context.Get("internal:render:rnd"); renderer != nil { // Check renderer
 					return renderer.(func(http.ResponseWriter) error)(rw) // Call renderer
 				} else if tbuilder := core.Context.Get("internal:render:tb"); tbuilder != nil { // Check template builder
