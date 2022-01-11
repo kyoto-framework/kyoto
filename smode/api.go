@@ -25,9 +25,12 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		cmap[item] = core
 		// Extract page
 		page := pmap[item]
-		// Adapt template
+		// Adapt rendering
 		if _item, ok := item.(ImplementsTemplate); ok {
 			render.Template(core, _item.Template)
+		}
+		if _item, ok := item.(ImplementsRender); ok {
+			render.Renderer(core, _item.Render)
 		}
 		// Adapt lifecycle
 		if _item, ok := item.(ImplementsInit); ok {

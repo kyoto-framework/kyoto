@@ -1,6 +1,9 @@
 package smode
 
-import "html/template"
+import (
+	"html/template"
+	"net/http"
+)
 
 type Action func(args ...interface{})
 type ActionMap map[string]Action
@@ -14,6 +17,10 @@ type ImplementsTemplate interface {
 
 type ImplementsTemplateWithPage interface {
 	Template(p Page) *template.Template
+}
+
+type ImplementsRender interface {
+	Render(rw http.ResponseWriter) error
 }
 
 type ImplementsInit interface {

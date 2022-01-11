@@ -1,6 +1,7 @@
 package render
 
 import (
+	"errors"
 	"html/template"
 	"net/http"
 	"strings"
@@ -35,8 +36,12 @@ func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 			Group:   "render",
 			Depends: groups,
 			Func: func() error {
-				tb := core.Context.Get("internal:render:tb").(func() *template.Template)
-				return tb().Execute(rw, core.State.Export())
+				if renderer := core.Context.Get("internal:render:rnd"); renderer != nil { // Check renderer
+					return renderer.(func(http.ResponseWriter) error)(rw) // Call renderer
+				} else if tbuilder := core.Context.Get("internal:render:tb"); tbuilder != nil { // Check template builder
+					return tbuilder.(func() *template.Template)().Execute(rw, core.State.Export()) // Execute template
+				}
+				return errors.New("no renderer or template builder specified") // Error if no renderer or template builder
 			},
 		})
 		// Execute scheduler
