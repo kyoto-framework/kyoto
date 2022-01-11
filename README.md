@@ -33,6 +33,7 @@ When our team migrated from JS framework to vanilla Go templating (we had a lot 
 - Built-in dynamics like Hotwire or Laravel Livewire
 - Built-in rendering based on `html/template`
 - Full control over project setup (minimal dependencies)
+- 0kb JS option (~8kb when using dynamics)
 - Extensible architecture (everyone can create own extensions for library)
 
 ## Reasons to opt out
