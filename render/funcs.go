@@ -20,7 +20,7 @@ func Meta(page interface{}) template.HTML {
 
 func Dynamics(path ...string) template.HTML {
 	if len(path) == 0 {
-		path = append(path, "/SSA")
+		path = append(path, "/internal/actions/")
 	}
 	builder := strings.Builder{}
 	builder.WriteString(fmt.Sprintf("<script>const ssapath = \"%s\"</script>", path[0]))

@@ -19,7 +19,7 @@ func setupRoutes(mux *http.ServeMux) {
 
 func setupActions(mux *http.ServeMux) {
 	// Register Actions handler
-	mux.HandleFunc("/SSA/", actions.Handler(func() *template.Template {
+	mux.HandleFunc("/internal/actions/", actions.Handler(func() *template.Template {
 		return template.Must(template.New("Actions").Funcs(render.FuncMap()).ParseGlob("*.html"))
 	}))
 	// Register Actions components
