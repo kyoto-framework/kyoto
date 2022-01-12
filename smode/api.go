@@ -21,6 +21,8 @@ var (
 
 func Adapt(item interface{}) func(*kyoto.Core) {
 	return func(core *kyoto.Core) {
+		// Inject component name
+		core.State.Set("internal:name", helpers.ComponentName(item))
 		// Save core mapping
 		cmap[item] = core
 		// Extract page
@@ -62,8 +64,8 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			})
 		}
 		// Adapt actions
-		if _item, ok := item.(ImplementsActions); ok {
-			for name, action := range _item.Actions() {
+		adaptactions := func(amap ActionMap) {
+			for name, action := range amap {
 				// Wrap action with struct population.
 				// This "hack" is required because Core receiver is called before action patch,
 				// so we can't override state population
@@ -80,6 +82,10 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 				actions.Define(core, name, _action)
 			}
 		}
+		if _item, ok := item.(ImplementsActions); ok {
+			adaptactions(_item.Actions())
+		}
+
 		// Schedule state export
 		core.Scheduler.Add(&scheduler.Job{
 			Group:   "state",

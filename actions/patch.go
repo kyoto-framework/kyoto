@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"errors"
+
 	"github.com/kyoto-framework/kyoto"
 	"github.com/kyoto-framework/scheduler"
 )
@@ -44,7 +46,12 @@ func Patch(core *kyoto.Core, params Parameters) {
 		Group:   "action",
 		Depends: []string{"populate"},
 		Func: func() error {
-			GetActions(core)[params.Action](params.Args...)
+			actions := GetActions(core)
+			if action, found := actions[params.Action]; found {
+				action(params.Args...)
+			} else {
+				return errors.New("action " + params.Action + " not found for component " + params.Component)
+			}
 			return nil
 		},
 	})
