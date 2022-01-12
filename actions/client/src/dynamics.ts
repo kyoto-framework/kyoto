@@ -194,7 +194,10 @@ export function Action(self: HTMLElement, action: string, ...args: Array<any>): 
         _TriggerLoaders(root)
         // Build URL
         let url = ssapath
-        url += `/${root.getAttribute('name')}`  // Component name
+        if (!url.endsWith('/')) {
+            url += '/'
+        }
+        url += `${root.getAttribute('name')}`  // Component name
         url += `/${root.getAttribute('state') || '{}'}` // Component state
         url += `/${_NameCleanup(action)}` // Action name
         url += `/${_Encode(JSON.stringify(args))}` // Action arguments

@@ -1,7 +1,7 @@
 package smode
 
 import (
-	"reflect"
+	"encoding/json"
 	"sync"
 
 	"github.com/kyoto-framework/kyoto"
@@ -65,25 +65,25 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		}
 		// Adapt actions
 		adaptactions := func(amap ActionMap) {
-			for name, action := range amap {
-				// Wrap action with struct population.
-				// This "hack" is required because Core receiver is called before action patch,
-				// so we can't override state population
-				_action := func(args ...interface{}) {
-					for k, v := range core.State.Export() {
-						field := reflect.ValueOf(item).Elem().FieldByName(k)
-						if field.CanSet() {
-							field.Set(reflect.ValueOf(v))
-						}
-					}
+			wrapaction := func(action Action) func(...interface{}) {
+				return func(args ...interface{}) {
+					statebts, _ := json.Marshal(core.State.Export())
+					json.Unmarshal(statebts, item)
 					action(args...)
 				}
-				// Register action
-				actions.Define(core, name, _action)
+			}
+			for name, action := range amap {
+				// Wrap and register an action.
+				// This "hack" is required because Core receiver is called before action patch,
+				// so we can't override state population
+				actions.Define(core, name, wrapaction(action))
 			}
 		}
 		if _item, ok := item.(ImplementsActions); ok {
 			adaptactions(_item.Actions())
+		}
+		if _item, ok := item.(ImplementsActionsWithPage); ok {
+			adaptactions(_item.Actions(page))
 		}
 
 		// Schedule state export
