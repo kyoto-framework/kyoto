@@ -37,9 +37,15 @@ func ComponentName(component interface{}) string {
 }
 
 func ComponentSerialize(component interface{}) string {
-	// Delete internals from state
+	// If state is passed, make local cleaned copy
 	if component, ok := component.(map[string]interface{}); ok {
-		delete(component, "internal:name")
+		_component := map[string]interface{}{}
+		for k, v := range component {
+			if !strings.HasPrefix(k, "internal:") {
+				_component[k] = v
+			}
+		}
+		component = _component
 	}
 	// Serialize component state into json
 	statebts, err := json.Marshal(component)
