@@ -23,7 +23,7 @@
 
 ## Motivation
 
-When our team migrated from JS framework to vanilla Go templating (we had a lot of reasons), we faced a set of tipical inconveniences during development. Copy-paste of DTO calls, markups, spaghetti inside of handlers, etc. Also, the goroutine system might be quite verbose in some places. That's why we decided to bring the best from two worlds and create a small library.
+When our team migrated from JS framework to vanilla Go templating (we had a lot of reasons), we faced a set of tipical inconveniences during development. That's why we decided to bring the best from two worlds and create a small library.
 
 ## What kyoto proposes?
 
