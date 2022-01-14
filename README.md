@@ -23,7 +23,7 @@
 
 ## Motivation
 
-When our team migrated from JS framework to vanilla Go templating (we had a lot of reasons), we faced a set of tipical inconveniences during development. That's why we decided to bring the best from two worlds and create a small library.
+When our team migrated from JS framework to vanilla Go templating (we had a lot of reasons), we faced a set of tipical inconveniences during development. That's why we decided to bring the best from two worlds and create this small library.
 
 ## What kyoto proposes?
 
