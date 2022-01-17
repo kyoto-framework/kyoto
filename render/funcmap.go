@@ -6,9 +6,7 @@ import "html/template"
 // You need to use this function while template building (or mix with your own)
 func FuncMap() template.FuncMap {
 	return template.FuncMap{
-		"meta":           Meta,
 		"dynamics":       Dynamics,
-		"json":           JSON,
 		"componentattrs": ComponentAttrs,
 		"action":         Action,
 		"bind":           Bind,

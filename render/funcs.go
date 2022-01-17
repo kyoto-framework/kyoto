@@ -14,10 +14,6 @@ func Render(component interface{}) string {
 	return ""
 }
 
-func Meta(page interface{}) template.HTML {
-	return ""
-}
-
 func Dynamics(path ...string) template.HTML {
 	if len(path) == 0 {
 		path = append(path, "/internal/actions/")
@@ -26,10 +22,6 @@ func Dynamics(path ...string) template.HTML {
 	builder.WriteString(fmt.Sprintf("<script>const ssapath = \"%s\"</script>", path[0]))
 	builder.WriteString(actions.Client)
 	return template.HTML(builder.String())
-}
-
-func JSON(data interface{}) string {
-	return ""
 }
 
 func ComponentAttrs(component interface{}) template.HTMLAttr {
