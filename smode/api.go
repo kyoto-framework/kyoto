@@ -2,6 +2,7 @@ package smode
 
 import (
 	"encoding/json"
+	"reflect"
 	"sync"
 
 	"github.com/kyoto-framework/kyoto"
@@ -21,6 +22,12 @@ var (
 
 func Adapt(item interface{}) func(*kyoto.Core) {
 	return func(core *kyoto.Core) {
+		// In case of page, need to create a new instance
+		if _, ispage := item.(ImplementsTemplate); ispage {
+			item = reflect.New(reflect.TypeOf(item).Elem()).Interface().(Page)
+		} else if _, ispage := item.(ImplementsTemplateWithPage); ispage {
+			item = reflect.New(reflect.TypeOf(item).Elem()).Interface().(Page)
+		}
 		// Inject component name
 		core.State.Set("internal:name", helpers.ComponentName(item))
 		// Save core mapping
