@@ -11,6 +11,8 @@ import (
 	"github.com/kyoto-framework/scheduler"
 )
 
+// PageHandler is a function, responsible for page rendering.
+// Returns http.HandlerFunc for registering in your router.
 func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		// Initialize the core
