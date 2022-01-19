@@ -5,6 +5,9 @@ import (
 	"github.com/kyoto-framework/scheduler"
 )
 
+// Patch is a function to inject lifecycle functionality into kyoto.Core.
+// Usually you don't need to call this function directly. Patch is applied automatically
+// when you call one of lifecycle adapters.
 func Patch(b *kyoto.Core) {
 	// Check if patching is needed
 	if b.Context.Get("internal:lifecycle") != nil {
