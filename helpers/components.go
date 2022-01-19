@@ -9,10 +9,16 @@ import (
 	"strings"
 )
 
+// ComponentID is a function to get component id.
+// Now it uses pointer address.
 func ComponentID(component interface{}) string {
 	return fmt.Sprintf("%p", component)
 }
 
+// ComponentName is a function to extract component name.
+// In case of struct pointer, takes struct name.
+// In case of Map, extracts component name with "internal:name" key.
+// In case of function, takes function name.
 func ComponentName(component interface{}) string {
 	// In case of passed function component
 	if reflect.TypeOf(component).Kind() == reflect.Func {
@@ -36,6 +42,7 @@ func ComponentName(component interface{}) string {
 	panic("Unable to get component name")
 }
 
+// ComponentSerialize is a function to serialize component state.
 func ComponentSerialize(component interface{}) string {
 	// If state is passed, make local cleaned copy
 	if component, ok := component.(map[string]interface{}); ok {
