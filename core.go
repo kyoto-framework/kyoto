@@ -5,12 +5,21 @@ import (
 	"github.com/kyoto-framework/scheduler"
 )
 
+// Core is a start point of kyoto.
+// It cointains only basics, while external packages
+// are using core for providing all the kyoto functionality.
+//
+// Core consists of state, context and scheduler.
+// Each component is a receiver of core.
+// Use "adapter" functions to inject functionality into kyoto core:
+// (f.e. lifecycle.Init(core, ...) ).
 type Core struct {
 	State     State
 	Context   Context
 	Scheduler *scheduler.Scheduler
 }
 
+// NewCore is a constructor for Core.
 func NewCore() *Core {
 	// Init state and context
 	_state := NewStore()
@@ -25,6 +34,9 @@ func NewCore() *Core {
 	}
 }
 
+// Component is a method to inject nested component.
+// Under the hood it composes custom Core for state separation and nesting.
+// On "afterasync" completion, state will be injected into root state with a provided alias.
 func (core *Core) Component(alias string, component func(*Core)) {
 	// Create custom core for component to scope state
 	_core := NewCore()
@@ -46,7 +58,7 @@ func (core *Core) Component(alias string, component func(*Core)) {
 	})
 }
 
-// Execute is a method to trigger scheduler execution
+// Execute is a method to trigger scheduler execution.
 func (core *Core) Execute() {
 	// Execute scheduler
 	core.Scheduler.Execute()
