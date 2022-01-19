@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 	"strings"
 
@@ -12,7 +13,6 @@ import (
 
 func Flush(b *kyoto.Core) {
 	// Extract context
-	tb := b.Context.Get("internal:render:tb").(func() *template.Template)
 	rw := b.Context.GetResponseWriter()
 	rwf := rw.(http.Flusher)
 	// Gather state
@@ -22,8 +22,15 @@ func Flush(b *kyoto.Core) {
 		}
 	}
 	// Render
-	buffer := bytes.Buffer{}
-	err := tb().Execute(&buffer, b.State.Export())
+	buffer := bytes.NewBufferString("")
+	var err error
+	if b.Context.Get("internal:render:cm") != nil {
+		renderer := b.Context.Get("internal:render:cm").(func(io.Writer) error)
+		err = renderer(buffer)
+	} else {
+		tbuilder := b.Context.Get("internal:render:tb").(func() *template.Template)
+		err = tbuilder().Execute(buffer, b.State.Export())
+	}
 	if err != nil {
 		panic(err)
 	}

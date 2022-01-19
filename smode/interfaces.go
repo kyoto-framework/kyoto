@@ -2,7 +2,7 @@ package smode
 
 import (
 	"html/template"
-	"net/http"
+	"io"
 )
 
 type Action func(args ...interface{})
@@ -20,7 +20,7 @@ type ImplementsTemplateWithPage interface {
 }
 
 type ImplementsRender interface {
-	Render(rw http.ResponseWriter) error
+	Render(rw io.Writer) error
 }
 
 type ImplementsInit interface {

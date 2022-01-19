@@ -39,7 +39,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			render.Template(core, _item.Template)
 		}
 		if _item, ok := item.(ImplementsRender); ok {
-			render.Renderer(core, _item.Render)
+			render.Custom(core, _item.Render)
 		}
 		// Adapt lifecycle
 		if _item, ok := item.(ImplementsInit); ok {

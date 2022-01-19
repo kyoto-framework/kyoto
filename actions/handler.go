@@ -27,24 +27,20 @@ func Handler(tb func() *template.Template) http.HandlerFunc {
 		core.Context.Set("internal:rw", rw)
 		core.Context.Set("internal:r", r)
 		core.Context.Set("internal:render:p", &params)
-		// Set template builder
-		core.Context.Set("internal:render:tb", func() *template.Template {
-			return template.Must(tb().Parse(fmt.Sprintf(`{{ template "%s" . }}`, params.Component)))
-		})
 		// Find component and apply to core
 		registryrw.RLock()
 		if component, found := registry[params.Component]; found {
-			// Switch behavior based on type of the component
-			switch component := component.(type) {
-			case func(*kyoto.Core): // Function component
-				component(core)
-			default: // Not supported
-				panic("Component type is not supported")
-			}
+			component(core)
 		} else {
 			panic("Component not found in registry")
 		}
 		registryrw.RUnlock()
+		// If no custom render, set template builder
+		if core.Context.Get("internal:render:cm") == nil {
+			core.Context.Set("internal:render:tb", func() *template.Template {
+				return template.Must(tb().Parse(fmt.Sprintf(`{{ template "%s" . }}`, params.Component)))
+			})
+		}
 		// Patch scheduler with state population, action and flush jobs
 		Patch(core, params)
 		// Execute

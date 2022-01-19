@@ -3,13 +3,14 @@ package actions
 import (
 	"sync"
 
+	"github.com/kyoto-framework/kyoto"
 	"github.com/kyoto-framework/kyoto/helpers"
 )
 
-var registry = map[string]interface{}{}
+var registry = map[string]func(*kyoto.Core){}
 var registryrw = sync.RWMutex{}
 
-func Register(components ...interface{}) {
+func Register(components ...func(*kyoto.Core)) {
 	// Acquire write lock
 	registryrw.Lock()
 	defer registryrw.Unlock()
@@ -20,7 +21,7 @@ func Register(components ...interface{}) {
 
 }
 
-func RegisterWithName(name string, component interface{}) {
+func RegisterWithName(name string, component func(*kyoto.Core)) {
 	// Acquire write lock
 	registryrw.Lock()
 	defer registryrw.Unlock()
