@@ -10,6 +10,7 @@ import (
 var registry = map[string]func(*kyoto.Core){}
 var registryrw = sync.RWMutex{}
 
+// Register is a function to register a dynamic component.
 func Register(components ...func(*kyoto.Core)) {
 	// Acquire write lock
 	registryrw.Lock()
@@ -21,6 +22,7 @@ func Register(components ...func(*kyoto.Core)) {
 
 }
 
+// RegisterWithName is a function to register a dynamic component with a specified name.
 func RegisterWithName(name string, component func(*kyoto.Core)) {
 	// Acquire write lock
 	registryrw.Lock()

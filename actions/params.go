@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Parameters represents parameters, needed for handling Actions request
+// Parameters represents parameters, needed for handling Actions request.
 type Parameters struct {
 	Component string
 	Action    string
@@ -14,6 +14,7 @@ type Parameters struct {
 	Args      []interface{}
 }
 
+// ParseParameters is a function that parses parameters from request path.
 func ParseParameters(path string) (Parameters, error) {
 	params := Parameters{}
 	tokens := strings.Split(path, "/")

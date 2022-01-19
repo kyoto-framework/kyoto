@@ -11,6 +11,8 @@ import (
 	"github.com/kyoto-framework/kyoto"
 )
 
+// Flush is a function to immediately update a component layout during action.
+// It is useful for updating a component layout multiple times during long action.
 func Flush(b *kyoto.Core) {
 	// Extract context
 	rw := b.Context.GetResponseWriter()

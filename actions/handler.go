@@ -8,6 +8,8 @@ import (
 	"github.com/kyoto-framework/kyoto"
 )
 
+// Handler is a generic actions handler, responsible for component rendering
+// on action call. Please note, you also need to register your dynamic components with Register method.
 func Handler(tb func() *template.Template) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		// Set server-sent events headers
