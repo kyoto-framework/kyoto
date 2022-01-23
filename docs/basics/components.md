@@ -80,3 +80,9 @@ func ComponentFoo(param1, param2 string) func(*kyoto.Core) {
     }
 }
 ```
+
+Attach it to a page in the same way, but with a call:
+
+```go
+core.Component("Foo", ComponentFoo("param1", "param2"))
+```
