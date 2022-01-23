@@ -69,8 +69,8 @@ import (
 // This example demonstrates main advantage of kyoto library - asynchronous lifecycle.
 // Multiple UUIDs will be fetched in asynchronous way, without even touching goroutines and synchronization tools like sync.WaitGroup.
 
-// Let's assume markup of this component is stored in 'component.httpbin.uuid.html'
-func ComponentHttpbinUUID(core *kyoto.Core) {
+// Let's assume markup of this component is stored in 'component.uuid.html'
+func ComponentUUID(core *kyoto.Core) {
     lifecycle.Init(core, func() {
         core.State.Set("UUID", "")
     })
@@ -86,8 +86,8 @@ func ComponentHttpbinUUID(core *kyoto.Core) {
 // Let's assume markup of this page is stored in 'page.index.html'
 func PageIndex(core *kyoto.Core) {
     lifecycle.Init(core, func() {
-        core.Component("UUID1", ComponentHttpbinUUID)
-        core.Component("UUID2", ComponentHttpbinUUID)
+        core.Component("UUID1", ComponentUUID)
+        core.Component("UUID2", ComponentUUID)
     })
     render.Template(c, func() *template.Template {
         return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
