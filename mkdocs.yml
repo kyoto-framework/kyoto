@@ -53,7 +53,7 @@ nav:
     - Pages: basics/pages.md
     - Components: basics/components.md
     - Lifecycle: basics/lifecycle.md
-    - Context: basics/components.md
+    - Context: basics/context.md
   - Features:
     - features/index.md
     - Actions: features/actions.md
