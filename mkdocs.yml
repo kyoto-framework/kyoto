@@ -43,25 +43,28 @@ nav:
   - Prologue: prologue.md
   - Getting started:
     - getting-started/index.md
-    - With starter: getting-started/with-starter.md
     - From scratch: getting-started/from-scratch.md
+    - With starter: getting-started/with-starter.md
     - Integration: getting-started/integration.md
     - Example with guide: getting-started/example-with-guide.md
+  - Basics:
+    - basics/index.md
+    - Routing: basics/routing.md
+    - Pages: basics/pages.md
+    - Components: basics/components.md
+    - Lifecycle: basics/lifecycle.md
+    - Context: basics/components.md
+  - Features:
+    - features/index.md
+    - Actions: features/actions.md
+    - Struct Mode: features/struct-mode.md
   - Concepts:
     - concepts/index.md
-    - Structures: concepts/structures.md
-    - Rendering lifecycle: concepts/rendering-lifecycle.md
-    - Lifecycle integration: concepts/lifecycle-integration.md
-    - Methods overloading: concepts/methods-overloading.md
-  - Core Features:
-    - core-features/index.md
-    - Page rendering: core-features/page-rendering.md
-    - Built-in handler: core-features/built-in-handler.md
-    - Context management: core-features/context-management.md
-    - Component lifecycle: core-features/component-lifecycle.md
-  - Extended Features:
-    - extended-features/index.md
-    - Server Side Actions: extended-features/server-side-actions.md
-    - Server Side State: extended-features/server-side-state.md
-    - Meta builder: extended-features/meta-builder.md
-    - Insights: extended-features/insights.md
+    - Core: concepts/core.md
+    - Scheduler: concepts/scheduler.md
+    - State: concepts/state.md
+    - Context: concepts/context.md
+    - Modules:
+      - General: concepts/modules/general.md
+      - Adapters: concepts/modules/adapters.md
+      - Patching: concepts/modules/patching.md

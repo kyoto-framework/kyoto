@@ -1,39 +1,47 @@
 
-# Home
-
 <p align="center">
     <img width="400" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/assets/kyoto.svg" />
 </p>
 
 <h1 align="center">kyoto</h1>
+
 <p align="center">
-    Library that brings frontend-like components experience to the server side with native <code>html/template</code> on steroids. Supports any serving basis (<code>net/http</code>/<code>gin</code>/etc), that provides <code>io.Writer</code> in response.
+	<img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
+	<img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
+	<img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
 </p>
 
-![License](https://img.shields.io/github/license/kyoto-framework/kyoto)
-[![Go Report Card](https://goreportcard.com/badge/github.com/kyoto-framework/kyoto)](https://goreportcard.com/report/github.com/kyoto-framework/kyoto)
-[![Go Reference](https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg)](https://pkg.go.dev/github.com/kyoto-framework/kyoto)
+<p align="center">
+	Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
+</p>
 
-> **Disclaimer**  
-> This project in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
+> **Disclaimer №1**  
+> High entry threshold. You must understand what problems are you trying to solve before using.
 
+> **Disclaimer №2**  
+> This project is in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
 
-## Why I need this?
+## Motivation
 
+When our team migrated from JS framework to vanilla Go templating (we had a lot of reasons), we faced a set of tipical inconveniences during development. That's why we decided to bring the best from two worlds and create this small library.
+
+## What kyoto proposes?
+
+- Organize code into configurable and standalone components structure
 - Get rid of spaghetti inside of handlers
-- Organize code into configurable components structure
-- Simple and straightforward page rendering lifecycle
-- Asynchronous DTO without goroutine mess
+- Simple asynchronous page rendering lifecycle
 - Built-in dynamics like Hotwire or Laravel Livewire
-- Everyting on top of well-known `html/template`
-- Get control over project setup: 0 external dependencies, just `kyoto` itself
+- Built-in rendering based on `html/template`
+- Full control over project setup (minimal dependencies)
+- 0kb JS payload without dynamics (~8kb when using dynamics)
+- Extensible architecture (everyone can create own extensions for library)
 
-## Why not?
+## Reasons to opt out
 
 - In active development (not production ready)
-- Not situable for pretty dynamic frontends
 - You want to develop SPA/PWA
 - You're just feeling OK with JS frameworks
+- Not situable for a frontend with a lot of client-side logic
 
 ## Installation
 
@@ -92,14 +100,16 @@ func (p *PageIndex) Init() {
 
 ## References
 
-GitHub: [https://github.com/kyoto-framework/kyoto](https://github.com/kyoto-framework/kyoto)  
 Documentation: [https://kyoto.codes/](https://kyoto.codes/)  
 UIKit: [https://github.com/kyoto-framework/uikit](https://github.com/kyoto-framework/uikit)  
 Demo project, Hacker News client made with kyoto: [https://hn.kyoto.codes/](https://hn.kyoto.codes/)  
-Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/master/examples/demo](https://hn.kyoto.codes/)  
+Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/master/examples/demo](https://github.com/kyoto-framework/kyoto/tree/master/examples/demo)  
 
 ## Support
 
-<a target="_blank" href="https://www.buymeacoffee.com/yuriizinets"><img alt="Buy me a Coffee" src="https://github.com/egonelbre/gophers/blob/master/.thumb/animation/buy-morning-coffee-3x.gif?raw=true"></a>
+Any project support is appreciated! Donations will help us to keep high updates frequency. If you would like to avoid using listed methods, contact us directly with [info@kyoto.codes](mailto:info@kyoto.codes)  
 
-Or directly with Bitcoin: `bc1qgxe4u799f8pdyzk65sqpq28xj0yc6g05ckhvkk`
+Bitcoin: `bc1qgxe4u799f8pdyzk65sqpq28xj0yc6g05ckhvkk`  
+Ethereum: `0xEB2f24e830223bE081264e0c81fb5FD4DDD2B7B0`
+
+Open Collective: [https://opencollective.com/kyoto-framework](https://opencollective.com/kyoto-framework)
