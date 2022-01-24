@@ -1,6 +1,8 @@
 package kyoto
 
 import (
+	"strings"
+
 	"github.com/kyoto-framework/kyoto/helpers"
 	"github.com/kyoto-framework/scheduler"
 )
@@ -58,7 +60,11 @@ func (core *Core) Execute() {
 	// Analyze errors
 	for job, res := range core.Scheduler.Results {
 		if res != nil {
-			panic("Error in job " + job + ": " + res.Error())
+			if strings.Contains(res.Error(), "Panic in job") {
+				panic(res.Error())
+			} else {
+				panic("Error in job " + job + ": " + res.Error())
+			}
 		}
 	}
 }
