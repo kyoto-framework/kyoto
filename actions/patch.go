@@ -25,11 +25,6 @@ func Patch(core *kyoto.Core, params Parameters) {
 			jobs = append(jobs, job)
 			continue
 		}
-		if job.Group == "state" {
-			job.Depends = []string{"action"}
-			jobs = append(jobs, job)
-			continue
-		}
 	}
 	core.Scheduler.Jobs = jobs
 	// Add state population job

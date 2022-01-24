@@ -46,16 +46,9 @@ func (core *Core) Component(alias string, component func(*Core)) {
 	_core.State.Set("internal:name", helpers.ComponentName(component))
 	// Execute core receiver
 	component(_core)
-	// Schedule a job for state gathering
-	core.Scheduler.Add(&scheduler.Job{
-		Group:   "state",
-		Depends: []string{"afterasync"},
-		Func: func() error {
-			// Gather state
-			core.State.Set(alias, _core.State.Export())
-			return nil
-		},
-	})
+	// Bind state to the root state
+	// Map acts like a reference, so it's safe to continue modify state
+	core.State.Set(alias, _core.State.Export())
 }
 
 // Execute is a method to trigger scheduler execution.
