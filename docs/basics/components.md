@@ -44,7 +44,6 @@ func ComponentUUID(core *kyoto.Core) {
         return nil
     })
 }
-
 ```
 
 ```html title="component.uuid.html"
@@ -63,7 +62,7 @@ Here you can see multiple things:
 
 Our component just defines 2 lifecycle functions:
 init with setting empty state and async with getting UUID from httpbin.org.
-Nothing special.
+Lifecycle functionality will be described in a "Lifecycle" documentation category.
 
 To define a component template, we are using "define" template functionality.
 Please note, definition name must to be the same as a component name.
