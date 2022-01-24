@@ -94,9 +94,13 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		}
 
 		// Schedule state export
+		statedeps := []string{}
+		if core.Context.Get("internal:lifecycle") != nil {
+			statedeps = append(statedeps, "afterasync")
+		}
 		core.Scheduler.Add(&scheduler.Job{
 			Group:   "state",
-			Depends: []string{"afterasync"},
+			Depends: statedeps,
 			Func: func() error {
 				for k, v := range structmap(item) {
 					core.State.Set(k, v)

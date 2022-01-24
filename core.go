@@ -38,7 +38,6 @@ func NewCore() *Core {
 
 // Component is a method to inject nested component.
 // Under the hood it composes custom Core for state separation and nesting.
-// On "afterasync" completion, state will be injected into root state with a provided alias.
 func (core *Core) Component(alias string, component func(*Core)) {
 	// Create custom core for component to scope state
 	_core := NewCore()

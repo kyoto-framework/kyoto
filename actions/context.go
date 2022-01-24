@@ -11,6 +11,7 @@ func GetActions(b *kyoto.Core) map[string]func(...interface{}) {
 }
 
 // SetActions is a function that injects actions map to context.
+// Avoid using this function directly, Define function is a preffered way.
 func SetActions(b *kyoto.Core, actions map[string]func(...interface{})) {
 	b.Context.Set("internal:actions", actions)
 }
