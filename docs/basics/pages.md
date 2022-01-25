@@ -61,3 +61,4 @@ Lifecycle functionality will be described in a "Lifecycle" documentation categor
 Another thing you may notice in this example is setting of a state.
 To interact with a state, we are using a `kyoto.State` instance inside of a core.
 There are 3 methods for state modification: `Set`, `Get`, `Del`.
+For more information, check "State" documentation category.

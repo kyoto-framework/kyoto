@@ -54,6 +54,7 @@ nav:
     - Components: basics/components.md
     - Lifecycle: basics/lifecycle.md
     - Context: basics/context.md
+    - State: basics/state.md
   - Features:
     - features/index.md
     - Actions: features/actions.md
