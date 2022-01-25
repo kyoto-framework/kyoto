@@ -11,6 +11,7 @@ var registry = map[string]func(*kyoto.Core){}
 var registryrw = sync.RWMutex{}
 
 // Register is a function to register a dynamic component.
+// If you need to register a wrapped receiver, just pass empty arguments to the wrapper call.
 func Register(components ...func(*kyoto.Core)) {
 	// Acquire write lock
 	registryrw.Lock()
@@ -19,10 +20,10 @@ func Register(components ...func(*kyoto.Core)) {
 	for _, component := range components {
 		registry[helpers.ComponentName(component)] = component
 	}
-
 }
 
 // RegisterWithName is a function to register a dynamic component with a specified name.
+// Avoid using this function directly, Register function is a preffered way to register a dynamic component.
 func RegisterWithName(name string, component func(*kyoto.Core)) {
 	// Acquire write lock
 	registryrw.Lock()

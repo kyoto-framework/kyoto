@@ -1,6 +1,8 @@
 package kyoto
 
 import (
+	"strings"
+
 	"github.com/kyoto-framework/kyoto/helpers"
 	"github.com/kyoto-framework/scheduler"
 )
@@ -36,7 +38,6 @@ func NewCore() *Core {
 
 // Component is a method to inject nested component.
 // Under the hood it composes custom Core for state separation and nesting.
-// On "afterasync" completion, state will be injected into root state with a provided alias.
 func (core *Core) Component(alias string, component func(*Core)) {
 	// Create custom core for component to scope state
 	_core := NewCore()
@@ -46,16 +47,9 @@ func (core *Core) Component(alias string, component func(*Core)) {
 	_core.State.Set("internal:name", helpers.ComponentName(component))
 	// Execute core receiver
 	component(_core)
-	// Schedule a job for state gathering
-	core.Scheduler.Add(&scheduler.Job{
-		Group:   "state",
-		Depends: []string{"afterasync"},
-		Func: func() error {
-			// Gather state
-			core.State.Set(alias, _core.State.Export())
-			return nil
-		},
-	})
+	// Bind state to the root state
+	// Map acts like a reference, so it's safe to continue modify state
+	core.State.Set(alias, _core.State.Export())
 }
 
 // Execute is a method to trigger scheduler execution.
@@ -65,7 +59,11 @@ func (core *Core) Execute() {
 	// Analyze errors
 	for job, res := range core.Scheduler.Results {
 		if res != nil {
-			panic("Error in job " + job + ": " + res.Error())
+			if strings.Contains(res.Error(), "Panic in job") {
+				panic(res.Error())
+			} else {
+				panic("Error in job " + job + ": " + res.Error())
+			}
 		}
 	}
 }

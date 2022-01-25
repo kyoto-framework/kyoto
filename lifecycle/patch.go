@@ -34,10 +34,4 @@ func Patch(b *kyoto.Core) {
 		Depends: []string{"async"},
 		Func:    func() error { return nil },
 	})
-	b.Scheduler.Add(&scheduler.Job{
-		Group:   "state",
-		Name:    "empty",
-		Depends: []string{"afterasync"},
-		Func:    func() error { return nil },
-	})
 }

@@ -17,12 +17,6 @@ func Flush(b *kyoto.Core) {
 	// Extract context
 	rw := b.Context.GetResponseWriter()
 	rwf := rw.(http.Flusher)
-	// Gather state
-	for _, job := range b.Scheduler.Jobs {
-		if job.Group == "state" {
-			job.Func()
-		}
-	}
 	// Render
 	buffer := bytes.NewBufferString("")
 	var err error
