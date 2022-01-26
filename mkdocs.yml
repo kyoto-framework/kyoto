@@ -36,17 +36,18 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.snippets
   - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
   - admonition
 
 nav:
   - Home: index.md
-  - Prologue: prologue.md
   - Getting started:
     - getting-started/index.md
     - From scratch: getting-started/from-scratch.md
     - With starter: getting-started/with-starter.md
     - Integration: getting-started/integration.md
-    - Example with guide: getting-started/example-with-guide.md
   - Basics:
     - basics/index.md
     - Routing: basics/routing.md
