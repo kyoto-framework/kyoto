@@ -6,32 +6,34 @@ That's why we also borrowed lifecycle idea from popular JS frameworks.
 Why do we need it on server side?
 Let's figure it out.
 
-We will take known example from components documentation:
+We will take known example from components documentation.
 
-```go title="component.uuid.go"
-package main
+=== "component.uuid.go"
 
-import (
-    "net/http"
-    "encoding/json"
+	```go
+	package main
 
-    "github.com/kyoto-framework/kyoto"
-    "github.com/kyoto-framework/kyoto/lifecycle"
-)
+	import (
+	    "net/http"
+	    "encoding/json"
 
-func ComponentUUID(core *kyoto.Core) {
-    lifecycle.Init(core, func() {
-        core.State.Set("UUID", "")
-    })
-    lifecycle.Async(core, func() error {
-        resp, _ := http.Get("http://httpbin.org/uuid")
-        data := map[string]string{}
-        json.NewDecoder(resp.Body).Decode(&data)
-        c.State.Set("UUID", data["uuid"])
-        return nil
-    })
-}
-```
+	    "github.com/kyoto-framework/kyoto"
+	    "github.com/kyoto-framework/kyoto/lifecycle"
+	)
+
+	func ComponentUUID(core *kyoto.Core) {
+	    lifecycle.Init(core, func() {
+	        core.State.Set("UUID", "")
+	    })
+	    lifecycle.Async(core, func() error {
+	        resp, _ := http.Get("http://httpbin.org/uuid")
+	        data := map[string]string{}
+	        json.NewDecoder(resp.Body).Decode(&data)
+	        c.State.Set("UUID", data["uuid"])
+	        return nil
+	    })
+	}
+	```
 
 First, let's figure out what stages lifecycle have.  
 Usually, everything is executing in this order: **init** -> **async** -> **after async**.  

@@ -5,25 +5,27 @@ During the development process, we may need to access global things or internals
 In the same time, kyoto modules sometimes need to communicate with each other or temporary save some shared stuff.
 That's why context was needed to solve that common problems.
 
-Let's check this example:
+Let's check this example.
 
-```go
+=== "main.go"
 
-func ComponentTest(core *kyoto.Core) {
-	lifecycle.Init(core, func() {
-		req := core.Context.GetRequest()
-		println("User-Agent:", req.UserAgent())
-		println("Context Example:", core.Context.Get("foo").(string))
-	})
-}
+	```go
 
-func PageIndex(core *kyoto.Core) {
-	lifecycle.Init(core, func() {
-		core.Context.Set("foo", "bar")
-		core.Component("c1", ComponentTest)
-	})
-}
-```
+	func ComponentTest(core *kyoto.Core) {
+		lifecycle.Init(core, func() {
+			req := core.Context.GetRequest()
+			println("User-Agent:", req.UserAgent())
+			println("Context Example:", core.Context.Get("foo").(string))
+		})
+	}
+
+	func PageIndex(core *kyoto.Core) {
+		lifecycle.Init(core, func() {
+			core.Context.Set("foo", "bar")
+			core.Component("c1", ComponentTest)
+		})
+	}
+	```
 
 Context is: 
 

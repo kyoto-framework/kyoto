@@ -5,38 +5,42 @@ Page definition is an entry point of out page rendering.
 The most basic way to define a page is to use template builder.
 Let's see how it works:
 
-```go title="page.index.go"
-package main
+=== "page.index.go"
 
-import (
-    "html/template"
+	```go
+	package main
 
-    "github.com/kyoto-framework/kyoto"
-    "github.com/kyoto-framework/kyoto/render"
-    "github.com/kyoto-framework/kyoto/lifecycle"
-)
+	import (
+	    "html/template"
 
-func PageIndex(core *kyoto.Core) {
-    lifecycle.Init(core, func() {
-        core.State.Set("Content", "Hello, Kyoto!")
-    })
-    render.Template(core, func() *template.Template {
-        return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
-    })
-}
-```
+	    "github.com/kyoto-framework/kyoto"
+	    "github.com/kyoto-framework/kyoto/render"
+	    "github.com/kyoto-framework/kyoto/lifecycle"
+	)
 
-```html title="page.index.html"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Page Index</title>
-</head>
-<body>
-    <h1>{{ .Content }}</h1>
-</body>
-</html>
-```
+	func PageIndex(core *kyoto.Core) {
+	    lifecycle.Init(core, func() {
+	        core.State.Set("Content", "Hello, Kyoto!")
+	    })
+	    render.Template(core, func() *template.Template {
+	        return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+	    })
+	}
+	```
+
+=== "page.index.html"
+
+	```html
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <title>Page Index</title>
+	</head>
+	<body>
+	    <h1>{{ .Content }}</h1>
+	</body>
+	</html>
+	```
 
 First, we will get the terms right:
 
