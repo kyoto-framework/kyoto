@@ -293,7 +293,7 @@ You can use this trigger with `ssa:poll` and `ssa:poll.interval` HTML attributes
 	...
 	```
 
-#### Trigger with intrsection
+#### Trigger with intersection
 
 You can use the `ssa:onintersect` HTML attribute to trigger an action on element intersection.
 This functionality was built on top of the browser's built-in `IntersectionObserver`.
@@ -389,7 +389,7 @@ At the end of an action the layout will be restored.
 
 	func ComponentFoo(core *kyoto.Core) {
 		...
-		actions.Deefine(core, "Bar", func(args ...interface{}) {
+		actions.Define(core, "Bar", func(args ...interface{}) {
 			...
 		})
 	}
