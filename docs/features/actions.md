@@ -468,4 +468,3 @@ To force the library to use replace mode, you can use the `ssa:render.mode` HTML
   We're trying to avoid storing rows of data in the state and using database directly instead.
 * When you're modifying state in the child component, state of the parent component is not updating.
   Be careful with dynamic components nesting.
-

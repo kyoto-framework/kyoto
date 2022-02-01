@@ -10,7 +10,7 @@ To define a component, we are using core receiver, just like we did with pages.
 
 === "component.uuid.go"
 
-	```
+	```go
 	package main
 
 	import (
