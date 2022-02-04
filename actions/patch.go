@@ -17,11 +17,15 @@ func Patch(core *kyoto.Core, params Parameters) {
 	// Patch and cleanup existing jobs
 	jobs := []*scheduler.Job{}
 	for _, job := range core.Scheduler.Jobs {
-		if job.Name == "empty" {
+		if job.Name == "placeholder" { // Need lifecycle placeholders
 			jobs = append(jobs, job)
 			continue
 		}
-		if job.Group == "init" {
+		if job.Group == "init" { // Need initialization
+			jobs = append(jobs, job)
+			continue
+		}
+		if job.Group == "state" { // Need state export (smode)
 			jobs = append(jobs, job)
 			continue
 		}
@@ -29,8 +33,9 @@ func Patch(core *kyoto.Core, params Parameters) {
 	core.Scheduler.Jobs = jobs
 	// Add state population job
 	core.Scheduler.Add(&scheduler.Job{
-		Group:   "populate",
-		Depends: []string{"init"},
+		Group:  "populate",
+		After:  []string{"init"},
+		Before: []string{"action"},
 		Func: func() error {
 			for k, v := range params.State {
 				core.State.Set(k, v)
@@ -40,8 +45,8 @@ func Patch(core *kyoto.Core, params Parameters) {
 	})
 	// Add action job
 	core.Scheduler.Add(&scheduler.Job{
-		Group:   "action",
-		Depends: []string{"populate"},
+		Group:  "action",
+		Before: []string{"render"},
 		Func: func() error {
 			actions := GetActions(core)
 			if action, found := actions[params.Action]; found {
@@ -54,8 +59,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 	})
 	// Add final flush job
 	core.Scheduler.Add(&scheduler.Job{
-		Group:   "flush",
-		Depends: []string{"action"},
+		Group: "render",
 		Func: func() error {
 			Flush(core)
 			return nil

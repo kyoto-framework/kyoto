@@ -22,6 +22,13 @@ var (
 
 func Adapt(item interface{}) func(*kyoto.Core) {
 	return func(core *kyoto.Core) {
+		// If no page, need to create a reference
+		if cmap[item] == nil {
+			cmap[item] = core
+		}
+		if pmap[item] == nil {
+			pmap[item] = item
+		}
 		// In case of page, need to create a new instance
 		if _, ispage := item.(ImplementsTemplate); ispage {
 			item = reflect.New(reflect.TypeOf(item).Elem()).Interface().(Page)
@@ -96,11 +103,11 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		// Schedule state export
 		after := []string{}
 		if core.Context.Get("internal:lifecycle") != nil {
-			after = append(after, "afterasync")
+			after = append(after, "afterasync", "action")
 		}
 		core.Scheduler.Add(&scheduler.Job{
 			Group:  "state",
-			After:  after, // Export state only after "afterasync", because lifecycle is also a "Before" job
+			After:  after, // Export state only after "afterasync" or "action", because lifecycle and action are also "Before" jobs
 			Before: []string{"render"},
 			Func: func() error {
 				for k, v := range structmap(item) {
