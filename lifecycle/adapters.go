@@ -22,9 +22,9 @@ func Init(b *kyoto.Core, init func()) {
 func Async(b *kyoto.Core, async func() error) {
 	Patch(b)
 	b.Scheduler.Add(&scheduler.Job{
-		Group:   "async",
-		Depends: []string{"init"},
-		Func:    async,
+		Group: "async",
+		After: []string{"init"},
+		Func:  async,
 	})
 }
 
@@ -33,8 +33,9 @@ func Async(b *kyoto.Core, async func() error) {
 func AfterAsync(b *kyoto.Core, afterasync func() error) {
 	Patch(b)
 	b.Scheduler.Add(&scheduler.Job{
-		Group:   "afterasync",
-		Depends: []string{"async"},
-		Func:    afterasync,
+		Group:  "afterasync",
+		After:  []string{"async"},
+		Before: []string{"render"},
+		Func:   afterasync,
 	})
 }

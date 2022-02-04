@@ -19,19 +19,20 @@ func Patch(b *kyoto.Core) {
 	// Without empty jobs, "Depends" clause will not work as expected
 	b.Scheduler.Add(&scheduler.Job{
 		Group: "init",
-		Name:  "empty",
+		Name:  "placeholder",
 		Func:  func() error { return nil },
 	})
 	b.Scheduler.Add(&scheduler.Job{
-		Group:   "async",
-		Name:    "empty",
-		Depends: []string{"init"},
-		Func:    func() error { return nil },
+		Group: "async",
+		Name:  "placeholder",
+		After: []string{"init"},
+		Func:  func() error { return nil },
 	})
 	b.Scheduler.Add(&scheduler.Job{
-		Group:   "afterasync",
-		Name:    "empty",
-		Depends: []string{"async"},
-		Func:    func() error { return nil },
+		Group:  "afterasync",
+		Name:   "placeholder",
+		After:  []string{"async"},
+		Before: []string{"render"},
+		Func:   func() error { return nil },
 	})
 }

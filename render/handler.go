@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/kyoto-framework/kyoto"
 	"github.com/kyoto-framework/scheduler"
@@ -26,18 +25,9 @@ func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 		if core.Context.Get("internal:render:tb") == nil && core.Context.Get("internal:render:cm") == nil {
 			panic("Rendering is not specified for page")
 		}
-		// Collect all job groups to use them as dependencies
-		groups := []string{}
-		for _, job := range core.Scheduler.Jobs {
-			// Avoid cycle dependencies
-			if !strings.Contains(strings.Join(job.Depends, ","), "render") {
-				groups = append(groups, job.Group)
-			}
-		}
 		// Schedule a render job
 		core.Scheduler.Add(&scheduler.Job{
-			Group:   "render",
-			Depends: groups,
+			Group: "render",
 			Func: func() error {
 				if redirect := core.Context.Get("internal:render:redirect"); redirect != nil { // Check redirect
 					code := 302

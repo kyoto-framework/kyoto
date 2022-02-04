@@ -10,3 +10,9 @@ github.com/kyoto-framework/scheduler v0.0.0-20220124201133-9cbbc85d36c7 h1:GOpFO
 github.com/kyoto-framework/scheduler v0.0.0-20220124201133-9cbbc85d36c7/go.mod h1:hJ7obZkOy4OXQFpzwoFWG82T56Sx9BIrmiEX+y3JFfM=
 github.com/kyoto-framework/scheduler v0.0.0-20220124220734-14f5847d3440 h1:ObtLDpTZ8imRvUrUPXT6rpsQbf11kkA1QadsZU0RJkQ=
 github.com/kyoto-framework/scheduler v0.0.0-20220124220734-14f5847d3440/go.mod h1:hJ7obZkOy4OXQFpzwoFWG82T56Sx9BIrmiEX+y3JFfM=
+github.com/kyoto-framework/scheduler v0.0.0-20220202111818-bfabd42e87f4 h1:lvD5ikCtw9SS4eBtspt1zEpsbm3CTI1GTBME/7wvR9w=
+github.com/kyoto-framework/scheduler v0.0.0-20220202111818-bfabd42e87f4/go.mod h1:hJ7obZkOy4OXQFpzwoFWG82T56Sx9BIrmiEX+y3JFfM=
+github.com/kyoto-framework/scheduler v0.0.0-20220203083012-1562ef81060e h1:9g1h8SeY8M++xXze92mT7w65btH9HesROuY9IoHINAA=
+github.com/kyoto-framework/scheduler v0.0.0-20220203083012-1562ef81060e/go.mod h1:hJ7obZkOy4OXQFpzwoFWG82T56Sx9BIrmiEX+y3JFfM=
+github.com/kyoto-framework/scheduler v0.0.0-20220204092728-a8bd793d7302 h1:mSWbz4SLkOMTQ9Tq4xAw3+bphp5TpvvnbQitI6Rk8vs=
+github.com/kyoto-framework/scheduler v0.0.0-20220204092728-a8bd793d7302/go.mod h1:hJ7obZkOy4OXQFpzwoFWG82T56Sx9BIrmiEX+y3JFfM=

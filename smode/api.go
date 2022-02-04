@@ -94,13 +94,14 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		}
 
 		// Schedule state export
-		statedeps := []string{}
+		after := []string{}
 		if core.Context.Get("internal:lifecycle") != nil {
-			statedeps = append(statedeps, "afterasync")
+			after = append(after, "afterasync")
 		}
 		core.Scheduler.Add(&scheduler.Job{
-			Group:   "state",
-			Depends: statedeps,
+			Group:  "state",
+			After:  after, // Export state only after "afterasync", because lifecycle is also a "Before" job
+			Before: []string{"render"},
 			Func: func() error {
 				for k, v := range structmap(item) {
 					core.State.Set(k, v)
@@ -110,8 +111,8 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		})
 		// Schedule global cmap cleanup
 		core.Scheduler.Add(&scheduler.Job{
-			Group:   "cleanup",
-			Depends: []string{"render"},
+			Group: "cleanup",
+			After: []string{"render"},
 			Func: func() error {
 				cmapm.Lock()
 				delete(cmap, item)
