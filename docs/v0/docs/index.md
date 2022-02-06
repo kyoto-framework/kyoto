@@ -2,7 +2,7 @@
 # Home
 
 <p align="center">
-    <img width="400" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/assets/kyoto.svg" />
+    <img width="400" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/v1/docs/assets/kyoto.svg" />
 </p>
 
 <h1 align="center">kyoto</h1>
