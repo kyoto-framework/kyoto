@@ -4,9 +4,17 @@ Everything begins somewhere.
 And we are starting from scratch, with project setup.
 This short "quick start" guide will include a basic project setup with just a simple index page, components and few examples.
 
+## Installation
+
+Everything is starting from package installation.
+
+```bash
+go get github.com/kyoto-framework/kyoto@master
+```
+
 ## Entry Point
 
-Let's start from serving foundations, like any other web project begins.
+Let's continue with serving foundations, basis for every web application.
 
 === "main.go"
 
