@@ -1,18 +1,18 @@
 
 <p align="center">
-    <img width="200" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/assets/kyoto.svg" />
+    <img width="200" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/v1/assets/kyoto.svg" />
 </p>
 
 <h1 align="center">kyoto</h1>
 
 <p align="center">
-    <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
-    <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
-    <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
+    Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
 </p>
 
 <p align="center">
-    Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
+    <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
+    <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
+    <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
 </p>
 
 > **Disclaimer №1**  
