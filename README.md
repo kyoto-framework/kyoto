@@ -15,6 +15,10 @@
     <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
 </p>
 
+<p align="center">
+    <a href="https://v1.kyoto.codes/getting-started/">Getting started</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/basics/">Basics</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/features/">Features</a>&nbsp;&bull; <a href="https://github.com/kyoto-framework/kyoto#support">Support</a>
+</p>
+
 > **Disclaimer №1**  
 > High entry threshold. You must understand what problems are you trying to solve before using.
 
