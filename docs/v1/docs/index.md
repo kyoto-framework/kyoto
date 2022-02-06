@@ -6,13 +6,13 @@
 <h1 align="center">kyoto</h1>
 
 <p align="center">
-	<img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
-	<img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
-	<img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
+    <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
+    <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
+    <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
 </p>
 
 <p align="center">
-	Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
+    Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
 </p>
 
 > **Disclaimer №1**  
@@ -53,47 +53,50 @@ Check documentation page for quick start: [https://kyoto.codes/getting-started/]
 Kyoto project setup may seem complicated and unusual at first sight.  
 It's highly recommended to follow documentation while using library: [https://kyoto.codes/getting-started/](https://kyoto.codes/getting-started/)  
 
-This example is not completely independent and just shows what the code looks like when using kyoto:
-
 ```go
 package main
 
 import (
-	"html/template"
+    "html/template"
+    "encoding/json"
+    "net/http"
 
-	"github.com/kyoto-framework/kyoto"
-	"github.com/kyoto-framework/uikit/twui"
+    "github.com/kyoto-framework/kyoto"
+    "github.com/kyoto-framework/kyoto/render"
+    "github.com/kyoto-framework/kyoto/lifecycle"
 )
 
-type PageIndex struct {
-	Navbar kyoto.Component
-}
+// This example demonstrates main advantage of kyoto library - asynchronous lifecycle.
+// Multiple UUIDs will be fetched in asynchronous way, without even touching goroutines and synchronization tools like sync.WaitGroup.
 
-func (p *PageIndex) Template() *template.Template {
-	return mktemplate("page.index.html")
-}
-
-func (p *PageIndex) Init() {
-	p.Navbar = kyoto.RegC(p, &twui.AppUINavNavbar{
-		Logo: `<img src="/static/img/kyoto.svg" class="h-8 w-8 scale-150" />`,
-		Links: []twui.AppUINavNavbarLink{
-			{Text: "Kyoto", Href: "https://github.com/kyoto-framework/kyoto"},
-			{Text: "UIKit", Href: "https://github.com/kyoto-framework/uikit"},
-			{Text: "Charts", Href: "https://github.com/kyoto-framework/kyoto-charts"},
-			{Text: "Starter", Href: "https://github.com/kyoto-framework/starter"},
-		},
-		Profile: twui.AppUINavNavbarProfile{
-			Enabled: true,
-			Avatar: `
-					<svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-				`,
-			Links: []twui.AppUINavNavbarLink{
-				{Text: "GitHub", Href: "https://github.com/kyoto-framework/kyoto/discussions/40"},
-				{Text: "Telegram", Href: "https://t.me/yuriizinets"},
-				{Text: "Email", Href: "mailto:yurii.zinets@icloud.com"},
-			},
-		},
+// Let's assume markup of this component is stored in 'component.uuid.html'
+func ComponentUUID(core *kyoto.Core) {
+    lifecycle.Init(core, func() {
+        core.State.Set("UUID", "")
     })
+    lifecycle.Async(core, func() error {
+        resp, _ := http.Get("http://httpbin.org/uuid")
+        data := map[string]string{}
+        json.NewDecoder(resp.Body).Decode(&data)
+        c.State.Set("UUID", data["uuid"])
+        return nil
+    })
+}
+
+// Let's assume markup of this page is stored in 'page.index.html'
+func PageIndex(core *kyoto.Core) {
+    lifecycle.Init(core, func() {
+        core.Component("UUID1", ComponentUUID)
+        core.Component("UUID2", ComponentUUID)
+    })
+    render.Template(c, func() *template.Template {
+        return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+    })
+}
+
+func main() {
+    http.HandleFunc("/", render.PageHandler(PageIndex))
+    http.ListenAndServe(":8080", nil)
 }
 
 ```
