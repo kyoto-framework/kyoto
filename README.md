@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img width="200" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/v1/assets/kyoto.svg" />
+    <img width="200" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/v1/docs/assets/kyoto.svg" />
 </p>
 
 <h1 align="center">kyoto</h1>
