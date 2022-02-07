@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-    <a href="https://v1.kyoto.codes/getting-started/">Getting started</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/basics/">Basics</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/features/">Features</a>&nbsp;&bull; <a href="https://github.com/kyoto-framework/kyoto#support">Support</a>
+    <a href="https://v1.kyoto.codes/getting-started/">Getting started</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/basics/">Basics</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/features/">Features</a>&nbsp;&bull; <a href="https://github.com/kyoto-framework/kyoto#donate">Donate</a>
 </p>
 
 > **Disclaimer №1**  
@@ -112,7 +112,7 @@ UIKit: [https://github.com/kyoto-framework/uikit](https://github.com/kyoto-frame
 Demo project, Hacker News client made with kyoto: [https://hn.kyoto.codes/](https://hn.kyoto.codes/)  
 Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/master/examples/demo](https://github.com/kyoto-framework/kyoto/tree/master/examples/demo)  
 
-## Support
+## Donate
 
 Any project support is appreciated! Donations will help us to keep high updates frequency. If you would like to avoid using listed methods, contact us directly with [info@kyoto.codes](mailto:info@kyoto.codes)  
 
