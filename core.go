@@ -1,7 +1,7 @@
 package kyoto
 
 import (
-	"strings"
+	"fmt"
 
 	"github.com/kyoto-framework/kyoto/helpers"
 	"github.com/kyoto-framework/scheduler"
@@ -59,11 +59,7 @@ func (core *Core) Execute() {
 	// Analyze errors
 	for job, res := range core.Scheduler.Results {
 		if res != nil {
-			if strings.Contains(res.Error(), "Panic in job") {
-				panic(res.Error())
-			} else {
-				panic("Error in job " + job + ": " + res.Error())
-			}
+			fmt.Printf("%s failed:\n - %s", job, res.Error())
 		}
 	}
 }
