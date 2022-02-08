@@ -22,6 +22,11 @@ var (
 
 func Adapt(item interface{}) func(*kyoto.Core) {
 	return func(core *kyoto.Core) {
+		// Aquire locks
+		cmapm.Lock()
+		pmapm.Lock()
+		defer cmapm.Unlock()
+		defer pmapm.Unlock()
 		// If no page, need to create a reference
 		if cmap[item] == nil {
 			cmap[item] = core

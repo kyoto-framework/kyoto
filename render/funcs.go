@@ -12,7 +12,7 @@ import (
 
 // Render is a function to render a component.
 // TODO: Not implemented.
-func Render(component interface{}) string {
+func Render(state map[string]interface{}) string {
 	return ""
 }
 
