@@ -49,13 +49,13 @@ When our team migrated from JS framework to vanilla Go templating (we had a lot 
 
 ## Installation
 
-As simple as `go get github.com/kyoto-framework/kyoto`  
-Check documentation page for quick start: [https://kyoto.codes/getting-started/](https://kyoto.codes/getting-started/)
+As simple as `go get github.com/kyoto-framework/kyoto@master`  
+Check latest version of documentation page for quick start: [https://v1.kyoto.codes/getting-started/](https://v1.kyoto.codes/getting-started/)
 
 ## Usage
 
 Kyoto project setup may seem complicated and unusual at first sight.  
-It's highly recommended to follow documentation while using library: [https://kyoto.codes/getting-started/](https://kyoto.codes/getting-started/)  
+It's highly recommended to follow documentation while using library: [https://v1.kyoto.codes/getting-started/](https://v1.kyoto.codes/getting-started/)  
 
 ```go
 package main
