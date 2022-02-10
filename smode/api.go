@@ -106,13 +106,9 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		}
 
 		// Schedule state export
-		after := []string{}
-		if core.Context.Get("internal:lifecycle") != nil {
-			after = append(after, "afterasync", "action")
-		}
 		core.Scheduler.Add(&scheduler.Job{
 			Group:  "state",
-			After:  after, // Export state only after "afterasync" or "action", because lifecycle and action are also "Before" jobs
+			After:  []string{"afterasync", "action"}, // Export state only after "afterasync" or "action", because lifecycle and action are also "Before" jobs
 			Before: []string{"render"},
 			Func: func() error {
 				for k, v := range structmap(item) {
