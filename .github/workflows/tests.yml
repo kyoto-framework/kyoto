@@ -16,5 +16,6 @@ jobs:
         run: |
           go test -coverprofile=coverage.txt.tmp -covermode=atomic ./ ./lifecycle ./render ./actions ./smode ./helpers
           cat coverage.txt.tmp | grep -v "backward." > coverage.txt
+          rm coverage.txt.tmp
       - name: Upload coverage to Codecov
         run: bash <(curl -s https://codecov.io/bash)
