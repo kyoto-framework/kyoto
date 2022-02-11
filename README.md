@@ -107,7 +107,7 @@ func main() {
 
 ## References
 
-Documentation: [https://kyoto.codes/](https://kyoto.codes/)  
+Documentation: [https://v1.kyoto.codes/](https://v1.kyoto.codes/)  
 UIKit: [https://github.com/kyoto-framework/uikit](https://github.com/kyoto-framework/uikit)  
 Demo project, Hacker News client made with kyoto: [https://hn.kyoto.codes/](https://hn.kyoto.codes/)  
 Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/master/examples/demo](https://github.com/kyoto-framework/kyoto/tree/master/examples/demo)  
