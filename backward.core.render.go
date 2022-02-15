@@ -98,7 +98,24 @@ func RenderPage(w io.Writer, p Page) {
 	// Trigger async in goroutines
 	st := time.Now()
 	subset := 0
+	// Async for page
+	if p, ok := p.(ImplementsAsyncWithoutPage); ok {
+		wg.Add(1)
+		go func(wg *sync.WaitGroup, err chan error, p ImplementsAsyncWithoutPage) {
+			defer wg.Done()
+			st := time.Now()
+			_err := p.Async()
+			insights.GetOrCreateNested(p).Update(InsightsTiming{
+				Async: time.Since(st),
+			})
+			if _err != nil {
+				err <- _err
+			}
+		}(&wg, err, p)
+	}
+	// Async for components
 	for {
+		// Subset of components to run async
 		cslrw.RLock()
 		regc := csl[p][subset:]
 		cslrw.RUnlock()
