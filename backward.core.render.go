@@ -105,9 +105,11 @@ func RenderPage(w io.Writer, p Page) {
 			defer wg.Done()
 			st := time.Now()
 			_err := p.Async()
-			insights.GetOrCreateNested(p).Update(InsightsTiming{
-				Async: time.Since(st),
-			})
+			if insights != nil {
+				insights.GetOrCreateNested(p).Update(InsightsTiming{
+					Async: time.Since(st),
+				})
+			}
 			if _err != nil {
 				err <- _err
 			}
