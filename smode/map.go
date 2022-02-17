@@ -22,6 +22,9 @@ func structmap(in interface{}) map[string]interface{} {
 	for i := 0; i < v.NumField(); i++ {
 		// gets us a StructField
 		fi := typ.Field(i)
+		if fi.Tag.Get("json") == "-" {
+			continue
+		}
 		// set key of map to value in struct field
 		out[fi.Name] = v.Field(i).Interface()
 	}
