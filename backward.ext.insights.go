@@ -7,13 +7,13 @@ import (
 	"time"
 )
 
-// Insights storage
+// Deprecated: Insights storage
 var (
 	insights   = []*Insights{}
 	insightsrw = sync.RWMutex{}
 )
 
-// Insights data type
+// Deprecated: Insights data type
 type Insights struct {
 	InsightsTiming
 
@@ -22,7 +22,7 @@ type Insights struct {
 	Nested []*Insights `json:"nested"`
 }
 
-// InsightsTiming data type
+// Deprecated: InsightsTiming data type
 type InsightsTiming struct {
 	Init       time.Duration `json:"i"`
 	Async      time.Duration `json:"a"`
@@ -30,7 +30,7 @@ type InsightsTiming struct {
 	Render     time.Duration `json:"r"`
 }
 
-// NewInsights creates new insights instance for provided object pointer,
+// Deprecated: NewInsights creates new insights instance for provided object pointer,
 // saves insights pointer to local store and returns it
 // The oldest insights are cut in case of store overflow (INSIGHTS_LIMIT config)
 func NewInsights(p interface{}) *Insights {
@@ -50,7 +50,7 @@ func NewInsights(p interface{}) *Insights {
 	return i
 }
 
-// GetInsights returns insights pointer by given object pointer
+// Deprecated: GetInsights returns insights pointer by given object pointer
 func GetInsights(p interface{}) *Insights {
 	for _, i := range insights {
 		if i.ID == InsightsID(p) {
@@ -65,7 +65,7 @@ func GetInsights(p interface{}) *Insights {
 	return nil
 }
 
-// GetInsightsByID returns insights pointer by insights id
+// Deprecated: GetInsightsByID returns insights pointer by insights id
 func GetInsightsByID(id string) *Insights {
 	for _, i := range insights {
 		if i.ID == id {
@@ -75,7 +75,7 @@ func GetInsightsByID(id string) *Insights {
 	return nil
 }
 
-// Update the Insights value
+// Deprecated: Update the Insights value
 func (i *Insights) Update(t InsightsTiming) {
 	if t.Init != 0 {
 		i.InsightsTiming.Init = t.Init
@@ -91,7 +91,7 @@ func (i *Insights) Update(t InsightsTiming) {
 	}
 }
 
-// GetOrCreateNested attempts to return existing nested insights, or returns new ones
+// Deprecated: GetOrCreateNested attempts to return existing nested insights, or returns new ones
 func (i *Insights) GetOrCreateNested(p interface{}) *Insights {
 	// Try to return existing nested insights
 	for _, ci := range i.Nested {
@@ -109,12 +109,12 @@ func (i *Insights) GetOrCreateNested(p interface{}) *Insights {
 	return ci
 }
 
-// InsightsID is a function to generate ID from pointer
+// Deprecated: InsightsID is a function to generate ID from pointer
 func InsightsID(p interface{}) string {
 	return fmt.Sprintf("%p", p)
 }
 
-// InsightsName is a function that extracts type name from pointer
+// Deprecated: InsightsName is a function that extracts type name from pointer
 func InsightsName(p interface{}) string {
 	return reflect.ValueOf(p).Elem().Type().Name()
 }
