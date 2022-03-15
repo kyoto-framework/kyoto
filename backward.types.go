@@ -7,34 +7,34 @@ import (
 
 // SSA aliases
 
-// Action is used to pass arguments onto a component to be used
+// Deprecated: Action is used to pass arguments onto a component to be used
 type Action func(args ...interface{})
 
-// ActionMap is a map of Actions stored by string
+// Deprecated: ActionMap is a map of Actions stored by string
 type ActionMap map[string]Action
 
-// TemplateBuilder is used to build templates.
+// Deprecated: TemplateBuilder is used to build templates.
 type TemplateBuilder func(p Page) *template.Template
 
-// DummyPage is an SSA page placeholder
+// Deprecated: DummyPage is an SSA page placeholder
 type DummyPage struct {
 	TemplateBuilder TemplateBuilder
 }
 
-// Template returns a template
+// Deprecated: Template returns a template
 func (p *DummyPage) Template() *template.Template {
 	return p.TemplateBuilder(p)
 }
 
 // Meta
 
-// Hreflang stores the lang and href
+// Deprecated: Hreflang stores the lang and href
 type Hreflang struct {
 	Lang string
 	Href string
 }
 
-// Meta data
+// Deprecated: Meta data
 type Meta struct {
 	Title       string
 	Description string
@@ -43,7 +43,7 @@ type Meta struct {
 	Additional  []map[string]string
 }
 
-// RedirectParameters is a helper for the Redirect function
+// Deprecated RedirectParameters is a helper for the Redirect function
 type RedirectParameters struct {
 	Page              Page
 	ResponseWriter    http.ResponseWriter
@@ -54,67 +54,70 @@ type RedirectParameters struct {
 	StatusCode        int
 }
 
-// Page contains only must-have methods
+// Deprecated: Page contains only must-have methods
 type Page interface{}
 
-// Component contains only must-have methods
+// Deprecated: Component contains only must-have methods
 type Component interface{}
 
 // Extensions
 
+// Deprecated
 type ImplementsTemplate interface {
 	Template(Page) *template.Template
 }
 
+// Deprecated
 type ImplementsTemplateWithoutPage interface {
 	Template() *template.Template
 }
 
+// Deprecated
 type ImplementsRender interface {
 	Render() string
 }
 
-// ImplementsInit interface for implementing init
+// Deprecated: ImplementsInit interface for implementing init
 type ImplementsInit interface {
 	Init(Page)
 }
 
-// ImplementsInitWithoutPage interface type
+// Deprecated: ImplementsInitWithoutPage interface type
 type ImplementsInitWithoutPage interface {
 	Init()
 }
 
-// ImplementsAsync interface for asynchronous functions
+// Deprecated: ImplementsAsync interface for asynchronous functions
 type ImplementsAsync interface {
 	Async(Page) error
 }
 
-// ImplementsAsyncWithoutPage interface for Asynchronous functions without a page
+// Deprecated: ImplementsAsyncWithoutPage interface for Asynchronous functions without a page
 type ImplementsAsyncWithoutPage interface {
 	Async() error
 }
 
-// ImplementsAfterAsync interface for after asynchronous functions
+// Deprecated: ImplementsAfterAsync interface for after asynchronous functions
 type ImplementsAfterAsync interface {
 	AfterAsync(Page)
 }
 
-// ImplementsAfterAsyncWithoutPage interface type
+// Deprecated: ImplementsAfterAsyncWithoutPage interface type
 type ImplementsAfterAsyncWithoutPage interface {
 	AfterAsync()
 }
 
-// ImplementsActions interface for implementing actions
+// Deprecated: ImplementsActions interface for implementing actions
 type ImplementsActions interface {
 	Actions(Page) ActionMap
 }
 
-// ImplementsActionsWithoutPage interface type
+// Deprecated: ImplementsActionsWithoutPage interface type
 type ImplementsActionsWithoutPage interface {
 	Actions() ActionMap
 }
 
-// ImplementsMeta interface type
+// Deprecated: ImplementsMeta interface type
 type ImplementsMeta interface {
 	Meta() Meta
 }

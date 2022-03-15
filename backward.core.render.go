@@ -11,19 +11,20 @@ import (
 )
 
 var (
-	// Component Store Lifecycle is a temporary storage for components processing
+	// Deprecated: Component Store Lifecycle is a temporary storage for components processing
 	// Will be cleared in the end of lifecycle
 	csl   = map[Page][]Component{}
+	// Deprecated
 	cslrw = &sync.RWMutex{}
 
-	// OnError is an error processing function.
+	// Deprecated: OnError is an error processing function.
 	// Panic by default
 	OnError = func(p Page, err error) {
 		panic(err)
 	}
 )
 
-// RegisterComponent is used while defining components in the Init() section
+// Deprecated: RegisterComponent is used while defining components in the Init() section
 func RegisterComponent(p Page, c Component) Component {
 	// Extract insights
 	insights := GetInsights(p)
@@ -68,10 +69,10 @@ func RegisterComponent(p Page, c Component) Component {
 	return c
 }
 
-// RegC is an alias for RegisterComponent
+// Deprecated: RegC is an alias for RegisterComponent
 var RegC = RegisterComponent
 
-// RenderPage is a main entrypoint of rendering. Responsible for rendering and components lifecycle
+// Deprecated: RenderPage is a main entrypoint of rendering. Responsible for rendering and components lifecycle
 func RenderPage(w io.Writer, p Page) {
 	// Init insights (if enabled)
 	var insights *Insights
@@ -246,7 +247,7 @@ func RenderPage(w io.Writer, p Page) {
 	}
 }
 
-// Redirect is a wrapper around http.Redirect for correct work inside of SSC
+// Deprecated: Redirect is a wrapper around http.Redirect for correct work inside of SSC
 func Redirect(rp *RedirectParameters) {
 	// Write redirect value
 	SetContext(rp.Page, "internal:redirect", rp.Target)
@@ -265,7 +266,7 @@ func Redirect(rp *RedirectParameters) {
 	}
 }
 
-// PageHandler is an opinionated page net/http handler.
+// Deprecated: PageHandler is an opinionated page net/http handler.
 // Context:
 // - internal:rw - http.ResponseWriter
 // - internal:r - *http.Request
