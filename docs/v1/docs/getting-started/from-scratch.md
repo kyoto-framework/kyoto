@@ -49,7 +49,7 @@ Let's continue with serving foundations, basis for every web application.
 
 Now, we can define our page.
 
-For detailed pages explanation, check [Basics • Pages](basics/pages.md) documentation category.
+For detailed pages explanation, check [Basics • Pages](/basics/pages) documentation category.
 
 === "page.index.go"
 
@@ -93,7 +93,7 @@ For detailed pages explanation, check [Basics • Pages](basics/pages.md) docume
 
 For attaching your page, you can simply use the built-in page handler (`render.PageHandler`), right below the Routes comment in your main function.
 
-For detailed routing explanation, check [Basics • Routing](basics/routing.md) documentation category.
+For detailed routing explanation, check [Basics • Routing](/basics/routing) documentation category.
 
 === "main.go"
 
@@ -123,8 +123,8 @@ PORT=25025 go run .
 Let's define a simple component, which fetches a UUID from httpbin API.
 This example is good demonstration of asynchronous library functionality.
 
-For detailed components explanation, check [Basics • Components](basics/components.md) documentation category.  
-For detailed lifecycle explanation, check [Basics • Lifecycle](basics/lifecycle.md) documentation category.
+For detailed components explanation, check [Basics • Components](/basics/components) documentation category.  
+For detailed lifecycle explanation, check [Basics • Lifecycle](/basics/lifecycle) documentation category.
 
 === "component.uuid.go"
 
