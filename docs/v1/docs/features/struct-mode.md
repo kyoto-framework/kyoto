@@ -33,7 +33,7 @@ We need to define a structure and `Template` method for that structure.
 	
 	```
 
-It would be nice to open [Basics • Pages](basics/pages.md) to compare approach.
+It would be nice to open [Basics • Pages](/basics/pages) to compare approach.
 You will definitely notice similar parts.
 Struct mode tries to replicate existing adapters as much as possible.
 
@@ -102,7 +102,7 @@ Let's start right from an example.
 	```
 
 You may notice how we defined lifecycle methods here.
-Feel free to open [Basics • Components](basics/components.md) to compare approach.
+Feel free to open [Basics • Components](/basics/components) to compare approach.
 `smode.Adapt` function takes care about registration of our methods.
 Also, in case of struct definitions we are using struct fields as a state.
 
