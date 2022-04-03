@@ -5,31 +5,37 @@ import (
 	"testing"
 
 	"github.com/kyoto-framework/kyoto"
-	"github.com/kyoto-framework/scheduler"
+	"github.com/kyoto-framework/kyoto/lifecycle"
 )
+
+func testPatchComponent(c *kyoto.Core) {
+	lifecycle.Init(c, func() {
+		c.State.Set("Foo", "Bar")
+	})
+	lifecycle.Async(c, func() error {
+		c.State.Set("Foo", "Baz")
+		return nil
+	})
+	Define(c, "Bar", func(args ...interface{}) {
+		c.State.Set("Foo", "Bar")
+	})
+}
 
 func TestPatch(t *testing.T) {
 	// Initialize core
 	core := kyoto.NewCore()
+	// Apply component
+	testPatchComponent(core)
 	// Define render
 	core.Context.Set("internal:render:tb", func() *template.Template {
-		return template.Must(template.New("").Parse(`TestPatch`))
+		return template.Must(template.New("").Parse(`
+			{{ define "testPatchComponent" }}
+			...
+			{{ end }}
+
+			{{ template "testPatchComponent" . }}
+		`))
 	})
-	// Add few jobs
-	core.Scheduler.Add(&scheduler.Job{
-		Group: "init",
-		Func:  func() error { return nil },
-	})
-	core.Scheduler.Add(&scheduler.Job{
-		Group: "async",
-		Func:  func() error { return nil },
-	})
-	core.Scheduler.Add(&scheduler.Job{
-		Group: "afterasync",
-		Func:  func() error { return nil },
-	})
-	// Define an action
-	Define(core, "Bar", func(args ...interface{}) {})
 	// Patch
 	Patch(core, Parameters{
 		Component: "Foo",
@@ -41,7 +47,7 @@ func TestPatch(t *testing.T) {
 	})
 	// Check scheduler is cleared
 	for _, job := range core.Scheduler.Jobs {
-		if job.Group != "placeholder" &&
+		if job.Name != "placeholder" &&
 			job.Group != "init" &&
 			job.Group != "populate" &&
 			job.Group != "state" &&
