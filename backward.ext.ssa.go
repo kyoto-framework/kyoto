@@ -13,14 +13,14 @@ import (
 	"sync"
 )
 
-// SSA Component Store is a storage for component types.
+// Deprecated: SSA Component Store is a storage for component types.
 // When SSA is called, page's general lifecycle components store is not available (we have dummy page instead).
 var (
 	ssacstore   = map[string]reflect.Type{}
 	ssacstorerw = &sync.RWMutex{}
 )
 
-// SSAParameters represents parameters, needed for handling SSA request
+// Deprecated: SSAParameters represents parameters, needed for handling SSA request
 type SSAParameters struct {
 	Component string
 	Action    string
@@ -28,7 +28,7 @@ type SSAParameters struct {
 	Args      string // JSON string
 }
 
-// RenderSSA is a low-level component rendering function for SSA. Responsible for rendering and components SSA lifecycle
+// Deprecated: RenderSSA is a low-level component rendering function for SSA. Responsible for rendering and components SSA lifecycle
 func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 	// Async specific state
 	var wg sync.WaitGroup
@@ -108,7 +108,7 @@ func RenderSSA(w io.Writer, dp *DummyPage, p SSAParameters) {
 	}
 }
 
-// SSAFlush is a low-level function for rendering and flushing component UI to the client
+// Deprecated: SSAFlush is a low-level function for rendering and flushing component UI to the client
 func SSAFlush(p Page, c Component) {
 	// Pass if redirected
 	if redirected := GetContext(p, "internal:redirect"); redirected != nil {
@@ -148,7 +148,7 @@ func SSAFlush(p Page, c Component) {
 	rwf.Flush()
 }
 
-// SSAHandler is an opinionated SSA net/http handler.
+// Deprecated: SSAHandler is an opinionated SSA net/http handler.
 // Context:
 // - internal:rw - http.ResponseWriter
 // - internal:r - *http.Request

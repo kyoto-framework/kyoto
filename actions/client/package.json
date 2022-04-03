@@ -6,7 +6,7 @@
   "scripts": {
     "dynamics:build": "esbuild --bundle --minify --outfile=dist/dynamics.js src/dynamics.ts",
     "dynamics:pack": "node package.js",
-    "build": "npm run dynamics:build"
+    "dynamics": "npm run dynamics:build && npm run dynamics:pack"
   },
   "keywords": [],
   "author": "",

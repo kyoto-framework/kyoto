@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// TFuncMap is responsible for integration of library functionality into template rendering
+// Deprecated: TFuncMap is responsible for integration of library functionality into template rendering
 // You need to use this function while template building (or mix with your own)
 func TFuncMap() template.FuncMap {
 	return template.FuncMap{
@@ -24,6 +24,7 @@ func TFuncMap() template.FuncMap {
 	}
 }
 
+// Deprecated
 func TRender(c Component) string {
 	// Get component insights
 	insights := GetInsights(c)
@@ -46,6 +47,7 @@ func TRender(c Component) string {
 	return dom
 }
 
+// Deprecated
 func TMeta(p Page) template.HTML {
 	builder := strings.Builder{}
 
@@ -67,6 +69,7 @@ func TMeta(p Page) template.HTML {
 	return template.HTML(builder.String())
 }
 
+// Deprecated
 func TDynamics(path ...string) template.HTML {
 	if len(path) == 0 {
 		path = append(path, "/SSA")
@@ -77,11 +80,13 @@ func TDynamics(path ...string) template.HTML {
 	return template.HTML(builder.String())
 }
 
+// Deprecated
 func TJSON(data interface{}) string {
 	d, _ := json.Marshal(data)
 	return string(d)
 }
 
+// Deprecated
 func TComponentAttrs(c Component) template.HTMLAttr {
 	// Extract component data
 	name := reflect.ValueOf(c).Elem().Type().Name()
@@ -95,6 +100,7 @@ func TComponentAttrs(c Component) template.HTMLAttr {
 	return template.HTMLAttr(builder)
 }
 
+// Deprecated
 func TAction(action string, args ...interface{}) template.JS {
 	var formattedargs []string
 	for _, arg := range args {
@@ -105,10 +111,12 @@ func TAction(action string, args ...interface{}) template.JS {
 	return template.JS(fmt.Sprintf("Action(this, '%s', %s)", action, strings.Join(formattedargs, ", ")))
 }
 
+// Deprecated
 func TBind(field string) template.JS {
 	return template.JS(fmt.Sprintf("Bind(this, '%s')", field))
 }
 
+// Deprecated
 func TFormSubmit() template.JS {
 	return "FormSubmit(this, event)"
 }

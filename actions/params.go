@@ -1,8 +1,9 @@
 package actions
 
 import (
-	"encoding/base64"
 	"encoding/json"
+	"errors"
+	"net/http"
 	"strings"
 )
 
@@ -14,24 +15,31 @@ type Parameters struct {
 	Args      []interface{}
 }
 
-// ParseParameters is a function that parses parameters from request path.
-func ParseParameters(path string) (Parameters, error) {
-	params := Parameters{}
-	tokens := strings.Split(path, "/")
-	var _state, _args []byte
-	_state, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[len(tokens)-3], "-", "/"))
-	_args, _ = base64.StdEncoding.DecodeString(strings.ReplaceAll(tokens[len(tokens)-1], "-", "/"))
-	state := map[string]interface{}{}
-	if err := json.Unmarshal(_state, &state); err != nil {
-		return params, err
+func ParseParameters(r *http.Request) (Parameters, error) {
+	// Validate request format
+	if r.FormValue("State") == "" {
+		return Parameters{}, errors.New("State is empty")
 	}
-	args := []interface{}{}
-	if err := json.Unmarshal(_args, &args); err != nil {
-		return params, err
+	if r.FormValue("Args") == "" {
+		return Parameters{}, errors.New("Args is empty")
 	}
-	params.Component = tokens[len(tokens)-4]
-	params.State = state
-	params.Action = tokens[len(tokens)-2]
-	params.Args = args
-	return params, nil
+	// Initialize parameters store
+	parameters := Parameters{}
+	// Split path into tokens
+	tokens := strings.Split(r.URL.Path, "/")
+	// Extract component state
+	err := json.Unmarshal([]byte(r.FormValue("State")), &parameters.State)
+	if err != nil {
+		return parameters, errors.New("Something wrong with state")
+	}
+	// Extract component arguments
+	err = json.Unmarshal([]byte(r.FormValue("Args")), &parameters.Args)
+	if err != nil {
+		return parameters, errors.New("Something wrong with arguments")
+	}
+	// Extract component & action names
+	parameters.Component = tokens[len(tokens)-2]
+	parameters.Action = tokens[len(tokens)-1]
+	// Return
+	return parameters, nil
 }

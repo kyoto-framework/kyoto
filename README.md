@@ -16,14 +16,13 @@
 </p>
 
 <p align="center">
-    <a href="https://v1.kyoto.codes/getting-started/">Getting started</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/basics/">Basics</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/features/">Features</a>&nbsp;&bull; <a href="https://github.com/kyoto-framework/kyoto#donate">Donate</a>
+    <a href="https://v1.kyoto.codes/getting-started/">Getting started</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/basics/">Basics</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/features/">Features</a>&nbsp;&bull; <a href="https://v0.kyoto.codes/">v0 Documentation</a>&nbsp;&bull; <a href="https://github.com/kyoto-framework/kyoto#donate">Donate</a>
 </p>
 
-> **Disclaimer №1**  
-> High entry threshold. You must understand what problems are you trying to solve before using.
-
-> **Disclaimer №2**  
-> This project is in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
+> **Disclaimers**  
+> - High entry threshold. You must understand what problems are you trying to solve before using.
+> - Due to current situation in Ukraine development has slowed down a bit, but it won't stop. Слава Україні 🇺🇦
+> - This project is in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
 
 ## Motivation
 
@@ -107,7 +106,7 @@ func main() {
 
 ## References
 
-Documentation: [https://kyoto.codes/](https://kyoto.codes/)  
+Documentation: [https://v1.kyoto.codes/](https://v1.kyoto.codes/)  
 UIKit: [https://github.com/kyoto-framework/uikit](https://github.com/kyoto-framework/uikit)  
 Demo project, Hacker News client made with kyoto: [https://hn.kyoto.codes/](https://hn.kyoto.codes/)  
 Demo project, features overview: [https://github.com/kyoto-framework/kyoto/tree/master/examples/demo](https://github.com/kyoto-framework/kyoto/tree/master/examples/demo)  
