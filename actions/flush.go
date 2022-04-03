@@ -6,7 +6,6 @@ import (
 	"html/template"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/kyoto-framework/kyoto"
 )
@@ -31,10 +30,8 @@ func Flush(b *kyoto.Core) {
 		panic(err)
 	}
 	html := buffer.String()
-	// Remove newlines (not supported by SSA)
-	html = strings.ReplaceAll(html, "\n", "")
-	// Write SSE
-	_, err = fmt.Fprintf(rw, "data: %v\n\n", html)
+	// Write to stream
+	_, err = fmt.Fprint(rw, html)
 	if err != nil {
 		panic(err)
 	}

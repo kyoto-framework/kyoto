@@ -53,28 +53,6 @@ function _LocateRoot(parameters: LocateParameters): HTMLElement {
     return root
 }
 
-function _Encode(v: string): string {
-    // Handle non-latin
-    v = unescape(encodeURIComponent(v))
-    // Encode to base64
-    v = btoa(v)
-    // Replace slashes
-    v = v.replaceAll('/', '-')
-    // Return
-    return v
-}
-
-function _Decode(v: string): string {
-    // Replace slashes
-    v = v.replaceAll('-', '/')
-    // Decode from base64
-    v = atob(v)
-    // Handle non-latin
-    v = decodeURIComponent(escape(v))
-    // Return
-    return v
-}
-
 function _NameCleanup(action: string): string {
     if (action.includes(':')) {
         action = action.split(':')[1]
@@ -182,62 +160,60 @@ function _Morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions
 
 // Public
 
-export function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise<void> {
-    return new Promise((resolve, reject) => {
-        // Determine component root
-        let root = _LocateRoot({
-            starter: self,
-            depth: action.split('').filter(x => x === '$').length,
-            id: action.includes(':') ? action.split(':')[0] : undefined,
-        })
-        // Set loading state
-        _TriggerLoaders(root)
-        // Build URL
-        let url = ssapath
-        if (!url.endsWith('/')) {
-            url += '/'
-        }
-        url += `${root.getAttribute('name')}`  // Component name
-        url += `/${root.getAttribute('state') || '{}'}` // Component state
-        url += `/${_NameCleanup(action)}` // Action name
-        url += `/${_Encode(JSON.stringify(args))}` // Action arguments
-        // Make request
-        let es = new EventSource(url)
-        // Handle response chunks
-        es.onmessage = (event: MessageEvent) => {
-            // Extract data
-            let data = event.data
-            // Handle no data case
-            if (!data) {
-                return
-            }
-            // Handle redirect case
-            if (data.startsWith('ssa:redirect=')) {
-                let redirect = data.replace('ssa:redirect=', '')
-                window.location.href = redirect
-                return
-            }
-            // Handle replace case
-            if (root.getAttribute('ssa:render.mode') == 'replace') {
-                root.outerHTML = data
-                return
-            }
-            // Morph
-            try {
-                _Morph(root, data)
-            }
-            catch (e: any) {
-                console.log('Fallback from morphdom to root.outerHTML due to error', e)
-                root.outerHTML = data
-            }
-        }
-        es.onerror = (event: Event) => {
-            // Closing connection on end or err
-            es.close()
-            // Resolve promise
-            resolve()
-        }
+export async function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise<void> {
+    // Determine component root
+    let root = _LocateRoot({
+        starter: self,
+        depth: action.split('').filter(x => x === '$').length,
+        id: action.includes(':') ? action.split(':')[0] : undefined,
     })
+    // Set loading state
+    _TriggerLoaders(root)
+    // Build URL
+    let url = ssapath // Base
+    if (!url.endsWith('/')) {
+        url += '/'
+    }
+    url += `${root.getAttribute('name')}`  // Component name
+    url += `/${_NameCleanup(action)}` // Action name
+    // Make request
+    const payload = new FormData()
+    payload.set('State', atob(root.getAttribute('state') as string) || '{}')
+    payload.set('Args', JSON.stringify(args))
+    const response = await fetch(url, {
+        method: 'POST',
+        body: payload,
+    })
+    // Extract stream reader
+    const reader = response.body?.pipeThrough(new TextDecoderStream()).getReader()
+    if (!reader) {
+        return
+    }
+    // Read responses
+    while (true) {
+        // Extract value and status
+        const { value, done } = await reader.read()
+        if (done) {
+            break
+        }
+        // Handle redirect
+        if (value.startsWith('ssa:redirect=')) {
+            window.location.href = value.replace('ssa:redirect=', '')
+            continue
+        }
+        // Handle replace
+        if (root.getAttribute('ssa:render.mode') == 'replace') {
+            root.outerHTML = value
+            continue
+        }
+        // Morph by default
+        try {
+            _Morph(root, value)
+        } catch (e: any) {
+            console.log('Fallback from morphdom to root.outerHTML due to error', e)
+            root.outerHTML = value
+        }
+    }
 }
 
 export function Bind(self: HTMLElement, field: string) {
@@ -252,11 +228,11 @@ export function Bind(self: HTMLElement, field: string) {
         throw new Error('Bind call error: component state is underfined')
     }
     // Load state
-    let state = JSON.parse(_Decode(root.getAttribute('state') as string))
+    let state = JSON.parse(atob(root.getAttribute('state') as string))
     // Set value
     state[field] = (self as HTMLInputElement).value
     // Set state
-    root.setAttribute('state', _Encode(JSON.stringify(state)))
+    root.setAttribute('state', btoa(state))
 }
 
 export function FormSubmit(self: HTMLElement, e: Event) {
