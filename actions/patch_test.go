@@ -38,7 +38,7 @@ func TestPatch(t *testing.T) {
 	})
 	// Patch
 	Patch(core, Parameters{
-		Component: "Foo",
+		Component: "testPatchComponent",
 		Action:    "Bar",
 		State: map[string]interface{}{
 			"Foo": "Bar",
