@@ -7,9 +7,9 @@
     <title>{{ .Title }}</title>
 </head>
 <body>
-    {{ template "ComponentUUID" .UUID1 }}
-    {{ template "ComponentUUID" .UUID2 }}
-    {{ template "ComponentUserAgent" .UserAgent }}
+    {{ render .UUID1 }}
+    {{ render .UUID2 }}
+    {{ render .UserAgent }}
 
     {{ dynamics }}
 </body>

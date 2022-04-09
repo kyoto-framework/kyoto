@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/kyoto-framework/kyoto"
 	"github.com/kyoto-framework/kyoto/actions"
 	"github.com/kyoto-framework/kyoto/render"
 )
@@ -16,8 +17,8 @@ func setupRoutes(mux *http.ServeMux) {
 
 func setupActions(mux *http.ServeMux) {
 	// Register Actions handler
-	mux.HandleFunc("/internal/actions/", actions.Handler(func() *template.Template {
-		return template.Must(template.New("Actions").Funcs(render.FuncMap()).ParseGlob("*.html"))
+	mux.HandleFunc("/internal/actions/", actions.Handler(func(c *kyoto.Core) *template.Template {
+		return template.Must(template.New("Actions").Funcs(render.FuncMap(c)).ParseGlob("*.html"))
 	}))
 	// Register Actions components
 	actions.Register(
