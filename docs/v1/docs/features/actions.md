@@ -22,8 +22,8 @@ To use actions, you will need to prepare your project:
 	...
 
 	// Register actions handler
-	mux.HandleFunc("/internal/actions/", actions.Handler(func () *template.Template {
-		return template.Must(template.New("Actions").Funcs(render.FuncMap()).ParseGlob("*.html"))
+	mux.HandleFunc("/internal/actions/", actions.Handler(func(c *kyoto.Core) *template.Template {
+		return template.Must(template.New("Actions").Funcs(render.FuncMap(c)).ParseGlob("*.html"))
 	}))
 	// Register dynamic components
 	actions.Register(

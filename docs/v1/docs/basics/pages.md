@@ -23,7 +23,7 @@ Let's see how it works:
 	        core.State.Set("Content", "Hello, Kyoto!")
 	    })
 	    render.Template(core, func() *template.Template {
-	        return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+	        return template.Must(template.New("page.index.html").Funcs(render.FuncMap(core)).ParseGlob("*.html"))
 	    })
 	}
 	```

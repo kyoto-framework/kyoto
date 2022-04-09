@@ -65,7 +65,7 @@ For detailed pages explanation, check [Basics • Pages](/basics/pages) document
 
 	func PageIndex(core *kyoto.Core) {
 		render.Template(core, func() *template.Template {
-			return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+			return template.Must(template.New("page.index.html").Funcs(render.FuncMap(core)).ParseGlob("*.html"))
 		})
 	}
 	```
@@ -84,8 +84,8 @@ For detailed pages explanation, check [Basics • Pages](/basics/pages) document
 !!! note ""
     You can define bootstrap functions for easier template definitions. For example:
     ```go
-    func newtemplate(page string) *template.Template {
-        return template.Must(template.New(page).Funcs(render.FuncMap()).ParseGlob("*.html"))
+    func newtemplate(core *kyoto.Core, page string) *template.Template {
+        return template.Must(template.New(page).Funcs(render.FuncMap(core)).ParseGlob("*.html"))
     }
     ```
 
@@ -181,7 +181,7 @@ After component definition, let's use it multiple times in our index page.
 			core.Component("UUID2", ComponentUUID)
 		})
 		render.Template(core, func() *template.Template {
-			return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+			return template.Must(template.New("page.index.html").Funcs(render.FuncMap(core)).ParseGlob("*.html"))
 		})
 	}
 	```

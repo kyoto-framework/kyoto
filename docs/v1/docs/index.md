@@ -89,8 +89,8 @@ func PageIndex(core *kyoto.Core) {
         core.Component("UUID1", ComponentUUID)
         core.Component("UUID2", ComponentUUID)
     })
-    render.Template(c, func() *template.Template {
-        return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+    render.Template(core, func() *template.Template {
+        return template.Must(template.New("page.index.html").Funcs(render.FuncMap(core)).ParseGlob("*.html"))
     })
 }
 
