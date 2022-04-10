@@ -36,7 +36,7 @@ func TestWriter(t *testing.T) {
 	})
 
 	// Check custom renderer
-	if core.Context.Get("internal:render:cm") == nil {
+	if core.State.Get("internal:render:wr") == nil {
 		t.Error("Custom renderer is not set")
 	}
 }
