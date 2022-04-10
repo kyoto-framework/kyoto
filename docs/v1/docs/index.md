@@ -1,6 +1,7 @@
 ---
 hide:
     - navigation
+    - toc
 ---
 
 <p align="center">
