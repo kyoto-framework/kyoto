@@ -2,6 +2,7 @@ package smode
 
 import (
 	"encoding/json"
+	"html/template"
 	"reflect"
 	"sync"
 
@@ -173,4 +174,11 @@ func Redirect(page Page, target string, code int) {
 	core := cmap[page]
 	// Redirect
 	render.Redirect(core, target, code)
+}
+
+func FuncMap(p Page) template.FuncMap {
+	// Extract kyoto.Core by page
+	core := cmap[p]
+	// Return funcmap with core
+	return render.FuncMap(core)
 }
