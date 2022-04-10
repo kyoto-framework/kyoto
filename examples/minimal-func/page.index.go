@@ -10,7 +10,7 @@ import (
 
 func PageIndex(c *kyoto.Core) {
 	render.Template(c, func() *template.Template {
-		return template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+		return template.Must(template.New("page.index.html").Funcs(render.FuncMap(c)).ParseGlob("*.html"))
 	})
 	lifecycle.Init(c, func() {
 		c.State.Set("Title", "Kyoto in a functional way")

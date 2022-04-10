@@ -19,8 +19,8 @@ func Flush(b *kyoto.Core) {
 	// Render
 	buffer := bytes.NewBufferString("")
 	var err error
-	if b.Context.Get("internal:render:cm") != nil {
-		renderer := b.Context.Get("internal:render:cm").(func(io.Writer) error)
+	if b.State.Get("internal:render:wr") != nil {
+		renderer := b.State.Get("internal:render:wr").(func(io.Writer) error)
 		err = renderer(buffer)
 	} else {
 		tbuilder := b.Context.Get("internal:render:tb").(func() *template.Template)

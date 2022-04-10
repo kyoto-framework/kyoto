@@ -2,6 +2,7 @@ package smode
 
 import (
 	"encoding/json"
+	"html/template"
 	"reflect"
 	"sync"
 
@@ -51,7 +52,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			render.Template(core, _item.Template)
 		}
 		if _item, ok := item.(ImplementsRender); ok {
-			render.Custom(core, _item.Render)
+			render.Writer(core, _item.Render)
 		}
 		// Adapt lifecycle
 		if _item, ok := item.(ImplementsInit); ok {
@@ -173,4 +174,11 @@ func Redirect(page Page, target string, code int) {
 	core := cmap[page]
 	// Redirect
 	render.Redirect(core, target, code)
+}
+
+func FuncMap(p Page) template.FuncMap {
+	// Extract kyoto.Core by page
+	core := cmap[p]
+	// Return funcmap with core
+	return render.FuncMap(core)
 }

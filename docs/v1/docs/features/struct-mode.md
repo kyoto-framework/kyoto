@@ -28,7 +28,7 @@ We need to define a structure and `Template` method for that structure.
 	type PageIndex struct {}
 
 	func (p *PageIndex) Template() *template.Template {
-		template.Must(template.New("page.index.html").Funcs(render.FuncMap()).ParseGlob("*.html"))
+		template.Must(template.New("page.index.html").Funcs(smode.FuncMap(p)).ParseGlob("*.html"))
 	}
 	
 	```

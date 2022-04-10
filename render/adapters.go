@@ -12,9 +12,9 @@ func Template(b *kyoto.Core, builder func() *template.Template) {
 	b.Context.Set("internal:render:tb", builder)
 }
 
-// Custom is a function to define a custom renderer for page.
-func Custom(b *kyoto.Core, renderer func(io.Writer) error) {
-	b.Context.Set("internal:render:cm", renderer)
+// Writer is a function to define a custom renderer for page.
+func Writer(b *kyoto.Core, renderer func(io.Writer) error) {
+	b.State.Set("internal:render:wr", renderer)
 }
 
 // Redirect is a function to redirect.

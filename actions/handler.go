@@ -10,7 +10,7 @@ import (
 
 // Handler is a generic actions handler, responsible for component rendering
 // on action call. Please note, you also need to register your dynamic components with Register method.
-func Handler(tb func() *template.Template) http.HandlerFunc {
+func Handler(tb func(c *kyoto.Core) *template.Template) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		// Set headers
 		rw.Header().Set("Content-Type", "plain/html")
@@ -38,9 +38,9 @@ func Handler(tb func() *template.Template) http.HandlerFunc {
 		}
 		registryrw.RUnlock()
 		// If no custom render, set template builder
-		if core.Context.Get("internal:render:cm") == nil {
+		if core.State.Get("internal:render:wr") == nil {
 			core.Context.Set("internal:render:tb", func() *template.Template {
-				return template.Must(tb().Parse(fmt.Sprintf(`{{ template "%s" . }}`, parameters.Component)))
+				return template.Must(tb(core).Parse(fmt.Sprintf(`{{ template "%s" . }}`, parameters.Component)))
 			})
 		}
 		// Patch scheduler with state population, action and flush jobs

@@ -1,8 +1,10 @@
 package bench
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -115,8 +117,8 @@ func BenchmarkAction(b *testing.B) {
 	}
 
 	// Define a template builder
-	tb := func() *template.Template {
-		return template.Must(template.New("bench").Funcs(render.FuncMap()).Parse(`
+	tb := func(c *kyoto.Core) *template.Template {
+		return template.Must(template.New("bench").Funcs(render.FuncMap(c)).Parse(`
 				{{ define "component" }}
 				<div {{ componentattrs . }}>
 					{{ .Content }}
@@ -127,7 +129,7 @@ func BenchmarkAction(b *testing.B) {
 						<title>Kyoto benchmark page</title>
 					</head>
 					<body>
-						{{ template "component" .c1 }}
+						{{ render .c1 }}
 					</body>
 				</html>
 			`))
@@ -138,7 +140,9 @@ func BenchmarkAction(b *testing.B) {
 		lifecycle.Init(core, func() {
 			core.Component("c1", component)
 		})
-		render.Template(core, tb)
+		render.Template(core, func() *template.Template {
+			return tb(core)
+		})
 	}
 
 	// Define a mux
@@ -151,7 +155,13 @@ func BenchmarkAction(b *testing.B) {
 
 	// Bench
 	for i := 0; i < b.N; i++ {
-		req, _ := http.NewRequest("GET", "/internal/actions/component/e30=/Action/W10=", nil)
+		reqb := bytes.Buffer{}
+		reqw := multipart.NewWriter(&reqb)
+		reqw.WriteField("State", `{"Content":"I'm a component content"}`)
+		reqw.WriteField("Args", "[]")
+		reqw.Close()
+		req, _ := http.NewRequest("POST", "/internal/actions/component/Action", &reqb)
+		req.Header.Set("Content-Type", reqw.FormDataContentType())
 		res := httptest.NewRecorder()
 		mux.ServeHTTP(res, req)
 	}

@@ -1,19 +1,39 @@
 package render
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"strings"
 
+	"github.com/kyoto-framework/kyoto"
 	"github.com/kyoto-framework/kyoto/actions"
 	"github.com/kyoto-framework/kyoto/helpers"
 )
 
 // Render is a function to render a component.
 // TODO: Not implemented.
-func Render(state map[string]interface{}) string {
-	return ""
+func Render(c *kyoto.Core, state map[string]interface{}) template.HTML {
+	// Check if state have a renderer
+	if renderer, ok := state["internal:render:wr"]; ok {
+		buf := &bytes.Buffer{}
+		err := renderer.(func(io.Writer) error)(buf)
+		if err != nil {
+			panic(err)
+		}
+		return template.HTML(buf.String())
+	} else { // Render with template
+		buf := &bytes.Buffer{}
+		tbuilder := c.Context.Get("internal:render:tb").(func() *template.Template)
+		tmpl := template.Must(tbuilder().Parse(fmt.Sprintf(`{{ template "%s" . }}`, helpers.ComponentName(state))))
+		err := tmpl.Execute(buf, state)
+		if err != nil {
+			panic(err)
+		}
+		return template.HTML(buf.String())
+	}
 }
 
 // Dynamics is a function to integrate dynamic kyoto functionality (actions).
