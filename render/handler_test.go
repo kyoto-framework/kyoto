@@ -39,10 +39,10 @@ func TestPageHandler(t *testing.T) {
 }
 
 // TestPageHandlerCustomRender ensures that page custom render inside of page handler actually works
-func TestPageHandlerCurstomRender(t *testing.T) {
+func TestPageHandlerWriterRender(t *testing.T) {
 	// Initialize test page
 	page := func(c *kyoto.Core) {
-		Custom(c, func(w io.Writer) error {
+		Writer(c, func(w io.Writer) error {
 			w.Write([]byte(fmt.Sprintf(
 				"%s", c.State.Get("Foo"),
 			)))

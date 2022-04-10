@@ -25,7 +25,7 @@ func TestHandler(t *testing.T) {
 	// Register component
 	RegisterWithName("testHandlerComponent", testHandlerComponent)
 	// Define handler
-	handler := Handler(func() *template.Template {
+	handler := Handler(func(c *kyoto.Core) *template.Template {
 		return template.Must(template.New("").Parse(
 			`{{ define "testHandlerComponent" }}` +
 				`Content is {{ .Foo }}` +

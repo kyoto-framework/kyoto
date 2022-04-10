@@ -29,8 +29,8 @@ func TestCustom(t *testing.T) {
 	// Initialize core
 	core := kyoto.NewCore()
 
-	// Set custom renderer
-	Custom(core, func(w io.Writer) error {
+	// Set writer renderer
+	Writer(core, func(w io.Writer) error {
 		w.Write([]byte("test"))
 		return nil
 	})
