@@ -92,3 +92,7 @@ In this way you can simplify your code, ommit writing a template definition name
     With `render` function you can avoid an error while calling other template with a dynamic name.  
     Wondering what I'm talking about?  
     Check this: [https://stackoverflow.com/questions/20716726/call-other-templates-with-dynamic-name](https://stackoverflow.com/questions/20716726/call-other-templates-with-dynamic-name)
+
+!!! warning "Performance impact"
+	In case of fallback to classic templates, `render` function has a huge performance impact.
+	Please, avoid using it in high-load systems.
