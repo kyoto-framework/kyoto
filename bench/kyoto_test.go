@@ -128,7 +128,7 @@ func BenchmarkComponents(b *testing.B) {
 // but using dynamic rendering with `render` function for classic templates.
 // This test was created to measure performance impact of using `render` for classic templates.
 func BenchmarkComponentsDynamicRender(b *testing.B) {
-	counts := []int{1, 100, 1000}
+	counts := []int{1, 100}
 	for _, count := range counts {
 		b.Run(fmt.Sprintf("%v", count), func(b *testing.B) {
 			// Components definitions and usage

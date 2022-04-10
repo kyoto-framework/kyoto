@@ -11,7 +11,7 @@ import (
 // Also it removes all jobs, not needed for action call (like "async" and "afterasync").
 func Patch(core *kyoto.Core, params Parameters) {
 	// Check template builder
-	if core.Context.Get("internal:render:tb") == nil {
+	if core.Context.Get("internal:render:tbuilder") == nil {
 		panic("No template specified for page")
 	}
 	// Patch and cleanup existing jobs

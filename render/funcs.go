@@ -19,14 +19,18 @@ func Render(c *kyoto.Core, state map[string]interface{}) template.HTML {
 	// Define buffer
 	buf := &bytes.Buffer{}
 	// Check if state have a renderer
-	if renderer, ok := state["internal:render:wr"]; ok {
+	if renderer, ok := state["internal:render:writer"]; ok {
+		// Call renderer on defined buffer
 		err := renderer.(func(io.Writer) error)(buf)
 		if err != nil {
 			panic(err)
 		}
 	} else { // Render with template
-		tbuilder := c.Context.Get("internal:render:tb").(func() *template.Template)
-		tmpl := template.Must(tbuilder().Parse(fmt.Sprintf(`{{ template "%s" . }}`, helpers.ComponentName(state))))
+		// Clone prebuilt template
+		tmpl, _ := c.Context.Get("internal:render:template").(*template.Template).Clone()
+		// Parse rendering string
+		tmpl = template.Must(tmpl.Parse(fmt.Sprintf(`{{ template "%s" . }}`, helpers.ComponentName(state))))
+		// Execute template
 		err := tmpl.Execute(buf, state)
 		if err != nil {
 			panic(err)
