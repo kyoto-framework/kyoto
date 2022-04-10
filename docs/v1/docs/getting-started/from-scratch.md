@@ -202,7 +202,6 @@ Thanks to asynchronous lifecycle, data fetching is concurrent without any gorout
 
 !!! note ""
 	For components rendering you can use `render` template function instead of built-it `template` function.
-	In this way, you will also have an option to define own rendering logic for component with `render.Writer`.
 
 	```html
 	...

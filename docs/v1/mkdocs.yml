@@ -59,6 +59,7 @@ nav:
   - Features:
     - features/index.md
     - Actions: features/actions.md
+    - Alternative rendering: features/alternative-rendering.md
     - Struct Mode: features/struct-mode.md
   - Concepts:
     - concepts/index.md
