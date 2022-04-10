@@ -24,8 +24,8 @@ func TestTemplate(t *testing.T) {
 	}
 }
 
-// TestCustom ensures custom renderer integrating into core as expected
-func TestCustom(t *testing.T) {
+// TestWriter ensures writer renderer integrating into core as expected
+func TestWriter(t *testing.T) {
 	// Initialize core
 	core := kyoto.NewCore()
 
