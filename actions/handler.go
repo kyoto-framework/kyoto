@@ -38,8 +38,8 @@ func Handler(tb func(c *kyoto.Core) *template.Template) http.HandlerFunc {
 		}
 		registryrw.RUnlock()
 		// If no custom render, set template builder
-		if core.State.Get("internal:render:wr") == nil {
-			core.Context.Set("internal:render:tb", func() *template.Template {
+		if core.State.Get("internal:render:writer") == nil {
+			core.Context.Set("internal:render:tbuilder", func() *template.Template {
 				return template.Must(tb(core).Parse(fmt.Sprintf(`{{ template "%s" . }}`, parameters.Component)))
 			})
 		}

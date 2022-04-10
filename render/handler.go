@@ -22,7 +22,7 @@ func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 		// Call core receiver
 		page(core)
 		// Check if page implements render
-		if core.Context.Get("internal:render:tb") == nil && core.State.Get("internal:render:wr") == nil {
+		if core.Context.Get("internal:render:template") == nil && core.State.Get("internal:render:writer") == nil {
 			panic("Rendering is not specified for page")
 		}
 		// Schedule a render job
@@ -37,10 +37,11 @@ func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 					http.Redirect(rw, r, redirect.(string), code)
 					return nil
 				}
-				if renderer := core.State.Get("internal:render:wr"); renderer != nil { // Check renderer
+				if renderer := core.State.Get("internal:render:writer"); renderer != nil { // Check renderer
 					return renderer.(func(io.Writer) error)(rw) // Call renderer
-				} else if tbuilder := core.Context.Get("internal:render:tb"); tbuilder != nil { // Check template builder
-					return tbuilder.(func() *template.Template)().Execute(rw, core.State.Export()) // Execute template
+				} else if tmpl := core.Context.Get("internal:render:template"); tmpl != nil { // Check template
+					tmplclone, _ := tmpl.(*template.Template).Clone() // Make a clone
+					return tmplclone.Execute(rw, core.State.Export()) // Execute template
 				}
 				return errors.New("no renderer or template builder specified") // Error if no renderer or template builder
 			},

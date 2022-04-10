@@ -38,3 +38,25 @@ BenchmarkAction-12                          9643            125656 ns/op
 PASS
 ok      github.com/kyoto-framework/kyoto/bench  9.958s
 ```
+
+## 10 Apr 2022
+
+```
+goos: darwin
+goarch: amd64
+pkg: github.com/kyoto-framework/kyoto/bench
+cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+BenchmarkEmpty-12                                          43446             26636 ns/op
+BenchmarkComponents/1-12                                   15571             75940 ns/op
+BenchmarkComponents/100-12                                   315           3502386 ns/op
+BenchmarkComponents/1000-12                                    7         151133768 ns/op
+BenchmarkComponentsDynamicRender/1-12                       9656            122647 ns/op
+BenchmarkComponentsDynamicRender/100-12                       49          22011405 ns/op
+BenchmarkComponentsDynamicRender/1000-12                       1        1811953962 ns/op
+BenchmarkComponentsWriter/1-12                             18330             65226 ns/op
+BenchmarkComponentsWriter/100-12                             862           1328411 ns/op
+BenchmarkComponentsWriter/1000-12                             25          43925223 ns/op
+BenchmarkAction-12                                          9584            125116 ns/op
+PASS
+ok      github.com/kyoto-framework/kyoto/bench  18.495s
+```
