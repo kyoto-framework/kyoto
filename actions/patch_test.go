@@ -27,7 +27,7 @@ func TestPatch(t *testing.T) {
 	// Apply component
 	testPatchComponent(core)
 	// Define render
-	core.Context.Set("internal:render:tb", func() *template.Template {
+	core.Context.Set("internal:render:tbuilder", func() *template.Template {
 		return template.Must(template.New("").Parse(`
 			{{ define "testPatchComponent" }}
 			...

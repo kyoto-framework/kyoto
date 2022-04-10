@@ -19,7 +19,7 @@ func TestTemplate(t *testing.T) {
 	})
 
 	// Check template builder
-	if core.Context.Get("internal:render:tb") == nil {
+	if core.Context.Get("internal:render:tbuilder") == nil {
 		t.Error("Template builder is not set")
 	}
 }
@@ -36,7 +36,7 @@ func TestWriter(t *testing.T) {
 	})
 
 	// Check custom renderer
-	if core.State.Get("internal:render:wr") == nil {
+	if core.State.Get("internal:render:writer") == nil {
 		t.Error("Custom renderer is not set")
 	}
 }

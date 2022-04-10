@@ -1,0 +1,13 @@
+version: '3'
+
+tasks:
+
+  test:
+    cmds:
+      - go test {{ .CLI_ARGS }} . ./actions ./helpers ./lifecycle ./render ./smode
+
+  coverage:
+    cmds:
+      - go test {{ .CLI_ARGS }} -coverprofile /tmp/kyoto-coverage.out . ./actions ./helpers ./lifecycle ./render ./smode
+      - go tool cover -html=/tmp/kyoto-coverage.out
+      - sleep 3 && rm /tmp/kyoto-coverage.out
