@@ -200,7 +200,7 @@ After component definition, let's use it multiple times in our index page.
 
 Thanks to asynchronous lifecycle, data fetching is concurrent without any goroutines hassle and page rendering happens much sooner.
 
-!!! note
+!!! note ""
 	For components rendering you can use `render` template function instead of built-it `template` function.
 	In this way, you will also have an option to define own rendering logic for component with `render.Writer`.
 
