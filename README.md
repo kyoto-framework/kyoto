@@ -11,8 +11,14 @@
 
 <p align="center">
     <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
-    <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
-    <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
+    <a href="https://goreportcard.com/report/github.com/kyoto-framework/kyoto">
+        <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
+    </a>
+    <a href="https://codecov.io/gh/kyoto-framework/kyoto">
+        <img src="https://codecov.io/gh/kyoto-framework/kyoto/branch/master/graph/badge.svg?token=XVLKT20DP8">
+    </a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">
+        <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
+    </a>
 </p>
 
 <p align="center">
