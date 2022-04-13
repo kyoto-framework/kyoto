@@ -16,19 +16,16 @@ func ComponentID(component interface{}) string {
 }
 
 // ComponentName is a function to extract component name.
+// In case of function, takes function name.
 // In case of struct pointer, takes struct name.
 // In case of Map, extracts component name with "internal:name" key.
-// In case of function, takes function name.
+// If type is not identified, throws panic.
 func ComponentName(component interface{}) string {
 	// In case of passed function component
 	if reflect.TypeOf(component).Kind() == reflect.Func {
 		funcpath := runtime.FuncForPC(reflect.ValueOf(component).Pointer()).Name()
 		tokens := strings.Split(funcpath, ".")
-		if len(tokens) == 1 {
-			return tokens[0]
-		} else {
-			return tokens[1]
-		}
+		return tokens[len(tokens)-1]
 	}
 	// In case of passed state map (component name must to be stored inside)
 	if reflect.TypeOf(component).Kind() == reflect.Map {
@@ -38,16 +35,16 @@ func ComponentName(component interface{}) string {
 	if reflect.TypeOf(component).Kind() == reflect.Ptr && reflect.TypeOf(component).Elem().Kind() == reflect.Struct {
 		return reflect.TypeOf(component).Elem().Name()
 	}
-	// Default is panic
-	panic("Unable to get component name")
+	// Default is panic with helping message
+	panic("Unable to get component name. Most likely passed wrong component type somewhere.")
 }
 
 // ComponentSerialize is a function to serialize component state.
 func ComponentSerialize(component interface{}) string {
 	// If state is passed, make local cleaned copy
-	if component, ok := component.(map[string]interface{}); ok {
+	if cmap, ok := component.(map[string]interface{}); ok {
 		_component := map[string]interface{}{}
-		for k, v := range component {
+		for k, v := range cmap {
 			if !strings.HasPrefix(k, "internal:") {
 				_component[k] = v
 			}
@@ -57,8 +54,7 @@ func ComponentSerialize(component interface{}) string {
 	// Serialize component state into json
 	statebts, err := json.Marshal(component)
 	if err != nil {
-		println("Error while serializing component state")
-		panic(err)
+		panic("Error while serializing component state. " + err.Error())
 	}
 	// Encode to base64 and replace slashes to avoid parsing errors
 	state := strings.ReplaceAll(base64.StdEncoding.EncodeToString(statebts), "/", "-")
