@@ -37,3 +37,10 @@ func TestStore(t *testing.T) {
 		t.Error("store.GetRequest not working")
 	}
 }
+
+func TestStoreNotPanics(t *testing.T) {
+	// Initialize store
+	store := NewStore()
+	// Try to get a non-existent value
+	store.Get("test")
+}
