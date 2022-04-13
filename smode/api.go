@@ -136,6 +136,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 }
 
 // TODO: Must to be renamed, naming conflict with smode.Register
+// TODO: Is not working for functional components (hash of unhashable type func(*kyoto.Core))
 func RegC(page Page, component Component) Component {
 	// Save component/page mapping to temporary store
 	pmap[component] = page
@@ -146,12 +147,7 @@ func RegC(page Page, component Component) Component {
 	// Inject component name into state
 	_core.State.Set("internal:name", helpers.ComponentName(component))
 	// Execute builder receiver
-	switch c := component.(type) {
-	case func(*kyoto.Core): // In case of builder receiver, just call it
-		c(_core)
-	case interface{}: // In case of struct component, adapt and call it
-		Adapt(c)(_core)
-	}
+	Adapt(component)(_core)
 	// Remove component/page mapping from temporary store
 	pmapm.Lock()
 	delete(pmap, component)
