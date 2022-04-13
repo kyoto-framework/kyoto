@@ -3,7 +3,7 @@ name: Tests and Coverage
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,10 +12,11 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: '1.17'
-      - name: Run tests with coverage
-        run: |
-          go test -coverprofile=coverage.txt.tmp -covermode=atomic ./ ./lifecycle ./render ./actions ./smode ./helpers
-          cat coverage.txt.tmp | grep -v "backward." > coverage.txt
-          rm coverage.txt.tmp
+      - name: Install Taskfile
+        run: go install github.com/go-task/task/v3/cmd/task@latest
+      - name: Test
+        run: task test
+      - name: Test with coverage report
+        run: task coverage:report -- coverage.txt
       - name: Upload coverage to Codecov
         run: bash <(curl -s https://codecov.io/bash)

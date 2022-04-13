@@ -4,11 +4,7 @@ tasks:
 
   test:
     cmds:
-      - go test {{ .CLI_ARGS }} . ./actions ./helpers ./lifecycle ./render ./smode
-  
-  test:race:
-    cmds:
-      - go test -race {{ .CLI_ARGS }} . ./actions ./helpers ./lifecycle ./render ./smode
+      - go test -race . ./actions ./helpers ./lifecycle ./render ./smode
 
   coverage:
     cmds:
@@ -16,6 +12,12 @@ tasks:
 
   coverage:web:
     cmds:
-      - go test {{ .CLI_ARGS }} -coverprofile /tmp/kyoto-coverage.out . ./actions ./helpers ./lifecycle ./render ./smode
+      - go test -coverprofile /tmp/kyoto-coverage.out . ./actions ./helpers ./lifecycle ./render ./smode
       - go tool cover -html=/tmp/kyoto-coverage.out
       - sleep 3 && rm /tmp/kyoto-coverage.out
+
+  coverage:report:
+    cmds:
+      - go test -race -coverprofile=/tmp/coverage.txt.tmp -covermode=atomic ./ ./lifecycle ./render ./actions ./smode ./helpers
+      - cat /tmp/coverage.txt.tmp | grep -v "backward." > {{ .CLI_ARGS }}
+      - rm /tmp/coverage.txt.tmp
