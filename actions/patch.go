@@ -10,10 +10,6 @@ import (
 // Patch is a function that patches scheduler with state population, action and flush jobs.
 // Also it removes all jobs, not needed for action call (like "async" and "afterasync").
 func Patch(core *kyoto.Core, params Parameters) {
-	// Check template builder
-	if core.Context.Get("internal:render:tbuilder") == nil {
-		panic("No template specified for page")
-	}
 	// Patch and cleanup existing jobs
 	jobs := []*scheduler.Job{}
 	for _, job := range core.Scheduler.Jobs {

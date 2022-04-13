@@ -39,9 +39,11 @@ func Handler(tb func(c *kyoto.Core) *template.Template) http.HandlerFunc {
 		registryrw.RUnlock()
 		// If no custom render, set template builder
 		if core.State.Get("internal:render:writer") == nil {
-			core.Context.Set("internal:render:tbuilder", func() *template.Template {
+			tbc := func() *template.Template {
 				return template.Must(tb(core).Parse(fmt.Sprintf(`{{ template "%s" . }}`, parameters.Component)))
-			})
+			}
+			core.Context.Set("internal:render:tbuilder", tbc)
+			core.Context.Set("internal:render:template", tbc())
 		}
 		// Patch scheduler with state population, action and flush jobs
 		Patch(core, parameters)

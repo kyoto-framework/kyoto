@@ -23,8 +23,9 @@ func Flush(b *kyoto.Core) {
 		renderer := b.State.Get("internal:render:writer").(func(io.Writer) error)
 		err = renderer(buffer)
 	} else {
-		tbuilder := b.Context.Get("internal:render:tbuilder").(func() *template.Template)
-		err = tbuilder().Execute(buffer, b.State.Export())
+		tmpl := b.Context.Get("internal:render:template").(*template.Template)
+		tmplclone, _ := tmpl.Clone()
+		err = tmplclone.Execute(buffer, b.State.Export())
 	}
 	if err != nil {
 		panic(err)
