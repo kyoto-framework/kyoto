@@ -2,11 +2,50 @@ package render
 
 import (
 	"fmt"
+	"html/template"
+	"io"
 	"strings"
 	"testing"
 
+	"github.com/kyoto-framework/kyoto"
 	"github.com/kyoto-framework/kyoto/helpers"
 )
+
+// TestRender ensures that render function correctly triggers a Writer render
+func TestRenderWriter(t *testing.T) {
+	// Initialize core
+	core := kyoto.NewCore()
+	// Apply Writer
+	Writer(core, func(w io.Writer) error {
+		_, err := w.Write([]byte("Foo"))
+		return err
+	})
+	// Generate and check render output
+	output := Render(core, core.State.Export())
+	if output != "Foo" {
+		t.Error("Render output is incorrect")
+	}
+}
+
+// TestRenderFallback ensures that render function correctly
+// fallbacks to template rendering in case of no Writer
+func TestRenderFallback(t *testing.T) {
+	// Initialize core
+	core := kyoto.NewCore()
+	// Inject component name (usually done by core.Component method)
+	core.State.Set("internal:name", "testRenderBar")
+	// Inject template and template builder
+	Template(core, func() *template.Template {
+		return template.Must(template.New("test").Parse(`
+			{{ define "testRenderBar" }}Bar{{ end }}
+		`))
+	})
+	// Generate and check render output
+	output := Render(core, core.State.Export())
+	if output != "Bar" {
+		t.Error("Render output is incorrect")
+	}
+}
 
 // TestDynamics ensures that dynamic integration is working as expected
 func TestDynamics(t *testing.T) {
