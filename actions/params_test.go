@@ -7,30 +7,29 @@ import (
 	"testing"
 )
 
+func buildActionRequest(state string, args string, link string) *http.Request {
+	mpb := bytes.Buffer{}
+	mpw := multipart.NewWriter(&mpb)
+	mpw.WriteField("State", state)
+	mpw.WriteField("Args", args)
+	mpw.Close()
+	req, err := http.NewRequest("POST", link, &mpb)
+	req.Header.Set("Content-Type", mpw.FormDataContentType())
+	if err != nil {
+		panic(err)
+	}
+	return req
+}
+
 // TestParseParameters ensures that the ParseParameters function works as expected
 func TestParseParameters(t *testing.T) {
-	mpb1 := bytes.Buffer{}
-	mpw1 := multipart.NewWriter(&mpb1)
-	mpw1.WriteField("State", `{"Foo":"Bar"}`)
-	mpw1.WriteField("Args", "[]")
-	mpw1.Close()
-	req1, err := http.NewRequest("POST", "http://localhost:8080/internal/actions/ComponentFoo/ActionName", &mpb1)
-	req1.Header.Set("Content-Type", mpw1.FormDataContentType())
-	if err != nil {
-		panic(err)
-	}
 
-	mpb2 := bytes.Buffer{}
-	mpw2 := multipart.NewWriter(&mpb2)
-	mpw2.WriteField("State", `{"Foo":"Bar"}`)
-	mpw2.WriteField("Args", "[]")
-	mpw2.Close()
-	req2, err := http.NewRequest("POST", "http://localhost:8080/custom-route/ComponentFoo/ActionName", &mpb2)
-	req2.Header.Set("Content-Type", mpw2.FormDataContentType())
-	if err != nil {
-		panic(err)
-	}
+	// Common request
+	req1 := buildActionRequest(`{"Foo":"Bar"}`, `[]`, "http://localhost:8080/internal/actions/ComponentFoo/ActionName")
+	// Custom route request
+	req2 := buildActionRequest(`{"Foo":"Bar"}`, `[]`, "http://localhost:8080/custom-route/ComponentFoo/ActionName")
 
+	// Validate common request parameters
 	params1, err := ParseParameters(req1)
 	if err != nil {
 		t.Errorf("ParseParameters(%s) returned error: %v", "req1", err)
@@ -45,6 +44,7 @@ func TestParseParameters(t *testing.T) {
 		t.Errorf("ParseParameters(%s) returned wrong state: %v", "req1", params1.State)
 	}
 
+	// Validate custom route request parameters
 	params2, err := ParseParameters(req2)
 	if err != nil {
 		t.Errorf("ParseParameters(%s) returned error: %v", "req2", err)
@@ -57,5 +57,23 @@ func TestParseParameters(t *testing.T) {
 	}
 	if params2.State["Foo"] != "Bar" {
 		t.Errorf("ParseParameters(%s) returned wrong state: %v", "req2", params2.State)
+	}
+}
+
+func TestParseParametersErrors(t *testing.T) {
+	// Request with empty state
+	req1 := buildActionRequest(``, `[]`, "http://localhost:8080/internal/actions/ComponentFoo/ActionName")
+	// Request with empty args
+	req2 := buildActionRequest(`{"Foo":"Bar"}`, ``, "http://localhost:8080/internal/actions/ComponentFoo/ActionName")
+	// Request with invalid state
+	req3 := buildActionRequest(`{"Foo":"Bar"`, `[]`, "http://localhost:8080/internal/actions/ComponentFoo/ActionName")
+	// Request with invalid args
+	req4 := buildActionRequest(`{"Foo":"Bar"}`, `[]]`, "http://localhost:8080/internal/actions/ComponentFoo/ActionName")
+
+	for i, req := range []*http.Request{req1, req2, req3, req4} {
+		_, err := ParseParameters(req)
+		if err == nil {
+			t.Errorf("ParseParameters(%s%d) should have returned error", "req", i)
+		}
 	}
 }
