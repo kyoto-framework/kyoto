@@ -23,6 +23,7 @@ func Register(components ...func(*kyoto.Core)) {
 }
 
 // RegisterWithName is a function to register a dynamic component with a specified name.
+// Created to handle anonymous functional components.
 // Avoid using this function directly, Register function is a preffered way to register a dynamic component.
 func RegisterWithName(name string, component func(*kyoto.Core)) {
 	// Acquire write lock

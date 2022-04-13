@@ -19,8 +19,8 @@ type ImplementsTemplateWithPage interface {
 	Template(p Page) *template.Template
 }
 
-type ImplementsRender interface {
-	Render(rw io.Writer) error
+type ImplementsWriter interface {
+	Writer(rw io.Writer) error
 }
 
 type ImplementsInit interface {
@@ -40,11 +40,11 @@ type ImplementsAsyncWithPage interface {
 }
 
 type ImplementsAfterAsync interface {
-	AfterAsync()
+	AfterAsync() error
 }
 
 type ImplementsAfterAsyncWithPage interface {
-	AfterAsync(p Page)
+	AfterAsync(p Page) error
 }
 
 type ImplementsActions interface {

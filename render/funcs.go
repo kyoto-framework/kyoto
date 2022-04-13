@@ -14,7 +14,6 @@ import (
 )
 
 // Render is a function to render a component.
-// TODO: Not implemented.
 func Render(c *kyoto.Core, state map[string]interface{}) template.HTML {
 	// Define buffer
 	buf := &bytes.Buffer{}

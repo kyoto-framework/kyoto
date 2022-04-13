@@ -3,6 +3,7 @@ package smode
 import (
 	"encoding/json"
 	"html/template"
+	"log"
 	"reflect"
 	"sync"
 
@@ -51,8 +52,8 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		if _item, ok := item.(ImplementsTemplate); ok {
 			render.Template(core, _item.Template)
 		}
-		if _item, ok := item.(ImplementsRender); ok {
-			render.Writer(core, _item.Render)
+		if _item, ok := item.(ImplementsWriter); ok {
+			render.Writer(core, _item.Writer)
 		}
 		// Adapt lifecycle
 		if _item, ok := item.(ImplementsInit); ok {
@@ -109,7 +110,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		// Schedule state export
 		core.Scheduler.Add(&scheduler.Job{
 			Group:  "state",
-			After:  []string{"afterasync", "action"}, // Export state only after "afterasync" or "action", because lifecycle and action are also "Before" jobs
+			After:  []string{"afterasync", "action"}, // Export state only after "afterasync" or "action", otherwise it will be executed immediately
 			Before: []string{"render"},
 			Func: func() error {
 				for k, v := range structmap(item) {
@@ -124,7 +125,9 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			After: []string{"render"},
 			Func: func() error {
 				cmapm.Lock()
+				log.Printf("Calling cleanup for %s %p", helpers.ComponentName(item), item)
 				delete(cmap, item)
+				delete(pmap, item)
 				cmapm.Unlock()
 				return nil
 			},
@@ -132,6 +135,8 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 	}
 }
 
+// TODO: Must to be renamed, naming conflict with smode.Register
+// TODO: Is not working for functional components (hash of unhashable type func(*kyoto.Core))
 func RegC(page Page, component Component) Component {
 	// Save component/page mapping to temporary store
 	pmap[component] = page
@@ -142,12 +147,7 @@ func RegC(page Page, component Component) Component {
 	// Inject component name into state
 	_core.State.Set("internal:name", helpers.ComponentName(component))
 	// Execute builder receiver
-	switch c := component.(type) {
-	case func(*kyoto.Core): // In case of builder receiver, just call it
-		c(_core)
-	case interface{}: // In case of struct component, adapt and call it
-		Adapt(c)(_core)
-	}
+	Adapt(component)(_core)
 	// Remove component/page mapping from temporary store
 	pmapm.Lock()
 	delete(pmap, component)
@@ -179,6 +179,9 @@ func Redirect(page Page, target string, code int) {
 func FuncMap(p Page) template.FuncMap {
 	// Extract kyoto.Core by page
 	core := cmap[p]
+	if core == nil {
+		panic("Can't find core for a provided page")
+	}
 	// Return funcmap with core
 	return render.FuncMap(core)
 }
