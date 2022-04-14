@@ -55,13 +55,19 @@ func TestComponentSerialize(t *testing.T) {
 		"internal:name": "testcomponent",
 	}
 	obj2 := map[string]interface{}{
+		"private:name": "testcomponent",
+	}
+	obj3 := map[string]interface{}{
 		"Foo": "Bar",
 	}
 	// Check serialization
 	if ComponentSerialize(obj1) == "eyJpbnRlcm5hbDpuYW1lIjoidGVzdGNvbXBvbmVudCJ9" {
 		t.Error("ComponentSerialize is not clearing internal variables")
 	}
-	if ComponentSerialize(obj2) != "eyJGb28iOiJCYXIifQ==" {
+	if ComponentSerialize(obj2) == "eyJwcml2YXRlOm5hbWUiOiJ0ZXN0Y29tcG9uZW50In0=" {
+		t.Error("ComponentSerialize is not clearing internal variables")
+	}
+	if ComponentSerialize(obj3) != "eyJGb28iOiJCYXIifQ==" {
 		t.Error("ComponentSerialize is not working correctly")
 	}
 }

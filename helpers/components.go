@@ -45,7 +45,7 @@ func ComponentSerialize(component interface{}) string {
 	if cmap, ok := component.(map[string]interface{}); ok {
 		_component := map[string]interface{}{}
 		for k, v := range cmap {
-			if !strings.HasPrefix(k, "internal:") {
+			if !strings.HasPrefix(k, "internal:") && !strings.HasPrefix(k, "private:") {
 				_component[k] = v
 			}
 		}
