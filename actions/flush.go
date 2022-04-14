@@ -28,6 +28,7 @@ func Flush(b *kyoto.Core) {
 		err = tmplclone.Execute(buffer, b.State.Export())
 	}
 	if err != nil {
+		rw.WriteHeader(500)
 		panic(err)
 	}
 	html := buffer.String()
