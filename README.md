@@ -1,3 +1,10 @@
+<details>
+    <summary>Disclaimers</summary>
+
+    - This project is in early development. Design and API may change drastically between major versions.
+    - This project has a high entry threshold. You must understand what problems are you trying to solve before using.
+    -  Due to current situation in Ukraine development has slowed down a bit, a lot of things require attention. But it won't stop. Слава Україні 🇺🇦
+</details>
 
 <p align="center">
     <img width="200" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/docs/v1/docs/assets/kyoto.svg" />
@@ -10,7 +17,6 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
     <a href="https://goreportcard.com/report/github.com/kyoto-framework/kyoto">
         <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
     </a>
@@ -19,16 +25,15 @@
     </a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">
         <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
     </a>
+    <a href="https://opencollective.com/kyoto-framework">
+        <img src="https://img.shields.io/opencollective/all/kyoto-framework?label=backers%20%26%20sponsors">
+    </a>
+    <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
 </p>
 
 <p align="center">
     <a href="https://v1.kyoto.codes/getting-started/">Getting started</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/basics/">Basics</a>&nbsp;&bull; <a href="https://v1.kyoto.codes/features/">Features</a>&nbsp;&bull; <a href="https://v0.kyoto.codes/">v0 Documentation</a>&nbsp;&bull; <a href="https://github.com/kyoto-framework/kyoto#donate">Donate</a>
 </p>
-
-> **Disclaimers**  
-> - High entry threshold. You must understand what problems are you trying to solve before using.
-> - Due to current situation in Ukraine development has slowed down a bit, but it won't stop. Слава Україні 🇺🇦
-> - This project is in early development, don't use in production! In case of any issues/proposals, feel free to open an [issue](https://github.com/kyoto-framework/kyoto/issues/new)
 
 ## Motivation
 

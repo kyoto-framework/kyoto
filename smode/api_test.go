@@ -119,7 +119,7 @@ func TestRegC(t *testing.T) {
 	// Register page
 	Adapt(page)(rootcore)
 	// Register component
-	RegC(page, component)
+	UseC(page, component)
 	// Get component core
 	core, exists := cmap[component]
 	if !exists {

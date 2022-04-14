@@ -22,6 +22,10 @@ var (
 	pmapm = sync.Mutex{}
 )
 
+// Adapt transforms passed struct component to a classic functional component.
+//
+// Usage:
+//  core.Component("Component", smode.Adapt(&MyComponent{}))
 func Adapt(item interface{}) func(*kyoto.Core) {
 	return func(core *kyoto.Core) {
 		// Aquire locks
@@ -135,9 +139,13 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 	}
 }
 
-// TODO: Must to be renamed, naming conflict with smode.Register
-// TODO: Is not working for functional components (hash of unhashable type func(*kyoto.Core))
-func RegC(page Page, component Component) Component {
+// UseC registers passed component in lifecycle and returns it.
+//
+// Usage:
+//  page.Component = smode.UseC(page, &MyComponent{})
+//
+// TODO: Not working for functional components (hash of unhashable type func(*kyoto.Core))
+func UseC(page Page, component Component) Component {
 	// Save component/page mapping to temporary store
 	pmap[component] = page
 	// Create custom core for component to scope state
@@ -156,6 +164,8 @@ func RegC(page Page, component Component) Component {
 	return _core.State.Export()
 }
 
+// Register registers dynamic components in the actions system.
+// Adapted to be compatible with struct components.
 func Register(components ...interface{}) {
 	for _, component := range components {
 		switch c := component.(type) {
@@ -169,6 +179,8 @@ func Register(components ...interface{}) {
 	}
 }
 
+// Redirect is a wrapper around `render.Redirect`.
+// See original function for details.
 func Redirect(page Page, target string, code int) {
 	// Extract core
 	core := cmap[page]
@@ -176,6 +188,8 @@ func Redirect(page Page, target string, code int) {
 	render.Redirect(core, target, code)
 }
 
+// FuncMap is a wrapper around `render.FuncMap`.
+// See original function for details.
 func FuncMap(p Page) template.FuncMap {
 	// Extract kyoto.Core by page
 	core := cmap[p]

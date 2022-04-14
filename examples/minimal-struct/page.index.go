@@ -19,11 +19,11 @@ func (p *PageIndex) Template() *template.Template {
 
 func (p *PageIndex) Init() {
 	p.Title = "Kyoto in a struct way"
-	p.UUID1 = smode.RegC(p, &ComponentUUID{
+	p.UUID1 = smode.UseC(p, &ComponentUUID{
 		Title: "First UUID",
 	})
-	p.UUID2 = smode.RegC(p, &ComponentUUID{
+	p.UUID2 = smode.UseC(p, &ComponentUUID{
 		Title: "Second UUID",
 	})
-	p.UserAgent = smode.RegC(p, &ComponentUserAgent{})
+	p.UserAgent = smode.UseC(p, &ComponentUserAgent{})
 }
