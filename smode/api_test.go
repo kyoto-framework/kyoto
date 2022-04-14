@@ -36,6 +36,8 @@ func (c *testComponent) Actions(p Page) ActionMap {
 	}
 }
 
+func testComponentFunc(c *kyoto.Core) {}
+
 func TestAdaptPage(t *testing.T) {
 	// Initialize core and apply page
 	core := kyoto.NewCore()
@@ -154,6 +156,16 @@ func TestRedirect(t *testing.T) {
 	if core.Context.Get("internal:render:redirectCode") == nil {
 		t.Error("Redirect code is not set")
 	}
+}
+
+// TestRegister ensures that we can register both struct and functional components.
+// We can't check registry directly because we can't access another module.
+// Instead, we just check that test not panics, actions.TestRegister will do the rest.
+func TestRegister(t *testing.T) {
+	Register(
+		&testComponent{},
+		testComponentFunc,
+	)
 }
 
 func TestFuncMap(t *testing.T) {
