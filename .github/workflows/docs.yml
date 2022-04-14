@@ -16,7 +16,7 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - uses: superfly/flyctl-actions/setup-flyctl@master
-        - run: (cd docs/v0 && flyctl deploy --remote-only)
+        - run: (cd docs/v0 && flyctl deploy)
   
   v1:
       name: Documentation v1
