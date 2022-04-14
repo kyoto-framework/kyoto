@@ -31,3 +31,19 @@ We will skip page functionality for now and focus on routing itself.
 On this example, you can see how we are using `render.PageHandler` to wrap our page definition.
 Under the hood, it makes a lot of things to render our page.
 Also, you are free to use any framework you want, that supports `http.HandlerFunc` interface.
+
+Without going off topic, let's also check how we can use redirects:
+
+=== "main.go"
+
+	```go
+	...
+	func PageIndex(core *kyoto.Core) {
+		render.Redirect(core, "/", 307)
+	}
+	...
+	```
+
+This function call will inject a redirection to the core.
+During rendering page handler will check if there is a redirection and will redirect with the given parameters.
+It's important to use kyoto's redirect to avoid header rewriting error.

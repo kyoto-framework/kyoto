@@ -60,9 +60,9 @@ With a help of `render.Template` we are specifying a template builder.
 
 Also, as you can see, there is a `lifecycle.Init` adapter.
 This adapter is responsible for defining of initializing function.
-Lifecycle functionality will be described in a "Lifecycle" documentation category.
+Lifecycle functionality will be described in a [Basics • Lifecycle](/basics/lifecycle) documentation category.
 
 Another thing you may notice in this example is setting of a state.
 To interact with a state, we are using a `kyoto.State` instance inside of a core.
 There are 3 methods for state modification: `Set`, `Get`, `Del`.
-For more information, check "State" documentation category.
+For more information, check [Basics • State](/basics/state) documentation category.

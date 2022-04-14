@@ -35,12 +35,15 @@ We will take known example from components documentation.
 	}
 	```
 
-First, let's figure out what stages lifecycle have.  
-Usually, everything is executing in this order: **init** -> **async** -> **after async**.  
+Let's figure out key points about lifecycle:
+
+- Lifecycle has 3 steps: init, async and afterasync.
+- Next step starts execution only when previous step is finished.
+- Each step and each function in a step is executed asynchronously.
+  That means library will spawn a goroutine for each lifecycle adapter call.
+
 I'm avoiding internal steps in documentation to not confuse people,
-but you can explore lifecycle in details with "Concepts" documentation category.
-Each step is executed asynchronously.
-That means library spawns goroutine for each instance of core receiver.
+but you can explore things in details with [Concepts](/concepts) documentation category.
 
 To integrate our component into lifecycle, we are using adapters from `lifecycle` module:
 `Init`, `Async`, `AfterAsync`. Only `Async` and `AfterAsync` are allowed to return an error.
