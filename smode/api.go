@@ -3,7 +3,6 @@ package smode
 import (
 	"encoding/json"
 	"html/template"
-	"log"
 	"reflect"
 	"sync"
 
@@ -129,7 +128,6 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			After: []string{"render"},
 			Func: func() error {
 				cmapm.Lock()
-				log.Printf("Calling cleanup for %s %p", helpers.ComponentName(item), item)
 				delete(cmap, item)
 				delete(pmap, item)
 				cmapm.Unlock()
