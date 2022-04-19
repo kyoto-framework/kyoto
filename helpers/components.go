@@ -25,7 +25,11 @@ func ComponentName(component interface{}) string {
 	if reflect.TypeOf(component).Kind() == reflect.Func {
 		funcpath := runtime.FuncForPC(reflect.ValueOf(component).Pointer()).Name()
 		tokens := strings.Split(funcpath, ".")
-		return tokens[len(tokens)-1]
+		if tokens[len(tokens)-1] == "func1" {
+			return tokens[len(tokens)-2]
+		} else {
+			return tokens[len(tokens)-1]
+		}
 	}
 	// In case of passed state map (component name must to be stored inside)
 	if reflect.TypeOf(component).Kind() == reflect.Map {

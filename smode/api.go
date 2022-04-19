@@ -111,7 +111,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		}
 
 		// Schedule state export
-		core.Scheduler.Add(&scheduler.Job{
+		core.Scheduler.Dispatch(&scheduler.Job{
 			Group:  "state",
 			After:  []string{"afterasync", "action"}, // Export state only after "afterasync" or "action", otherwise it will be executed immediately
 			Before: []string{"render"},
@@ -123,7 +123,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 			},
 		})
 		// Schedule global cmap cleanup
-		core.Scheduler.Add(&scheduler.Job{
+		core.Scheduler.Dispatch(&scheduler.Job{
 			Group: "cleanup",
 			After: []string{"render"},
 			Func: func() error {

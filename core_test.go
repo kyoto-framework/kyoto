@@ -48,7 +48,7 @@ func TestCoreScheduler(t *testing.T) {
 	flag := false
 
 	// Add a job to scheduler
-	core.Scheduler.Add(&scheduler.Job{
+	core.Scheduler.Dispatch(&scheduler.Job{
 		Group: "init",
 		Func: func() error {
 			flag = true

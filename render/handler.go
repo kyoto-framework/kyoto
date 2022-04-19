@@ -26,7 +26,7 @@ func PageHandler(page func(*kyoto.Core)) http.HandlerFunc {
 			panic("Rendering is not specified for page")
 		}
 		// Schedule a render job
-		core.Scheduler.Add(&scheduler.Job{
+		core.Scheduler.Dispatch(&scheduler.Job{
 			Group: "render",
 			Func: func() error {
 				if redirect := core.Context.Get("internal:render:redirect"); redirect != nil { // Check redirect

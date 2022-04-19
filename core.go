@@ -40,9 +40,11 @@ func NewCore() *Core {
 // Under the hood it composes custom Core for state separation and nesting.
 func (core *Core) Component(alias string, component func(*Core)) {
 	// Create custom core for component to scope state
-	_core := NewCore()
-	_core.Scheduler = core.Scheduler
-	_core.Context = core.Context
+	_core := &Core{
+		State:     NewStore(),
+		Context:   core.Context,
+		Scheduler: core.Scheduler,
+	}
 	// Inject component name into state
 	_core.State.Set("internal:name", helpers.ComponentName(component))
 	// Execute core receiver
@@ -57,9 +59,10 @@ func (core *Core) Execute() {
 	// Execute scheduler
 	core.Scheduler.Execute()
 	// Analyze errors
-	for job, res := range core.Scheduler.Results {
-		if res != nil {
-			fmt.Printf("%s failed:\n - %s \n", job, res.Error())
+	for _, job := range core.Scheduler.Jobs {
+		err := job.Result.Get()
+		if err != nil {
+			fmt.Printf("%s failed:\n - %s \n", job.ID(), err.Error())
 		}
 	}
 }

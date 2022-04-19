@@ -8,8 +8,9 @@ import (
 // Init is a function to define an initialization job.
 func Init(b *kyoto.Core, init func()) {
 	Patch(b)
-	b.Scheduler.Add(&scheduler.Job{
-		Group: "init",
+	b.Scheduler.Dispatch(&scheduler.Job{
+		Group:  "init",
+		Before: []string{"render"},
 		Func: func() error {
 			init()
 			return nil
@@ -21,10 +22,11 @@ func Init(b *kyoto.Core, init func()) {
 // Will be executed after initialization step.
 func Async(b *kyoto.Core, async func() error) {
 	Patch(b)
-	b.Scheduler.Add(&scheduler.Job{
-		Group: "async",
-		After: []string{"init"},
-		Func:  async,
+	b.Scheduler.Dispatch(&scheduler.Job{
+		Group:  "async",
+		Before: []string{"render"},
+		After:  []string{"init"},
+		Func:   async,
 	})
 }
 
@@ -32,10 +34,10 @@ func Async(b *kyoto.Core, async func() error) {
 // that will be executed after asynchronous step.
 func AfterAsync(b *kyoto.Core, afterasync func() error) {
 	Patch(b)
-	b.Scheduler.Add(&scheduler.Job{
+	b.Scheduler.Dispatch(&scheduler.Job{
 		Group:  "afterasync",
-		After:  []string{"async"},
 		Before: []string{"render"},
+		After:  []string{"init", "async"},
 		Func:   afterasync,
 	})
 }

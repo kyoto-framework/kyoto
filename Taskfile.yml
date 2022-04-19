@@ -22,6 +22,10 @@ tasks:
       - cat /tmp/coverage.txt.tmp | grep -v "backward." > {{ .CLI_ARGS }}
       - rm /tmp/coverage.txt.tmp
 
+  bench:
+    cmds:
+      - (cd bench; go test -bench .)
+
   docs:v1:
     cmds:
       - (cd docs/v1; mkdocs serve)
