@@ -113,7 +113,7 @@ func Adapt(item interface{}) func(*kyoto.Core) {
 		// Schedule state export
 		core.Scheduler.Dispatch(&scheduler.Job{
 			Group:  "state",
-			After:  []string{"afterasync", "action"}, // Export state only after "afterasync" or "action", otherwise it will be executed immediately
+			After:  []string{"init", "async", "afterasync", "action"}, // Export state only after "afterasync" or "action", otherwise it will be executed immediately
 			Before: []string{"render"},
 			Func: func() error {
 				for k, v := range structmap(item) {
