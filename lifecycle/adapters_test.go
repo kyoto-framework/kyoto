@@ -20,10 +20,6 @@ func TestAdapters(t *testing.T) {
 	if len(core.Scheduler.Jobs) != 3 {
 		t.Error("Something went wrong and jobs count is not correct")
 	}
-	// Check core is patched
-	if core.Context.Get("internal:lifecycle") == nil {
-		t.Error("Lifecycle adapters are not patching core")
-	}
 	// Check jobs groups
 	init := false
 	async := false
