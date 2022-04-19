@@ -42,6 +42,37 @@ func componentBenchWriter(index int) func(*kyoto.Core) {
 	}
 }
 
+// BenchmarkEmptyReference is testing performance of empty page.
+// This bench was created to determine overhead of scheduler architecture.
+func BenchmarkEmptyReference(b *testing.B) {
+
+	// Define a mux
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+		tmpl := template.Must(template.New("bench").Parse(`
+			<html>
+				<head>
+					<title>Kyoto benchmark page</title>
+				</head>
+				<body>
+					I'm a content
+				</body>
+			</html>
+		`))
+
+		buf := bytes.NewBufferString("")
+		tmpl.Execute(buf, nil)
+		rw.Write(buf.Bytes())
+	})
+
+	// Bench
+	for i := 0; i < b.N; i++ {
+		req, _ := http.NewRequest("GET", "/", nil)
+		res := httptest.NewRecorder()
+		mux.ServeHTTP(res, req)
+	}
+}
+
 // BenchmarkEmpty is testing performance of empty page.
 // This bench was created to determine overhead of scheduler architecture.
 func BenchmarkEmpty(b *testing.B) {

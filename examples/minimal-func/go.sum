@@ -1,5 +1,5 @@
-github.com/kyoto-framework/scheduler v0.0.0-20220418131348-702ad91678af h1:mpDVv+8tn/HloBu6FkOff1TIpIBfqJ7jEW8MONhTqu0=
-github.com/kyoto-framework/scheduler v0.0.0-20220418131348-702ad91678af/go.mod h1:U+m/me78tC4AFEw3UAwE/UzP95+sOJUBznpH4s6SXYE=
+github.com/kyoto-framework/scheduler v0.0.0-20220419050632-472087dddf82 h1:sZINjY6oWd08aWumw1w70j0sK29wfA3eaJU7qm0JKm4=
+github.com/kyoto-framework/scheduler v0.0.0-20220419050632-472087dddf82/go.mod h1:U+m/me78tC4AFEw3UAwE/UzP95+sOJUBznpH4s6SXYE=
 github.com/kyoto-framework/zen v0.0.0-20220418065731-a871e34f2f62 h1:cvwrCnESCrWevkULCYZO1i3ElCuCPH1UyzVEZ2NVqjs=
 github.com/kyoto-framework/zen v0.0.0-20220418065731-a871e34f2f62/go.mod h1:MLXuSpmhQdT6PSqYQHcNPUBEfSGbMggeJKICBmMZfq4=
 github.com/yuin/goldmark v1.4.1/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=

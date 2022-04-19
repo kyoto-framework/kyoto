@@ -17,7 +17,7 @@ func TestAdapters(t *testing.T) {
 	Async(core, func() error { return nil })
 	AfterAsync(core, func() error { return nil })
 	// Check jobs are actually added
-	if len(core.Scheduler.Jobs) != 6 {
+	if len(core.Scheduler.Jobs) != 3 {
 		t.Error("Something went wrong and jobs count is not correct")
 	}
 	// Check core is patched
@@ -29,11 +29,11 @@ func TestAdapters(t *testing.T) {
 	async := false
 	afterasync := false
 	for _, job := range core.Scheduler.Jobs {
-		if job.Group == "init" && job.Name != "placeholder" {
+		if job.Group == "init" {
 			init = true
-		} else if job.Group == "async" && job.Name != "placeholder" {
+		} else if job.Group == "async" {
 			async = true
-		} else if job.Group == "afterasync" && job.Name != "placeholder" {
+		} else if job.Group == "afterasync" {
 			afterasync = true
 		}
 	}
