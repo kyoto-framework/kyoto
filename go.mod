@@ -1,6 +1,6 @@
 module github.com/kyoto-framework/kyoto
 
-go 1.17
+go 1.18
 
 require github.com/kyoto-framework/scheduler v0.0.0-20220419050632-472087dddf82
 
