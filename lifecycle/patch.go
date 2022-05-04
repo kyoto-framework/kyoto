@@ -17,18 +17,18 @@ func Patch(b *kyoto.Core) {
 	b.Context.Set("internal:lifecycle", true)
 	// Add empty jobs to schedule (for groups definitions)
 	// Without empty jobs, "Depends" clause will not work as expected
-	b.Scheduler.Add(&scheduler.Job{
+	b.Scheduler.Dispatch(&scheduler.Job{
 		Group: "init",
 		Name:  "placeholder",
 		Func:  func() error { return nil },
 	})
-	b.Scheduler.Add(&scheduler.Job{
+	b.Scheduler.Dispatch(&scheduler.Job{
 		Group: "async",
 		Name:  "placeholder",
 		After: []string{"init"},
 		Func:  func() error { return nil },
 	})
-	b.Scheduler.Add(&scheduler.Job{
+	b.Scheduler.Dispatch(&scheduler.Job{
 		Group:  "afterasync",
 		Name:   "placeholder",
 		After:  []string{"async"},

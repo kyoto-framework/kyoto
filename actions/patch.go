@@ -28,7 +28,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 	}
 	core.Scheduler.Jobs = jobs
 	// Add state population job
-	core.Scheduler.Add(&scheduler.Job{
+	core.Scheduler.Dispatch(&scheduler.Job{
 		Group:  "populate",
 		After:  []string{"init"},
 		Before: []string{"action"},
@@ -40,7 +40,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 		},
 	})
 	// Add action job
-	core.Scheduler.Add(&scheduler.Job{
+	core.Scheduler.Dispatch(&scheduler.Job{
 		Group:  "action",
 		Before: []string{"render"},
 		Func: func() error {
@@ -54,7 +54,7 @@ func Patch(core *kyoto.Core, params Parameters) {
 		},
 	})
 	// Add final flush job
-	core.Scheduler.Add(&scheduler.Job{
+	core.Scheduler.Dispatch(&scheduler.Job{
 		Group: "render",
 		Func: func() error {
 			Flush(core)
