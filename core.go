@@ -57,9 +57,10 @@ func (core *Core) Execute() {
 	// Execute scheduler
 	core.Scheduler.Execute()
 	// Analyze errors
-	for job, res := range core.Scheduler.Results {
-		if res != nil {
-			fmt.Printf("%s failed:\n - %s \n", job, res.Error())
+	for _, job := range core.Scheduler.Jobs {
+		err := job.Result.Get()
+		if err != nil {
+			fmt.Printf("%s failed:\n - %s \n", job.ID(), err.Error())
 		}
 	}
 }
