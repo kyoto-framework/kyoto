@@ -15,7 +15,6 @@ func PageIndex(c *kyoto.Core) {
 
 	// Define lifecycle
 	lifecycle.Init(c, func() {
-		c.State.Set("Title", "Kyoto in a functional way")
 		c.Component("UUID1", ComponentUUID("First UUID"))
 		c.Component("UUID2", ComponentUUID("Second UUID"))
 		c.Component("UserAgent", ComponentUserAgent)
