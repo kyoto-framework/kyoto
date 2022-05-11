@@ -33,8 +33,15 @@ func Patch(core *kyoto.Core, params Parameters) {
 		After:  []string{"init"},
 		Before: []string{"action"},
 		Func: func() error {
+			// Iterate over values
 			for k, v := range params.State {
-				core.State.Set(k, v)
+				if v, ok := v.(map[string]any); ok && v["State"] != nil && v["State"].(bool) == true {
+					core.State.Get(k).(interface {
+						SetAny(any)
+					}).SetAny(v["Value"])
+				} else {
+					core.State.Set(k, v)
+				}
 			}
 			return nil
 		},

@@ -1,6 +1,6 @@
 module github.com/kyoto-framework/kyoto/examples/minimal-func
 
-go 1.17
+go 1.18
 
 require github.com/kyoto-framework/kyoto v0.0.0
 
