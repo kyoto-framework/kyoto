@@ -1,7 +1,9 @@
 package state
 
 import (
+	"encoding/json"
 	"fmt"
+	"reflect"
 
 	"github.com/kyoto-framework/kyoto"
 )
@@ -19,7 +21,17 @@ func (s *State[T]) Set(value T) {
 
 // SetAny is a setter for a state (accepts any)
 func (s *State[T]) SetAny(value any) {
-	s.Value = value.(T)
+	// Final value, that will be assigned to the state
+	var _value T
+	// Act in a different way, depending on the value type
+	if reflect.TypeOf(value) == reflect.TypeOf(_value) { // If value is the same type as the state, just set it
+		_value = value.(T)
+	} else if reflect.TypeOf(value).Kind() == reflect.Map { // If value is a map (f.e. on action), try to map it to the state type
+		bts, _ := json.Marshal(value)
+		json.Unmarshal(bts, &_value)
+	}
+	// Set the final value
+	s.Value = _value
 }
 
 // Get is a getter for a state
