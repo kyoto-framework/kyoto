@@ -60,8 +60,8 @@ func ComponentSerialize(component interface{}) string {
 	if err != nil {
 		panic("Error while serializing component state. " + err.Error())
 	}
-	// Encode to base64 and replace slashes to avoid parsing errors
-	state := strings.ReplaceAll(base64.StdEncoding.EncodeToString(statebts), "/", "-")
+	// Encode to base64
+	state := base64.StdEncoding.EncodeToString(statebts)
 	// Return
 	return state
 }
