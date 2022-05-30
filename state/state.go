@@ -46,6 +46,25 @@ func (s *State[T]) String() string {
 
 // New is a constructor for a state
 func New[T any](c *kyoto.Core, alias string, value T) *State[T] {
+	// Detect if the state already defined
+	if c.State.Get(alias) != nil {
+		// Detect if it's a state
+		if state, ok := c.State.Get(alias).(*State[T]); ok {
+			return state
+		}
+		// Detect if there is a value
+		if c.State.Get(alias) != nil {
+			// Wrap with a State
+			s := &State[T]{
+				Value: c.State.Get(alias).(T),
+				State: true,
+			}
+			// Bind to the core state
+			c.State.Set(alias, s)
+			// Return the state
+			return s
+		}
+	}
 	// Build new state
 	s := &State[T]{
 		Value: value,
