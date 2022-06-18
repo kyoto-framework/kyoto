@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-    <a href="https://kyoto.codes/getting-started/">Documentation</a>&nbsp;&bull; <a href="https://kyoto.codes/basics/">Team</a>&nbsp;&bull; <a href="https://kyoto.codes/features/">Support</a>
+    <a href="https://kyoto.codes/getting-started/">Documentation</a>&nbsp;&bull; <a href="https://kyoto.codes/basics/">Team</a>&nbsp;&bull; <a href="https://kyoto.codes/basics/">Contact</a>&nbsp;&bull; <a href="https://kyoto.codes/features/">Donate</a>
 </p>
 
 ## Motivation
