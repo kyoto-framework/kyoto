@@ -1,31 +1,27 @@
-version: '3'
+version: 3
 
 tasks:
 
   test:
     cmds:
-      - go test -race . ./actions ./helpers ./lifecycle ./render ./smode
-
-  coverage:
+      - go test -race .
+  
+  test:cov:
     cmds:
-      - go test -cover . ./actions ./helpers ./lifecycle ./render ./smode
-
-  coverage:web:
+      - go test -cover .
+  
+  test:cov:web:
     cmds:
-      - go test -coverprofile /tmp/kyoto-coverage.out . ./actions ./helpers ./lifecycle ./render ./smode
+      - go test -coverprofile /tmp/kyoto-coverage.out .
       - go tool cover -html=/tmp/kyoto-coverage.out
       - sleep 3 && rm /tmp/kyoto-coverage.out
 
-  coverage:report:
+  test:cov:report:
     cmds:
-      - go test -race -coverprofile=/tmp/coverage.txt.tmp -covermode=atomic ./ ./lifecycle ./render ./actions ./smode ./helpers
+      - go test -race -coverprofile=/tmp/coverage.txt.tmp -covermode=atomic .
       - cat /tmp/coverage.txt.tmp | grep -v "backward." > {{ .CLI_ARGS }}
       - rm /tmp/coverage.txt.tmp
 
-  bench:
+  doc:
     cmds:
-      - (cd bench; go test -bench .)
-
-  docs:v1:
-    cmds:
-      - (cd docs/v1; mkdocs serve)
+      - godoc -http=:8000
