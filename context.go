@@ -1,11 +1,3 @@
-/*
-	-
-
-	Context
-
-	Kyoto provides a context,
-	which holds common objects like http.ResponseWriter, *http.Request, etc.
-*/
 package kyoto
 
 import (

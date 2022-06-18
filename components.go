@@ -1,15 +1,3 @@
-/*
-	-
-
-	Components
-
-	Kyoto provides a way to define components.
-	It's a very common approach for modern libraries to manage frontend parts.
-	In kyoto each component is a context receiver, which returns it's state.
-	Each component becomes a part of the page or top-level component,
-	which executes component asynchronously and gets a state future object.
-	In that way your components are executing in a non-blocking way.
-*/
 package kyoto
 
 import (
@@ -69,6 +57,7 @@ func Await(component any) any {
 // Component utilities
 // ****************
 
+// ComponentName takes a component function and tries to extract it's name.
 func ComponentName[T any](component Component[T]) string {
 	funcpath := runtime.FuncForPC(reflect.ValueOf(component).Pointer()).Name()
 	tokens := strings.Split(funcpath, ".")
@@ -79,6 +68,7 @@ func ComponentName[T any](component Component[T]) string {
 	}
 }
 
+// MarshalState encodes components' state for a client.
 func MarshalState(state any) string {
 	// Serialize component state into json
 	statebts, err := json.Marshal(state)
@@ -91,6 +81,7 @@ func MarshalState(state any) string {
 	return stateb64
 }
 
+// UnmarshalState decodes components' state from a client.
 func UnmarshalState(state string, target any) {
 	// Deserialize component state from json
 	err := json.Unmarshal([]byte(state), target)

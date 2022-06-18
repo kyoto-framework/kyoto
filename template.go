@@ -1,11 +1,3 @@
-/*
-	-
-
-	Template
-
-	Kyoto provides a set of parameters and functions
-	to provide a comfortable template building process.
-*/
 package kyoto
 
 import (

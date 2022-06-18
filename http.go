@@ -1,11 +1,3 @@
-/*
-	-
-
-	HTTP
-
-	Kyoto provides a simple net/http handlers and function wrappers
-	to handle pages rendering and serving.
-*/
 package kyoto
 
 import (
@@ -45,7 +37,8 @@ func HandlerPage[T any](page Component[T]) http.HandlerFunc {
 // Additional utilities
 // ****************
 
-// Serve is a simple wrapper around http.ListenAndServe.
+// Serve is a simple wrapper around http.ListenAndServe,
+// which will log server starting and will panic on error.
 func Serve(addr string) {
 	log.Println("Starting server on", addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {

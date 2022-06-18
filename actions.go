@@ -1,16 +1,3 @@
-/*
-	-
-
-	Actions
-
-	Kyoto provides a way to simplify building dynamic UIs.
-	For this purpose it has a feature named actions.
-	Logic is pretty simple.
-	Action is executing on server side,
-	server is sending updated component markup to the client
-	which will be morphed into DOM.
-	That's it.
-*/
 package kyoto
 
 import (
@@ -27,10 +14,12 @@ import (
 // Action configuration
 // ****************
 
+// ActionConfiguration holds a global actions configuration.
 type ActionConfiguration struct {
 	Path string
 }
 
+// ActionConf is a global configuration that will be used during actions handling.
 var ActionConf = ActionConfiguration{
 	Path: "/internal/actions/",
 }
@@ -39,6 +28,7 @@ var ActionConf = ActionConfiguration{
 // Action parameters representation
 // ****************
 
+// ActionParameters is a Go representation of an action request.
 type ActionParameters struct {
 	Component string
 	Action    string
@@ -46,6 +36,7 @@ type ActionParameters struct {
 	Args      []any
 }
 
+// Parse extracts action data from a provided request.
 func (p *ActionParameters) Parse(r *http.Request) error {
 	// Validate request format
 	if r.FormValue("State") == "" {
@@ -74,6 +65,23 @@ func (p *ActionParameters) Parse(r *http.Request) error {
 // Action methods
 // ****************
 
+// Action is a function that handles an action request.
+// Returns an execution flag (true if action was executed).
+// You can use a flag to prevent farther execution of a component.
+//
+// Example:
+// 	func Foo(ctx *kyoto.Context) (state FooState) {
+//		// Handle action
+//		bar := kyoto.Action(ctx, "Bar", func(args ...any) {
+//			// Do something
+// 		})
+//		// Prevent further execution
+//		if bar {
+//			return
+//		}
+//		// Default non-action behavior
+// 		// ...
+// 	}
 func Action(c *Context, name string, action func(args ...any)) bool {
 	if c.Action.Action == name {
 		action(c.Action.Args...)
@@ -82,6 +90,16 @@ func Action(c *Context, name string, action func(args ...any)) bool {
 	return false
 }
 
+// ActionPreload unpacks a component state from an action request.
+// Executing only in case of an action request.
+//
+// Example:
+// 	func Foo(ctx *kyoto.Context) (state FooState) {
+//		// Preload state
+// 		kyoto.ActionPreload(ctx, &state)
+//		// Handle actions
+//		...
+//	}
 func ActionPreload[T any](c *Context, state T) {
 	// Pass if not an action
 	if c.Action.Component == "" {
@@ -91,6 +109,8 @@ func ActionPreload[T any](c *Context, state T) {
 	UnmarshalState(c.Action.State, state)
 }
 
+// ActionFlush allows to push multiple component UI updates during single action call.
+// Call it when you need to push an updated component markup to the client.
 func ActionFlush(c *Context, state any) {
 	// Initialize flusher
 	flusher := c.ResponseWriter.(http.Flusher)

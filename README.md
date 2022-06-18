@@ -78,7 +78,7 @@ type CUUIDState struct {
     UUID string
 }
 
-    // Let's assume markup of this component is stored in 'component.uuid.html'
+// Let's assume markup of this component is stored in 'component.uuid.html'
 func CUUID(ctx *kyoto.Context) (state CUUIDState) {
     // Fetch uuid data
     resp, _ := http.Get("http://httpbin.org/uuid")
