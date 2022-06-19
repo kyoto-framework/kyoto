@@ -77,6 +77,21 @@
 			kyoto.Serve(":8080")
 		}
 
+	Handling requests
+
+	Kyoto provides a simple net/http handlers and function wrappers
+	to handle pages rendering and serving.
+	Check kyoto/nethttp.go functions for details and advanced usage.
+
+	Example:
+
+		func main() {
+			kyoto.HandlePage("/foo", PageFoo)
+			kyoto.HandlePage("/bar", PageBar)
+
+			kyoto.Serve(":8000")
+		}
+
 	Components
 
 	Kyoto provides a way to define components.
@@ -85,7 +100,10 @@
 	Each component becomes a part of the page or top-level component,
 	which executes component asynchronously and gets a state future object.
 	In that way your components are executing in a non-blocking way.
+
 	Pages are just top-level components, where you can configure rendering and page related stuff.
+
+	Example:
 
 		// Component is a context receiver, that returns it's state.
 		// State can be whatever you want (simple type, struct, slice, map, etc).
@@ -103,6 +121,8 @@
 	Kyoto provides a context,
 	which holds common objects like http.ResponseWriter, *http.Request, etc.
 
+	Example:
+
 		func Component(ctx *kyoto.Context) (state ComponentState) {
 			log.Println(ctx.Request.UserAgent())
 			...
@@ -113,6 +133,8 @@
 	Kyoto provides a set of parameters and functions
 	to provide a comfortable template building process.
 
+	Example:
+
 		func Page(ctx *kyoto.Context) (state PageState) {
 			// By default it will:
 			// - use kyoto.FuncMap as a FuncMap
@@ -121,26 +143,17 @@
 			kyoto.Template(ctx, "page.index.html")
 		}
 
-	HTTP
-
-	Kyoto provides a simple net/http handlers and function wrappers
-	to handle pages rendering and serving.
-
-		func main() {
-			kyoto.HandlePage("/foo", PageFoo)
-			kyoto.HandlePage("/bar", PageBar)
-
-			kyoto.Serve(":8000")
-		}
-
 	Actions
 
 	Kyoto provides a way to simplify building dynamic UIs.
 	For this purpose it has a feature named actions.
 	Logic is pretty simple.
-	Action is executing on server side,
+	Client calls an action (sends a request to the server).
+	Action is executing on server side and
 	server is sending updated component markup to the client
 	which will be morphed into DOM.
 	That's it.
+
+	To be continued...
 */
 package kyoto

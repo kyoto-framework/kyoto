@@ -71,6 +71,7 @@ func (p *ActionParameters) Parse(r *http.Request) error {
 // You can use a flag to prevent farther execution of a component.
 //
 // Example:
+//
 // 	func Foo(ctx *kyoto.Context) (state FooState) {
 //		// Handle action
 //		bar := kyoto.Action(ctx, "Bar", func(args ...any) {
@@ -95,6 +96,7 @@ func Action(c *Context, name string, action func(args ...any)) bool {
 // Executing only in case of an action request.
 //
 // Example:
+//
 // 	func Foo(ctx *kyoto.Context) (state FooState) {
 //		// Preload state
 // 		kyoto.ActionPreload(ctx, &state)
@@ -114,6 +116,7 @@ func ActionPreload[T any](c *Context, state T) {
 // Call it when you need to push an updated component markup to the client.
 //
 // Example:
+//
 // 	func Foo(ctx *kyoto.Context) (state FooState) {
 //		...
 // 		// Handle example action
@@ -165,6 +168,7 @@ func actionFuncClient() template.HTML {
 // It's a wrapper around http.HandlePage, but accepts a component instead of usual http.HandlerFunc.
 //
 // Example:
+//
 //  kyoto.HandleAction(Foo) // Register a usual component
 //  kyoto.handleAction(Bar("")) // Register a component which accepts arguments and returns wrapped function
 func HandleAction[T any](component Component[T]) {
@@ -178,6 +182,7 @@ func HandleAction[T any](component Component[T]) {
 // It's recommended to use HandleAction instead.
 //
 // Example:
+//
 // 	http.HandleFunc("/internal/actions/Foo/", kyoto.HandlerAction(Foo))
 func HandlerAction[T any](component Component[T]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
