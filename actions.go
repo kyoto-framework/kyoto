@@ -16,10 +16,11 @@ import (
 
 // ActionConfiguration holds a global actions configuration.
 type ActionConfiguration struct {
-	Path string
+	Path string // Configure a path prefix for action calls
 }
 
 // ActionConf is a global configuration that will be used during actions handling.
+// See ActionConfiguration for more details.
 var ActionConf = ActionConfiguration{
 	Path: "/internal/actions/",
 }
@@ -111,6 +112,23 @@ func ActionPreload[T any](c *Context, state T) {
 
 // ActionFlush allows to push multiple component UI updates during single action call.
 // Call it when you need to push an updated component markup to the client.
+//
+// Example:
+// 	func Foo(ctx *kyoto.Context) (state FooState) {
+//		...
+// 		// Handle example action
+// 		kyoto.Action(ctx, "Bar", func(args ...any) {
+// 			// Do something with a state
+// 			state.Content = "Bar"
+// 			// Push updated UI to the client
+// 			kyoto.ActionFlush(ctx, state)
+// 			// Do something else with a state
+// 			state.Content = "Baz"
+// 			// Push updated UI to the client
+// 			kyoto.ActionFlush(ctx, state)
+// 		})
+// 		...
+// }
 func ActionFlush(c *Context, state any) {
 	// Initialize flusher
 	flusher := c.ResponseWriter.(http.Flusher)
@@ -143,12 +161,24 @@ func actionFuncClient() template.HTML {
 // Action handling
 // ****************
 
+// HandleAction registers a component action handler with a predefined pattern in the DefaultServeMux.
+// It's a wrapper around http.HandlePage, but accepts a component instead of usual http.HandlerFunc.
+//
+// Example:
+//  kyoto.HandleAction(Foo) // Register a usual component
+//  kyoto.handleAction(Bar("")) // Register a component which accepts arguments and returns wrapped function
 func HandleAction[T any](component Component[T]) {
 	pattern := ActionConf.Path + ComponentName(component) + "/"
 	log.Printf("Registering '%s' component action handler under '%s'", ComponentName(component), pattern)
 	http.HandleFunc(pattern, HandlerAction(component))
 }
 
+// HandlerAction returns a http.HandlerFunc that handles an action request for a specified component.
+// Pattern still must to correspond to the provided component.
+// It's recommended to use HandleAction instead.
+//
+// Example:
+// 	http.HandleFunc("/internal/actions/Foo/", kyoto.HandlerAction(Foo))
 func HandlerAction[T any](component Component[T]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
