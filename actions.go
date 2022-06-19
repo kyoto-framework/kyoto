@@ -72,18 +72,18 @@ func (p *ActionParameters) Parse(r *http.Request) error {
 //
 // Example:
 //
-// 	func Foo(ctx *kyoto.Context) (state FooState) {
+//	func Foo(ctx *kyoto.Context) (state FooState) {
 //		// Handle action
 //		bar := kyoto.Action(ctx, "Bar", func(args ...any) {
 //			// Do something
-// 		})
+//		})
 //		// Prevent further execution
 //		if bar {
 //			return
 //		}
 //		// Default non-action behavior
-// 		// ...
-// 	}
+//		// ...
+//	}
 func Action(c *Context, name string, action func(args ...any)) bool {
 	if c.Action.Action == name {
 		action(c.Action.Args...)
@@ -97,9 +97,9 @@ func Action(c *Context, name string, action func(args ...any)) bool {
 //
 // Example:
 //
-// 	func Foo(ctx *kyoto.Context) (state FooState) {
+//	func Foo(ctx *kyoto.Context) (state FooState) {
 //		// Preload state
-// 		kyoto.ActionPreload(ctx, &state)
+//		kyoto.ActionPreload(ctx, &state)
 //		// Handle actions
 //		...
 //	}
@@ -117,20 +117,20 @@ func ActionPreload[T any](c *Context, state T) {
 //
 // Example:
 //
-// 	func Foo(ctx *kyoto.Context) (state FooState) {
+//	func Foo(ctx *kyoto.Context) (state FooState) {
 //		...
-// 		// Handle example action
-// 		kyoto.Action(ctx, "Bar", func(args ...any) {
-// 			// Do something with a state
-// 			state.Content = "Bar"
-// 			// Push updated UI to the client
-// 			kyoto.ActionFlush(ctx, state)
-// 			// Do something else with a state
-// 			state.Content = "Baz"
-// 			// Push updated UI to the client
-// 			kyoto.ActionFlush(ctx, state)
-// 		})
-// 		...
+//		// Handle example action
+//		kyoto.Action(ctx, "Bar", func(args ...any) {
+//			// Do something with a state
+//			state.Content = "Bar"
+//			// Push updated UI to the client
+//			kyoto.ActionFlush(ctx, state)
+//			// Do something else with a state
+//			state.Content = "Baz"
+//			// Push updated UI to the client
+//			kyoto.ActionFlush(ctx, state)
+//		})
+//		...
 // }
 func ActionFlush(c *Context, state any) {
 	// Initialize flusher
@@ -169,8 +169,8 @@ func actionFuncClient() template.HTML {
 //
 // Example:
 //
-//  kyoto.HandleAction(Foo) // Register a usual component
-//  kyoto.handleAction(Bar("")) // Register a component which accepts arguments and returns wrapped function
+//	kyoto.HandleAction(Foo) // Register a usual component
+//	kyoto.handleAction(Bar("")) // Register a component which accepts arguments and returns wrapped function
 func HandleAction[T any](component Component[T]) {
 	pattern := ActionConf.Path + ComponentName(component) + "/"
 	log.Printf("Registering '%s' component action handler under '%s'", ComponentName(component), pattern)
@@ -183,7 +183,7 @@ func HandleAction[T any](component Component[T]) {
 //
 // Example:
 //
-// 	http.HandleFunc("/internal/actions/Foo/", kyoto.HandlerAction(Foo))
+//	http.HandleFunc("/internal/actions/Foo/", kyoto.HandlerAction(Foo))
 func HandlerAction[T any](component Component[T]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
