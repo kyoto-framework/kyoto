@@ -12,7 +12,7 @@ try {
   console.error(err);
 }
 try {
-  fs.writeFileSync("../../actions.client.go", data);
+  fs.writeFileSync("../actions.client.go", data);
 } catch (err) {
   console.error(err);
 }
