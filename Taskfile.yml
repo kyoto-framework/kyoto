@@ -2,14 +2,18 @@ version: 3
 
 tasks:
 
+  build:client:
+    cmds:
+      - (cd client && npm i && npm run dynamics)
+
   test:
     cmds:
       - go test -race .
-  
+
   test:cov:
     cmds:
       - go test -cover .
-  
+
   test:cov:web:
     cmds:
       - go test -coverprofile /tmp/kyoto-coverage.out .
