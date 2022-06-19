@@ -24,4 +24,5 @@ tasks:
 
   doc:
     cmds:
+      - (sleep 1 && open http://localhost:8000/pkg/github.com/kyoto-framework/kyoto/) &
       - godoc -http=:8000

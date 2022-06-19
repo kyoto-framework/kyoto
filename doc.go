@@ -6,6 +6,77 @@
 	Creating asynchronous and dynamic layout parts is a complex problem for larger projects using `html/template`.
 	Library tries to simplify this process.
 
+	Quick start
+
+	Let's go straight into a simple example.
+	Then, we will dig into details, step by step, how it works.
+
+		package main
+
+		import (
+			"html/template"
+			"encoding/json"
+
+			"github.com/kyoto-framework/kyoto"
+		)
+
+		// This example demonstrates main advantage of kyoto library - asynchronous lifecycle.
+		// Multiple UUIDs will be fetched from httpbin in asynchronous way, without explicitly touching goroutines
+		// and synchronization tools like sync.WaitGroup.
+
+		type CUUIDState struct {
+			UUID string
+		}
+
+		// Let's assume markup of this component is stored in 'component.uuid.html'
+		//
+		// {{ define "CUUID" }}
+		//  <div>UUID: {{ state.UUID }}</div>
+		// {{ end }}
+		func CUUID(ctx *kyoto.Context) (state CUUIDState) {
+			// Fetch uuid data
+			resp, _ := http.Get("http://httpbin.org/uuid")
+			data := map[string]string{}
+			json.NewDecoder(resp.Body).Decode(&data)
+			// Set state
+			state.UUID = data["uuid"]
+		}
+
+		type PIndexState struct {
+			UUID1 kyoto.Component[CUUIDState]
+			UUID1 kyoto.Component[CUUIDState]
+		}
+
+		// Let's assume markup of this page is stored in 'page.index.html'
+		//
+		// <!DOCTYPE html>
+		// <html lang="en">
+		// <head>
+		// 	<meta charset="UTF-8">
+		// 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		// 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		// 	<title>{{ .Title }}</title>
+		// </head>
+		// <body>
+		// 	{{ template "CUUID" .UUID1 }}
+		// 	{{ template "CUUID" .UUID2 }}
+		// </body>
+		// </html>
+		func PIndex(ctx *kyoto.Context) (state PIndexState) {
+			// Define rendering
+			render.Template(ctx, "page.index.html")
+			// Attach components
+			state.UUID1 = kyoto.Use(ctx, CUUID)
+			state.UUID2 = kyoto.Use(ctx, CUUID)
+		}
+
+		func main() {
+			// Register page
+			kyoto.HandlePage("/", PIndex)
+			// Serve
+			kyoto.Serve(":8080")
+		}
+
 	Components
 
 	Kyoto provides a way to define components.
@@ -14,7 +85,10 @@
 	Each component becomes a part of the page or top-level component,
 	which executes component asynchronously and gets a state future object.
 	In that way your components are executing in a non-blocking way.
+	Pages are just top-level components, where you can configure rendering and page related stuff.
 
+		// Component is a context receiver, that returns it's state.
+		// State can be whatever you want (simple type, struct, slice, map, etc).
 		func CUUID(ctx *kyoto.Context) (state CUUIDState) {
 			// Fetch uuid data
 			resp, _ := http.Get("http://httpbin.org/uuid")
