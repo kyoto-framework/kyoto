@@ -210,7 +210,7 @@
 		// Let's assume markup of this component is stored in 'component.uuid.html'
 		//
 		//	{{ define "CUUID" }}
-		//	<div {{ state . }}>
+		//	<div {{ state . }} name="CUUID">
 		//		<div>UUID: {{ state.UUID }}</div>
 		//		<button onclick="Action(this, 'Reload')">Reload</button>
 		//	</div>
@@ -275,8 +275,10 @@
 
 	In this example you can see provided modifications to the quick start example.
 
-	First, we've added a state into our components' markup.
+	First, we've added a state and name into our components' markup.
 	In this way we are saving our components' state between actions and find a component root.
+	Unfortunately, we have to manually provide a component name for now,
+	we haven't found a way to provide it dynamically.
 
 	Second, we've added a reload button with onclick function call.
 	We're using a function Action provided by a client.
