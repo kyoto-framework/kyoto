@@ -1,0 +1,18 @@
+{
+    "name": "payload",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "dynamics:build": "esbuild --bundle --minify --outfile=dist/dynamics.js src/dynamics.ts",
+      "dynamics:pack": "node package.js",
+      "dynamics": "npm run dynamics:build && npm run dynamics:pack"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "esbuild": "^0.12.28",
+      "morphdom": "^2.6.1"
+    }
+  }
