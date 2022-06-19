@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-    <a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">Documentation</a>&nbsp;&bull; <a href="#">Team</a>&nbsp;&bull; <a href="#">Contact</a>&nbsp;&bull; <a href="#">Donate</a>
+    <a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">Documentation</a>&nbsp;&bull; <a href="#team">Team</a>&nbsp;&bull; <a href="#contact">Contact</a>&nbsp;&bull; <a href="#support-us">Support us</a>
 </p>
 
 ## Motivation
@@ -36,11 +36,11 @@ Library tries to simplify this process.
 
 - Organize code into configurable and standalone components structure
 - Get rid of spaghetti inside of handlers
-- Simple asynchronous rendering lifecycle
+- Simple asynchronous lifecycle
 - Built-in dynamics like Hotwire or Laravel Livewire
-- Built-in rendering based on `html/template`
+- Using a familiar built-in `html/template`
 - Full control over project setup (minimal dependencies)
-- 0kb JS payload without actions client (~8kb when using actions)
+- 0kb JS payload without actions client (~8kb when including a client)
 
 ## Reasons to opt out
 
@@ -49,73 +49,25 @@ Library tries to simplify this process.
 - You're just feeling OK with JS frameworks
 - Not situable for a frontend with a lot of client-side logic
 
-## Installation
+## Team
 
-As simple as `go get github.com/kyoto-framework/kyoto@master`  
-Check latest version of documentation page for quick start: [https://kyoto.codes/getting-started/](https://kyoto.codes/getting-started/)
+- Yurii Zinets: [github](https://github.com/yuriizinets)
+- Viktor Korniichuk: [github](https://github.com/RowdyHcs)
 
-## Usage
+## Contact
 
-Kyoto project setup may seem complicated and unusual at first sight.  
-It's highly recommended to follow documentation while using library: [https://kyoto.codes/getting-started/](https://kyoto.codes/getting-started/)  
+Email: info@kyoto.codes or yurii.zinets@icloud.com  
+Telegram: @yuriizinets
 
-```go
-package main
+## Support us
 
-import (
-    "html/template"
-    "encoding/json"
-    "net/http"
+Any project support is appreciated! Providing a feedback, pull requests, new ideas, whatever. Also, donations and sponsoring will help us to keep high updates frequency. Just send us a quick email or a message on contacts provided above.
 
-    "github.com/kyoto-framework/kyoto"
-)
-
-// This example demonstrates main advantage of kyoto library - asynchronous lifecycle.
-// Multiple UUIDs will be fetched in asynchronous way, without explicitly touching goroutines 
-// and synchronization tools like sync.WaitGroup.
-
-type CUUIDState struct {
-    UUID string
-}
-
-// Let's assume markup of this component is stored in 'component.uuid.html'
-func CUUID(ctx *kyoto.Context) (state CUUIDState) {
-    // Fetch uuid data
-    resp, _ := http.Get("http://httpbin.org/uuid")
-    data := map[string]string{}
-    json.NewDecoder(resp.Body).Decode(&data)
-    // Set state
-    state.UUID = data["uuid"]
-}
-
-type PIndexState struct {
-    UUID1 kyoto.Component[CUUIDState]
-    UUID1 kyoto.Component[CUUIDState]
-}
-
-// Let's assume markup of this page is stored in 'page.index.html'
-func PIndex(ctx *kyoto.Context) (state PIndexState) {
-    // Define rendering
-    render.Template(ctx, "page.index.html")
-    // Attach components
-    state.UUID1 = kyoto.Use(ctx, CUUID)
-    state.UUID2 = kyoto.Use(ctx, CUUID)
-}
-
-func main() {
-    // Register page
-    kyoto.HandlePage("/", PIndex)
-    // Serve
-    kyoto.Serve(":8080")
-}
-
-```
-
-## Donate
-
-Any project support is appreciated! Donations will help us to keep high updates frequency. If you would like to avoid using listed methods, contact us directly with [info@kyoto.codes](mailto:info@kyoto.codes)  
+If you have an option to donate us with a crypto, we have some addresses.
 
 Bitcoin: `bc1qgxe4u799f8pdyzk65sqpq28xj0yc6g05ckhvkk`  
 Ethereum: `0xEB2f24e830223bE081264e0c81fb5FD4DDD2B7B0`
+
+Also, we have a page on open collective for backers support.
 
 Open Collective: [https://opencollective.com/kyoto-framework](https://opencollective.com/kyoto-framework)

@@ -55,7 +55,7 @@
 		// 	<meta charset="UTF-8">
 		// 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		// 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		// 	<title>{{ .Title }}</title>
+		// 	<title>Example</title>
 		// </head>
 		// <body>
 		// 	{{ template "CUUID" .UUID1 }}
@@ -144,6 +144,11 @@
 
 	Kyoto provides a set of parameters and functions
 	to provide a comfortable template building process.
+	You can configure template building parameters with
+	kyoto.TemplateConf configuration.
+
+	See template.go for available functions
+	and kyoto.TemplateConfiguration for configuration details.
 
 	Example:
 
@@ -153,6 +158,7 @@
 			// - parse everything in the current directory with a .ParseGlob("*.html")
 			// - render a template with a given name
 			kyoto.Template(ctx, "page.index.html")
+			...
 		}
 
 	Actions
@@ -166,6 +172,130 @@
 	which will be morphed into DOM.
 	That's it.
 
-	To be continued...
+	To use actions, you need to go through a few steps.
+	You'll need to include a client into page (JS functions for communication)
+	and register an actions handler for a needed component.
+
+	Let's start from including a client.
+
+		<html>
+			<head>
+				...
+			</head>
+			<body>
+				...
+				{{ client }}
+			</body>
+		</html>
+
+	Then, let's register an actions handler for a needed component.
+
+		func main() {
+			...
+			kyoto.HandleAction(Component)
+			...
+		}
+
+	That's all!
+	Now we ready to use actions to provide a dynamic UI.
+
+	Example:
+
+		...
+
+		type CUUIDState struct {
+			UUID string
+		}
+
+		// Let's assume markup of this component is stored in 'component.uuid.html'
+		//
+		//	{{ define "CUUID" }}
+		//	<div {{ state . }}>
+		//		<div>UUID: {{ state.UUID }}</div>
+		//		<button onclick="Action(this, 'Reload')">Reload</button>
+		//	</div>
+		//	{{ end }}
+		func CUUID(ctx *kyoto.Component) (state CUUIDState) {
+			// Define uuid loader
+			uuid := func() string {
+				resp, _ := http.Get("http://httpbin.org/uuid")
+				data := map[string]string{}
+				json.NewDecoder(resp.Body).Decode(&data)
+				return data["uuid"]
+			}
+			// Handle action
+			handled := kyoto.Action(ctx, "Reload", func(args ...any) {
+				// We will just set a new uuid and will print a log
+				// It's not makes a lot of sense now, but it's just a demonstration example
+				state.UUID = uuid()
+				log.Println("New uuid was issued:", state.UUID)
+			})
+			// Prevent further execution if action handled
+			if handled {
+				return
+			}
+			// Default loading behavior
+			state.UUID = uuid()
+		}
+
+		type PIndexState struct {
+			UUID1 kyoto.Component[CUUIDState]
+			UUID2 kyoto.Component[CUUIDState]
+		}
+
+		// Let's assume markup of this page is stored in 'page.index.html'
+		//
+		//	<!DOCTYPE html>
+		//	<html lang="en">
+		//	<head>
+		//		<meta charset="UTF-8">
+		//		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		//		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		//		<title>Example</title>
+		//	</head>
+		//	<body>
+		//		{{ template "CUUID" .UUID1 }}
+		//		{{ template "CUUID" .UUID2 }}
+		//		{{ client }}
+		//	</body>
+		//	</html>
+		func PIndex(ctx *kyoto.Context) (state PIndexState) {
+			// Define rendering
+			kyoto.Template(ctx, "page.index.html")
+			// Attach components
+			state.UUID1 = kyoto.Use(ctx, CUUID)
+			state.UUID2 = kyoto.Use(ctx, CUUID)
+		}
+
+		func main() {
+			kyoto.HandlePage("/", PIndex)
+			kyoto.HandleAction(CUUID)
+			kyoto.Serve(":8000")
+		}
+
+	In this example you can see provided modifications to the quick start example.
+
+	First, we've added a state into our components' markup.
+	In this way we are saving our components' state between actions and find a component root.
+
+	Second, we've added a reload button with onclick function call.
+	We're using a function Action provided by a client.
+	Action triggering will be described in details later.
+
+	Third, we've added an action handler inside of our component.
+	This handler will be executed when a client calls an action with a corresponding name.
+
+	Action triggering
+
+	Documentation is not ready yet.
+
+	Action flow control
+
+	Documentation is not ready yet.
+
+	Action rendering options
+
+	Documentation is not ready yet.
+
 */
 package kyoto
