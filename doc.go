@@ -81,7 +81,8 @@
 
 	Kyoto provides a simple net/http handlers and function wrappers
 	to handle pages rendering and serving.
-	Check kyoto/nethttp.go functions for details and advanced usage.
+
+	See functions inside of nethttp.go file for details and advanced usage.
 
 	Example:
 
@@ -116,10 +117,21 @@
 			state.UUID = data["uuid"]
 		}
 
+		// Page is just a top-level component, which attaches components and defines rendering
+		func PExample(ctx *kyoto.Context) (state PExampleState) {
+			// Define rendering
+			kyoto.Template(ctx, "page.example.html")
+			// Attach components
+			state.UUID1 = kyoto.Use(ctx, CUUID)
+			state.UUID2 = kyoto.Use(ctx, CUUID)
+		}
+
 	Context
 
 	Kyoto provides a context,
 	which holds common objects like http.ResponseWriter, *http.Request, etc.
+
+	See kyoto.Context for details.
 
 	Example:
 
