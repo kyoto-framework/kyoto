@@ -57,7 +57,7 @@ Library tries to simplify this process.
 ## Contact
 
 Email: info@kyoto.codes or yurii.zinets@icloud.com  
-Telegram: @yuriizinets
+Telegram: [@yuriizinets](https://t.me/yuriizinets)
 
 ## Support us
 
