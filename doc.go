@@ -43,8 +43,8 @@
 		}
 
 		type PIndexState struct {
-			UUID1 kyoto.Component[CUUIDState]
-			UUID1 kyoto.Component[CUUIDState]
+			UUID1 kyoto.ComponentF[CUUIDState]
+			UUID1 kyoto.ComponentF[CUUIDState]
 		}
 
 		// Let's assume markup of this page is stored in 'page.index.html'
@@ -58,8 +58,8 @@
 		// 	<title>Example</title>
 		// </head>
 		// <body>
-		// 	{{ template "CUUID" .UUID1 }}
-		// 	{{ template "CUUID" .UUID2 }}
+		// 	{{ template "CUUID" await .UUID1 }}
+		// 	{{ template "CUUID" await .UUID2 }}
 		// </body>
 		// </html>
 		func PIndex(ctx *kyoto.Context) (state PIndexState) {
@@ -239,8 +239,8 @@
 		}
 
 		type PIndexState struct {
-			UUID1 kyoto.Component[CUUIDState]
-			UUID2 kyoto.Component[CUUIDState]
+			UUID1 kyoto.ComponentF[CUUIDState]
+			UUID2 kyoto.ComponentF[CUUIDState]
 		}
 
 		// Let's assume markup of this page is stored in 'page.index.html'
@@ -324,6 +324,12 @@
 	Documentation is not ready yet.
 
 	Action flow control
+
+		ssa:oncall.display="<display>"
+
+	Documentation is not ready yet.
+
+		kyoto.ActionFlush(ctx, state)
 
 	Documentation is not ready yet.
 
