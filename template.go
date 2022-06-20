@@ -29,7 +29,7 @@ var TemplateConf = TemplateConfiguration{
 	FuncMap:   FuncMap,
 }
 
-// ComposeFuncMap is a function for composing multiple FuncMap instances into one
+// ComposeFuncMap is a function for composing multiple FuncMap instances into one.
 func ComposeFuncMap(fmaps ...template.FuncMap) template.FuncMap {
 	var result = template.FuncMap{}
 	for _, fmap := range fmaps {

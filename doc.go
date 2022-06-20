@@ -289,6 +289,34 @@
 
 	Action triggering
 
+	Kyoto have multiple ways to trigger actions.
+	Now we will check them one by one.
+
+		Action(this, "<action>", <args...>)
+
+	This is the simplest way to trigger an action.
+	It's just a function call with a referer (usually 'this', f.e. button) as a first argument (used to determine root),
+	action name as a second argument and arguments as a rest.
+	Arguments must to be JSON serializable.
+
+	It's possible to trigger an action of another component.
+	If you want to call an action of parent component, use $ prefix in action name.
+	If you want to call an action of component by id, use <id:action> as an action name.
+
+		FormSubmit(this, event)
+
+	This is a special action which is triggered when a form is submitted.
+	Usually called in onsubmit="..." attribute of a form.
+	You'll need to implement 'Submit' action to handle this trigger.
+
+		ssa:onload="<action>"
+
+	This is a special attribute which will trigger an action on page load.
+	This may be useful for components' lazy loading.
+
+		ssa:poll="<action>"
+		ssa:poll.interval="<interval>"
+
 	Documentation is not ready yet.
 
 	Action flow control
