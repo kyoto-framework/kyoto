@@ -311,7 +311,7 @@
 
 		ssa:onload="<action>"
 
-	This is a special attribute which will trigger an action on page load.
+	This is a special HTML attribute which will trigger an action on page load.
 	This may be useful for components' lazy loading.
 
 		ssa:poll="<action>"
