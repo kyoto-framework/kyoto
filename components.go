@@ -37,6 +37,18 @@ func (c ComponentF[T]) await() (val any) {
 
 // Use is a function to use your components in your code.
 // Triggers component execution and returns a future for a component work result (ComponentF).
+//
+// Example:
+//
+//		func CompBar(ctx *kyoto.Context) (state CompBarState) {
+//			...
+//		}
+//
+//		func PageFoo(ctx *kyoto.Context) (state PageFooState) {
+//			...
+//			state.Bar = kyoto.Use(ctx, CompBar)  // Awaitable kyoto.ComponentF[CompBarState]
+//			...
+//		}
 func Use[T any](c *Context, component Component[T]) ComponentF[T] {
 	return ComponentF[T](zen.Async(func() (T, error) {
 		return component(c), nil
@@ -45,6 +57,17 @@ func Use[T any](c *Context, component Component[T]) ComponentF[T] {
 
 // Await accepts any awaitable component and returns it's state.
 // It's a function supposed to be used as a template function.
+//
+// Template example:
+//
+//		{{ template "CompBar" await .Bar }}
+//
+// Go example:
+//
+//		barf = kyoto.Use(ctx, CompBar) // Awaitable kyoto.ComponentF[CompBarState]
+//		...
+//		bar = kyoto.Await(barf) // CompBarState
+//
 func Await(component any) any {
 	if component, implements := component.(awaitable); implements {
 		return component.await()
@@ -58,6 +81,17 @@ func Await(component any) any {
 // ****************
 
 // ComponentName takes a component function and tries to extract it's name.
+//
+// Example:
+//
+//		func CompBar(ctx *kyoto.Context) (state CompBarState) {
+//			...
+//		}
+//
+//		func main() {
+//			fmt.Println(kyoto.ComponentName(CompBar)) // "CompBar"
+//		}
+//
 func ComponentName[T any](component Component[T]) string {
 	funcpath := runtime.FuncForPC(reflect.ValueOf(component).Pointer()).Name()
 	tokens := strings.Split(funcpath, ".")
@@ -69,6 +103,16 @@ func ComponentName[T any](component Component[T]) string {
 }
 
 // MarshalState encodes components' state for a client.
+// Supposed to be used as a template function.
+//
+// Template example:
+//
+//		{{ state . }}
+//
+// Go example:
+//
+//		compStateEnc := kyoto.MarshalState(compState)
+//
 func MarshalState(state any) string {
 	// Serialize component state into json
 	statebts, err := json.Marshal(state)
@@ -82,6 +126,7 @@ func MarshalState(state any) string {
 }
 
 // UnmarshalState decodes components' state from a client.
+// Supposed to be used internaly only, exposed just in case.
 func UnmarshalState(state string, target any) {
 	// Deserialize component state from json
 	err := json.Unmarshal([]byte(state), target)

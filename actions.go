@@ -97,7 +97,7 @@ func Action(c *Context, name string, action func(args ...any)) bool {
 //
 // Example:
 //
-//	func Foo(ctx *kyoto.Context) (state FooState) {
+//	func CompFoo(ctx *kyoto.Context) (state CompFooState) {
 //		// Preload state
 //		kyoto.ActionPreload(ctx, &state)
 //		// Handle actions
@@ -117,7 +117,7 @@ func ActionPreload[T any](c *Context, state T) {
 //
 // Example:
 //
-//	func Foo(ctx *kyoto.Context) (state FooState) {
+//	func CompFoo(ctx *kyoto.Context) (state CompFooState) {
 //		...
 //		// Handle example action
 //		kyoto.Action(ctx, "Bar", func(args ...any) {
@@ -169,8 +169,8 @@ func actionFuncClient() template.HTML {
 //
 // Example:
 //
-//	kyoto.HandleAction(Foo) // Register a usual component
-//	kyoto.handleAction(Bar("")) // Register a component which accepts arguments and returns wrapped function
+//	kyoto.HandleAction(CompFoo) // Register a usual component
+//	kyoto.handleAction(CompBar("")) // Register a component which accepts arguments and returns wrapped function
 func HandleAction[T any](component Component[T]) {
 	pattern := ActionConf.Path + ComponentName(component) + "/"
 	log.Printf("Registering '%s' component action handler under '%s'", ComponentName(component), pattern)
