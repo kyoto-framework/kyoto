@@ -305,7 +305,7 @@
 
 		FormSubmit(this, event)
 
-	This is a special action which is triggered when a form is submitted.
+	This is a specific action which is triggered when a form is submitted.
 	Usually called in onsubmit="..." attribute of a form.
 	You'll need to implement 'Submit' action to handle this trigger.
 
@@ -317,25 +317,45 @@
 		ssa:poll="<action>"
 		ssa:poll.interval="<interval>"
 
-	Documentation is not ready yet.
+	With this special HTML attributes you can trigger an action with interval.
+	Useful for components that must to be updated over time (f.e. charts, stats, etc).
+	You can use this trigger with ssa:poll and ssa:poll.interval HTML attributes.
 
 		ssa:onintersect="<action>"
 
-	Documentation is not ready yet.
+	This one attribute allows you to trigger an action when an element is visible on the screen.
+	May be useful for lazy loading.
 
 	Action flow control
 
+	Kyoto provides a way to control action flow.
+	For now, it's possible to control display style on component call
+	and push multiple UI updates to the client during a single action.
+
 		ssa:oncall.display="<display>"
 
-	Documentation is not ready yet.
+	Because kyoto makes a roundtrip to the server every time an action is triggered on the page,
+	there are cases where the page may not react immediately to a user event (like a click).
+	That's why the library provides a way to easily control display attributes on action call.
+	You can use this HTML attribute to control display during action call.
+	At the end of an action the layout will be restored.
+
+	A small note. Don't forget to set a default display for loading elements like spinners and loaders.
 
 		kyoto.ActionFlush(ctx, state)
 
-	Documentation is not ready yet.
+	You can push multiple component UI updates during a single action call.
+	Just call kyoto.ActionFlush(ctx, state) to initiate an update.
 
 	Action rendering options
 
-	Documentation is not ready yet.
+	Kyoto provides a way to control action rendering.
+
+		ssa:render.mode="replace"
+
+	Now there is at least 2 rendering options after an action call: morph (default) and replace.
+	Morph will try to morph received markup to the current one with morphdom library.
+	In case of an error, or explicit "replace" mode, markup will be replaced with x.outerHTML = '...'.
 
 */
 package kyoto
