@@ -128,23 +128,14 @@ func MarshalState(state any) string {
 // UnmarshalState decodes components' state from a client.
 // Supposed to be used internaly only, exposed just in case.
 func UnmarshalState(state string, target any) {
-	// Deserialize component state from json
-	err := json.Unmarshal([]byte(state), target)
+	// Decode from base64
+	statebts, err := base64.StdEncoding.DecodeString(state)
 	if err != nil {
-		panic("Error while unmarshaling component state: " + err.Error())
+		panic("Error while decoding component state. " + err.Error())
+	}
+	// Deserialize component state from json
+	err = json.Unmarshal(statebts, target)
+	if err != nil {
+		panic("Error while deserializing component state. " + err.Error())
 	}
 }
-
-// Uncomment when client will be migrated
-// func UnmarshalState(state string, target any) {
-// 	// Decode from base64
-// 	statebts, err := base64.StdEncoding.DecodeString(state)
-// 	if err != nil {
-// 		panic("Error while decoding component state. " + err.Error())
-// 	}
-// 	// Deserialize component state from json
-// 	err = json.Unmarshal(statebts, target)
-// 	if err != nil {
-// 		panic("Error while deserializing component state. " + err.Error())
-// 	}
-// }

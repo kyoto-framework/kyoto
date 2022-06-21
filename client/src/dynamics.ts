@@ -178,7 +178,7 @@ export async function Action(self: HTMLElement, action: string, ...args: Array<a
     url += `/${_NameCleanup(action)}` // Action name
     // Make request
     const payload = new FormData()
-    payload.set('State', atob(root.getAttribute('state') as string) || '{}')
+    payload.set('State', root.getAttribute('state') as string)
     payload.set('Args', JSON.stringify(args))
     const response = await fetch(url, {
         method: 'POST',
@@ -255,7 +255,7 @@ export function FormSubmit(self: HTMLElement, e: Event) {
         state[pair[0]] = pair[1]
     })
     // Set state
-    root.setAttribute('state', btoa(JSON.stringify(state).replaceAll('/', '-')))
+    root.setAttribute('state', btoa(JSON.stringify(state)))
     // Trigger "Submit" action
     Action(root, 'Submit')
     // Fix for ...?
