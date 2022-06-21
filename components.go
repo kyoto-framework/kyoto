@@ -26,7 +26,8 @@ type awaitable interface {
 	await() any
 }
 
-// await is a method to utilize zen.Await in a non-generic way.
+// await is a method to implement awaitable interface
+// and utilize zen.Await in a non-generic way.
 func (c *ComponentF[T]) await() (val any) {
 	val, err := zen.Await((*zen.Future[T])(c))
 	if err != nil {
