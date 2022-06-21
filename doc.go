@@ -43,8 +43,8 @@
 		}
 
 		type PIndexState struct {
-			UUID1 kyoto.ComponentF[CUUIDState]
-			UUID1 kyoto.ComponentF[CUUIDState]
+			UUID1 *kyoto.ComponentF[CUUIDState]
+			UUID1 *kyoto.ComponentF[CUUIDState]
 		}
 
 		// Let's assume markup of this page is stored in 'page.index.html'
@@ -239,8 +239,8 @@
 		}
 
 		type PIndexState struct {
-			UUID1 kyoto.ComponentF[CUUIDState]
-			UUID2 kyoto.ComponentF[CUUIDState]
+			UUID1 *kyoto.ComponentF[CUUIDState]
+			UUID2 *kyoto.ComponentF[CUUIDState]
 		}
 
 		// Let's assume markup of this page is stored in 'page.index.html'

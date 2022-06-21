@@ -27,8 +27,8 @@ type awaitable interface {
 }
 
 // await is a method to utilize zen.Await in a non-generic way.
-func (c ComponentF[T]) await() (val any) {
-	val, err := zen.Await(zen.Future[T](c))
+func (c *ComponentF[T]) await() (val any) {
+	val, err := zen.Await((*zen.Future[T])(c))
 	if err != nil {
 		panic(err)
 	}
@@ -46,11 +46,11 @@ func (c ComponentF[T]) await() (val any) {
 //
 //		func PageFoo(ctx *kyoto.Context) (state PageFooState) {
 //			...
-//			state.Bar = kyoto.Use(ctx, CompBar)  // Awaitable kyoto.ComponentF[CompBarState]
+//			state.Bar = kyoto.Use(ctx, CompBar)  // Awaitable *kyoto.ComponentF[CompBarState]
 //			...
 //		}
-func Use[T any](c *Context, component Component[T]) ComponentF[T] {
-	return ComponentF[T](zen.Async(func() (T, error) {
+func Use[T any](c *Context, component Component[T]) *ComponentF[T] {
+	return (*ComponentF[T])(zen.Async(func() (T, error) {
 		return component(c), nil
 	}))
 }
@@ -64,7 +64,7 @@ func Use[T any](c *Context, component Component[T]) ComponentF[T] {
 //
 // Go example:
 //
-//		barf = kyoto.Use(ctx, CompBar) // Awaitable kyoto.ComponentF[CompBarState]
+//		barf = kyoto.Use(ctx, CompBar) // Awaitable *kyoto.ComponentF[CompBarState]
 //		...
 //		bar = kyoto.Await(barf) // CompBarState
 //
