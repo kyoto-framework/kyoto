@@ -1,6 +1,7 @@
 package kyoto
 
 import (
+	"embed"
 	"html/template"
 )
 
@@ -11,7 +12,8 @@ import (
 // TemplateConfiguration holds template building configuration.
 type TemplateConfiguration struct {
 	ParseGlob string
-	FuncMap   template.FuncMap
+	ParseFS   *embed.FS
+	FuncMap   *template.FuncMap
 }
 
 // FuncMap holds a library predefined template functions.
@@ -26,7 +28,7 @@ var FuncMap = template.FuncMap{
 // Feel free to modify it as needed.
 var TemplateConf = TemplateConfiguration{
 	ParseGlob: "*.html",
-	FuncMap:   FuncMap,
+	FuncMap:   &FuncMap,
 }
 
 // ComposeFuncMap is a function for composing multiple FuncMap instances into one.
@@ -69,7 +71,20 @@ func ComposeFuncMap(fmaps ...template.FuncMap) template.FuncMap {
 //		}
 //
 func Template(c *Context, name string) {
-	c.Template = template.Must(template.New(name).Funcs(TemplateConf.FuncMap).ParseGlob(TemplateConf.ParseGlob))
+	// Base
+	tmpl := template.New(name)
+	// Template functions
+	if TemplateConf.FuncMap != nil {
+		tmpl = tmpl.Funcs(*TemplateConf.FuncMap)
+	}
+	// Template parsing
+	if TemplateConf.ParseFS != nil && TemplateConf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseFS(TemplateConf.ParseFS, TemplateConf.ParseGlob))
+	} else if TemplateConf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseGlob(TemplateConf.ParseGlob))
+	}
+	// Assign
+	c.Template = tmpl
 }
 
 // TemplateInline creates a new template with a given template source,
@@ -85,8 +100,22 @@ func Template(c *Context, name string) {
 //			...
 //		}
 //
-func TemplateInline(c *Context, tmpl string) {
-	c.Template = template.Must(template.Must(template.New("inline").Funcs(TemplateConf.FuncMap).ParseGlob(TemplateConf.ParseGlob)).Parse(tmpl))
+func TemplateInline(c *Context, tmplsrc string) {
+	// Base
+	tmpl := template.New("inline")
+	// Template functions
+	if TemplateConf.FuncMap != nil {
+		tmpl = tmpl.Funcs(*TemplateConf.FuncMap)
+	}
+	// Template parsing
+	if TemplateConf.ParseFS != nil && TemplateConf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseFS(TemplateConf.ParseFS, TemplateConf.ParseGlob))
+	} else if TemplateConf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseGlob(TemplateConf.ParseGlob))
+	}
+	tmpl = template.Must(tmpl.Parse(tmplsrc))
+	// Assign
+	c.Template = tmpl
 }
 
 // TemplateRaw handles a raw template.
