@@ -3,6 +3,7 @@ package kyoto
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"net/http"
 	"testing"
 )
@@ -83,7 +84,7 @@ func TestAwait(t *testing.T) {
 	}
 }
 
-func TestAwaitError(t *testing.T) {
+func TestAwaitNonAwaitableError(t *testing.T) {
 	// Define component state
 	type CUUIDState struct {
 		UUID string
@@ -103,7 +104,7 @@ func TestAwaitError(t *testing.T) {
 	// Define recovery
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered in TestAwait", r)
+			fmt.Println("Recovered in TestAwaitNonAwaitableError", r)
 		}
 	}()
 
@@ -112,4 +113,62 @@ func TestAwaitError(t *testing.T) {
 
 	// Error if not panicked
 	t.Errorf("Await returned %s, expected panic", uuid)
+}
+
+func TestMarshalState(t *testing.T) {
+	// Define component state
+	type FooState struct {
+		Foo string
+	}
+
+	state := FooState{Foo: "Bar"}
+	b64state := MarshalState(state)
+
+	if b64state == "" {
+		t.Errorf("MarshalState returned empty string, expected non-empty string")
+	}
+
+	emptyState := FooState{}
+	UnmarshalState(b64state, &emptyState)
+
+	if emptyState.Foo != state.Foo {
+		t.Errorf("UnmarshalState returned %s, expected %s", emptyState.Foo, state.Foo)
+	}
+}
+
+func TestMarshalStateError(t *testing.T) {
+	// Define recovery
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered in TestMarshalStateError", r)
+		}
+	}()
+
+	MarshalState(math.Inf(1))
+
+	t.Error("MarshalState did not panic")
+}
+
+func TestUnmarshalDecodingError(t *testing.T) {
+	// Define recovery
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered in TestUnmarshalDecodingError", r)
+		}
+	}()
+
+	UnmarshalState("{\"Foo\":\"Bar\"}", &struct{}{})
+	t.Error("UnmarshalState did not panic")
+}
+
+func TestUnmarshalDeserializeError(t *testing.T) {
+	// Define recovery
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered in TestUnmarshalDeserializeError", r)
+		}
+	}()
+
+	UnmarshalState("", &struct{}{})
+	t.Error("UnmarshalState did not panic")
 }

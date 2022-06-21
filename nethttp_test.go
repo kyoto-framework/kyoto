@@ -22,7 +22,7 @@ func TestPageHandler(t *testing.T) {
 
 	// Define page state
 	type PIndexState struct {
-		Foo ComponentF[FooState]
+		Foo *ComponentF[FooState]
 	}
 
 	// Define page
@@ -75,7 +75,7 @@ func TestHandlePage(t *testing.T) {
 
 	// Define page state
 	type PIndexState struct {
-		Foo ComponentF[FooState]
+		Foo *ComponentF[FooState]
 	}
 
 	// Define page
@@ -140,7 +140,7 @@ func TestPageHandlerError(t *testing.T) {
 
 	// Define page state
 	type PIndexState struct {
-		Foo ComponentF[FooState]
+		Foo *ComponentF[FooState]
 	}
 
 	// Define page
