@@ -23,7 +23,7 @@ tasks:
   test:cov:report:
     cmds:
       - go test -race -coverprofile=/tmp/coverage.txt.tmp -covermode=atomic .
-      - cat /tmp/coverage.txt.tmp | grep -v "backward." > {{ .CLI_ARGS }}
+      - cat /tmp/coverage.txt.tmp | grep -v "compat." > {{ .CLI_ARGS }}
       - rm /tmp/coverage.txt.tmp
 
   doc:
