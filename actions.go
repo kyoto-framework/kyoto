@@ -36,6 +36,8 @@ type ActionParameters struct {
 	Action    string
 	State     string
 	Args      []any
+
+	processed bool
 }
 
 // Parse extracts action data from a provided request.
@@ -86,8 +88,14 @@ func (p *ActionParameters) Parse(r *http.Request) error {
 //		// ...
 //	}
 func Action(c *Context, name string, action func(args ...any)) bool {
+	// This will allow to avoid recursive action call
+	// while attaching recursive component
+	if c.Action.processed {
+		return false
+	}
 	if c.Action.Action == name {
 		action(c.Action.Args...)
+		c.Action.processed = true
 		return true
 	}
 	return false
