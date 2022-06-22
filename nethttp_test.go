@@ -2,42 +2,59 @@ package kyoto
 
 import (
 	"fmt"
-	"io"
+	"html/template"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/kyoto-framework/zen"
 )
 
+// Common test items
+
+type testNethttpComponentState struct {
+	Value string
+}
+
+func testNethttpComponent(ctx *Context) (state testNethttpComponentState) {
+	state.Value = "This is a value"
+	return
+}
+
+type testNethttpPageState struct {
+	Component *ComponentF[testNethttpComponentState]
+}
+
+func testNethttpPage(ctx *Context) (state testNethttpPageState) {
+	// Define rendering
+	TemplateRaw(ctx, template.Must(template.New("nethttp.page.html").Funcs(FuncMap).Parse(
+		`{{ define "nethttpComponent" }}{{ .Value }}{{ end }}`+
+			`<html>{{ template "nethttpComponent" await .Component }}</html>`,
+	)))
+	// Attach component
+	state.Component = Use(ctx, testNethttpComponent)
+	// Return
+	return
+}
+
+func testNethttpPageErr(ctx *Context) (state testNethttpPageState) {
+	// Define rendering with an error (nethttpComponent is not defined)
+	TemplateRaw(ctx, template.Must(template.New("nethttp.page.html").Funcs(FuncMap).Parse(
+		`<html>{{ template "nethttpComponent" await .Component }}</html>`,
+	)))
+	// Attach component
+	state.Component = Use(ctx, testNethttpComponent)
+	// Return
+	return
+}
+
 func TestPageHandler(t *testing.T) {
-	// Define component state
-	type FooState struct {
-		Bar string
-	}
-
-	// Define component
-	Foo := func(ctx *Context) (state FooState) {
-		state.Bar = "Baz"
-		return state
-	}
-
-	// Define page state
-	type PIndexState struct {
-		Foo *ComponentF[FooState]
-	}
-
-	// Define page
-	PIndex := func(ctx *Context) (state PIndexState) {
-		// Define rendering
-		TemplateInline(ctx, `{{ template "Foo" await .Foo }}`)
-		// Attach components
-		state.Foo = Use(ctx, Foo)
-		return state
-	}
-	// Start a local HTTP server
-	server := httptest.NewServer(HandlerPage(PIndex))
+	// Start a local HTTP server with a testNethttpPage handler
+	server := httptest.NewServer(HandlerPage(testNethttpPage))
 	// Close the server when test finishes
 	defer server.Close()
 
+	// Make a request
 	res, err := http.Get(fmt.Sprintf("%s/", server.URL))
 	if err != nil {
 		t.Fatal(err)
@@ -50,51 +67,20 @@ func TestPageHandler(t *testing.T) {
 
 	// Check response body
 	defer res.Body.Close()
-
-	bodyBytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		panic(err)
-	}
-	bodyString := string(bodyBytes)
-	if bodyString != "Baz" {
-		t.Errorf("Expected Baz, got %s", bodyString)
+	if body := zen.Response(res).Text(); body != "<html>This is a value</html>" {
+		t.Error("Expected <html>This is a value</html>, got", body)
 	}
 }
 
 func TestHandlePage(t *testing.T) {
-	// Define component state
-	type FooState struct {
-		Bar string
-	}
-
-	// Define component
-	Foo := func(ctx *Context) (state FooState) {
-		state.Bar = "Baz"
-		return state
-	}
-
-	// Define page state
-	type PIndexState struct {
-		Foo *ComponentF[FooState]
-	}
-
-	// Define page
-	PIndex := func(ctx *Context) (state PIndexState) {
-		// Define rendering
-		TemplateInline(ctx, `{{ template "Foo" await .Foo }}`)
-		// Attach components
-		state.Foo = Use(ctx, Foo)
-		return state
-	}
-
-	// Start a local HTTP server
-	HandlePage("/", PIndex)
-
+	// Start a local HTTP server with a testNethttpPage automatic handler
+	HandlePage("/", testNethttpPage)
 	// Start serve
 	go func() {
 		Serve(":8080")
 	}()
 
+	// Make a request
 	res, err := http.Get(fmt.Sprintf("%s/", "http://localhost:8080"))
 	if err != nil {
 		t.Fatal(err)
@@ -107,15 +93,8 @@ func TestHandlePage(t *testing.T) {
 
 	// Check response body
 	defer res.Body.Close()
-
-	bodyBytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	bodyString := string(bodyBytes)
-	if bodyString != "Baz" {
-		t.Errorf("Expected Baz, got %s", bodyString)
+	if body := zen.Response(res).Text(); body != "<html>This is a value</html>" {
+		t.Error("Expected <html>This is a value</html>, got", body)
 	}
 }
 
@@ -127,40 +106,15 @@ func TestPageHandlerError(t *testing.T) {
 		}
 	}()
 
-	// Define component state
-	type FooState struct {
-		Bar string
-	}
-
-	// Define component
-	Foo := func(ctx *Context) (state FooState) {
-		state.Bar = "Baz"
-		return state
-	}
-
-	// Define page state
-	type PIndexState struct {
-		Foo *ComponentF[FooState]
-	}
-
-	// Define page
-	PIndex := func(ctx *Context) (state PIndexState) {
-		TemplateInline(ctx, `{{ template "Foo" await .Bar }}`)
-		// Attach components
-		state.Foo = Use(ctx, Foo)
-		return state
-	}
-
-	// Start a local HTTP server
-	server := httptest.NewServer(HandlerPage(PIndex))
-
+	// Start a local HTTP server with a testNethttpPageErr handler
+	server := httptest.NewServer(HandlerPage(testNethttpPageErr))
 	// Close the server when test finishes
 	defer server.Close()
 
 	// Get request to page with wrong template
 	_, err := http.Get(fmt.Sprintf("%s/", server.URL))
 	if err == nil {
-		t.Fatal("Expected error")
+		t.Fatal("Expected error, got OK")
 	}
 }
 
