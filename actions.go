@@ -87,6 +87,7 @@ func (p *ActionParameters) Parse(r *http.Request) error {
 //		// Default non-action behavior
 //		// ...
 //	}
+//
 func Action(c *Context, name string, action func(args ...any)) bool {
 	// This will allow to avoid recursive action call
 	// while attaching recursive component

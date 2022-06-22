@@ -126,6 +126,21 @@
 			state.UUID2 = kyoto.Use(ctx, CUUID)
 		}
 
+	As an option, you can wrap component with another function to accept additional paramenters from top-level page/component.
+
+	Example:
+
+		func CUUID(hburl string) kyoto.Component[CUUIDState] {
+			return func(ctx *kyoto.Context) (state CUUIDState) {
+				// Fetch uuid data
+				resp, _ := http.Get(hburl)
+				data := map[string]string{}
+				json.NewDecoder(resp.Body).Decode(&data)
+				// Set state
+				state.UUID = data["uuid"]
+			}
+		}
+
 	Context
 
 	Kyoto provides a context,
