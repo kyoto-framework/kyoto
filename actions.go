@@ -1,6 +1,7 @@
 package kyoto
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -137,8 +138,13 @@ func ActionFlush(c *Context, state any) {
 	flusher := c.ResponseWriter.(http.Flusher)
 	// Clone prepared template
 	tmpl, _ := c.Template.Clone()
-	// Render template into flusher
-	if err := tmpl.Execute(c.ResponseWriter, state); err != nil {
+	// Render template into buffer
+	buf := &bytes.Buffer{}
+	if err := tmpl.Execute(buf, state); err != nil {
+		panic(err)
+	}
+	// Write to stream
+	if _, err := fmt.Fprint(c.ResponseWriter, buf.String()); err != nil {
 		panic(err)
 	}
 	// Flush
