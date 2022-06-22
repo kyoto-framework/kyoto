@@ -1,7 +1,10 @@
 package kyoto
 
 import (
+	"bytes"
 	"html/template"
+	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -29,15 +32,58 @@ func TestComposeFuncMap(t *testing.T) {
 	}
 }
 
-func TestTemplate(t *testing.T) {
+func TestTemplateDefault(t *testing.T) {
 	// Create context
-	c := Context{}
+	c := &Context{}
+	// Create a template file for test
+	ioutil.WriteFile("template_test.html", []byte("Placeholder for tests"), 0644)
 	// Create template
-	Template(&c, "test")
+	Template(c, "template_test.html")
 	// Check template is set
 	if c.Template == nil {
 		t.Error("Template is not set")
+		os.Remove("template_test.html")
+		return
 	}
+	// Check template is rendering
+	buf := &bytes.Buffer{}
+	if err := c.Template.Execute(buf, nil); err != nil || buf.String() != "Placeholder for tests" {
+		t.Error("Something wrong with template rendering")
+		os.Remove("template_test.html")
+		return
+	}
+	// Cleanup
+	os.Remove("template_test.html")
+}
+
+func TestTemplateGlob(t *testing.T) {
+	// Create context
+	c := &Context{}
+	// Create a template file for test
+	os.Mkdir("tmp", 0700)
+	err := ioutil.WriteFile("tmp/template_test.html", []byte("Placeholder for tests"), 0644)
+	if err != nil {
+		panic(err)
+	}
+	// Set config
+	TemplateConf.ParseGlob = "tmp/*.html"
+	// Create template
+	Template(c, "template_test.html")
+	// Check template is set
+	if c.Template == nil {
+		t.Error("Template is not set")
+		os.RemoveAll("tmp")
+		return
+	}
+	// Check template is rendering
+	buf := &bytes.Buffer{}
+	if err := c.Template.Execute(buf, nil); err != nil || buf.String() != "Placeholder for tests" {
+		t.Error("Something wrong with template rendering")
+		os.RemoveAll("tmp")
+		return
+	}
+	// Cleanup
+	os.RemoveAll("tmp")
 }
 
 func TestTemplateInline(t *testing.T) {
