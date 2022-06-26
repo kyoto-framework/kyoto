@@ -82,6 +82,7 @@ func Await(component any) any {
 // ****************
 
 // ComponentName takes a component function and tries to extract it's name.
+// Be careful while using this function, may lead to undefined behavior in case of wrong value.
 //
 // Example:
 //
@@ -93,7 +94,7 @@ func Await(component any) any {
 //			fmt.Println(kyoto.ComponentName(CompBar)) // "CompBar"
 //		}
 //
-func ComponentName[T any](component Component[T]) string {
+func ComponentName(component any) string {
 	funcpath := runtime.FuncForPC(reflect.ValueOf(component).Pointer()).Name()
 	tokens := strings.Split(funcpath, ".")
 	if tokens[len(tokens)-1] == "func1" || tokens[len(tokens)-1] == "func2" {
