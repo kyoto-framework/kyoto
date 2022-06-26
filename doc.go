@@ -302,6 +302,9 @@
 	Third, we've added an action handler inside of our component.
 	This handler will be executed when a client calls an action with a corresponding name.
 
+	It's highly recommended to keep components' state as small as possible.
+	It will be transmitted on each action call.
+
 	Action triggering
 
 	Kyoto have multiple ways to trigger actions.
