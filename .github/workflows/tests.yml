@@ -17,6 +17,6 @@ jobs:
       - name: Test
         run: task test
       - name: Test with coverage report
-        run: task coverage:report -- coverage.txt
+        run: task test:cov:report -- coverage.txt
       - name: Upload coverage to Codecov
         run: bash <(curl -s https://codecov.io/bash)
