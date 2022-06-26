@@ -1,174 +1,127 @@
 package kyoto
 
 import (
-	"encoding/json"
 	"fmt"
 	"math"
-	"net/http"
 	"testing"
 )
 
-type CUUIDStateTestComponent struct {
-	UUID string
+// Common test items
+
+type testComponentState struct {
+	Value string
 }
 
-func CUUIDTestComponent(ctx *Context) (state CUUIDStateTestComponent) {
-	// Fetch uuid data
-	resp, _ := http.Get("http://httpbin.org/uuid")
-	data := map[string]string{}
-	json.NewDecoder(resp.Body).Decode(&data)
+func testComponent(ctx *Context) (state testComponentState) {
 	// Set state
-	state.UUID = data["uuid"]
-	return state
+	state.Value = "Default value"
+	// Return
+	return
 }
 
-func TestComponent(t *testing.T) {
+func testComponentWrapped(value string) Component[testComponentState] {
+	return func(ctx *Context) (state testComponentState) {
+		// Set state
+		state.Value = value
+		// return
+		return
+	}
+}
+
+// TestComponentName ensures ComponentName returns correct values for expected arguments.
+func TestComponentName(t *testing.T) {
+	// Classic component
+	name := ComponentName(testComponent)
+	if name != "testComponent" {
+		t.Errorf("ComponentName returned %s, expected %s", name, "testComponent")
+	}
+	// Wrapped component
+	name = ComponentName(testComponentWrapped)
+	if name != "testComponentWrapped" {
+		t.Errorf("ComponentName returned %s, expected %s", name, "testComponentWrapped")
+	}
+}
+
+// TestComponentUse ensures Use returns awaitable future.
+func TestComponentUse(t *testing.T) {
 	// Create context
-	c := Context{}
+	c := &Context{}
 	// Use component
-	Use(&c, CUUIDTestComponent)
-	name := ComponentName(CUUIDTestComponent)
-	if name != "CUUIDTestComponent" {
-		t.Errorf("ComponentName returned %s, expected %s", name, "CUUID")
-	}
-
-	type CUUIDState struct {
-		UUID string
-	}
-
-	uuid := func(ctx *Context) (state CUUIDState) {
-		// Fetch uuid data
-		resp, _ := http.Get("http://httpbin.org/uuid")
-		data := map[string]string{}
-		json.NewDecoder(resp.Body).Decode(&data)
-		// Set state
-		state.UUID = data["uuid"]
-		return state
-	}
-
-	name = ComponentName(uuid)
-	if name != "TestComponent" {
-		t.Errorf("ComponentName returned %s, expected %s", name, "TestComponent")
+	var stateftr any = Use(c, testComponent)
+	// Check it's an awaitable future
+	if _, implements := stateftr.(awaitable); !implements {
+		t.Error("Use is not returning awaitable future")
 	}
 }
 
-func TestAwait(t *testing.T) {
-	// Define component state
-	type CUUIDState struct {
-		UUID string
-	}
-
-	// Define component
-	CUUID := func(ctx *Context) (state CUUIDState) {
-		// Fetch uuid data
-		resp, _ := http.Get("http://httpbin.org/uuid")
-		data := map[string]string{}
-		json.NewDecoder(resp.Body).Decode(&data)
-		// Set state
-		state.UUID = data["uuid"]
-		return state
-	}
-
+// TestComponentAwait ensures Await returns expected result on awaitable future.
+func TestComponentAwait(t *testing.T) {
 	// Create context
-	c := Context{}
-
+	c := &Context{}
 	// Use component
-	cuuid := Use(&c, CUUID)
-
-	// Await component
-	uuid := Await(cuuid)
-
-	// Check state
-	if uuid.(CUUIDState).UUID == "" {
-		t.Errorf("Await returned %s, expected non-empty string", uuid)
+	var stateftr awaitable = Use(c, testComponent)
+	// Check value
+	expected := testComponentState{Value: "Default value"}
+	if Await(stateftr) != expected {
+		t.Error("State from a future is not as expected")
 	}
 }
 
-func TestAwaitNonAwaitableError(t *testing.T) {
-	// Define component state
-	type CUUIDState struct {
-		UUID string
-	}
-
-	// Define component
-	CUUID := func(ctx *Context) (state CUUIDState) {
-		// Fetch uuid data
-		resp, _ := http.Get("http://httpbin.org/uuid")
-		data := map[string]string{}
-		json.NewDecoder(resp.Body).Decode(&data)
-		// Set state
-		state.UUID = data["uuid"]
-		return state
-	}
-
+// TestComponentAwaitErr ensures Await will panic when passing non-awaitable object.
+func TestComponentAwaitErr(t *testing.T) {
 	// Define recovery
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered in TestAwaitNonAwaitableError", r)
+			fmt.Println("Recovered in TestComponentAwaitErr", r)
 		}
 	}()
-
-	// Await non-awaitable component
-	uuid := Await(CUUID)
-
+	// Trigger a panic with function awaiting, instead of future awaiting
+	val := Await(testComponent)
 	// Error if not panicked
-	t.Errorf("Await returned %s, expected panic", uuid)
+	t.Errorf("Await returned %s, expected panic", val)
 }
 
-func TestMarshalState(t *testing.T) {
-	// Define component state
-	type FooState struct {
-		Foo string
+// TestComponentMarshalState ensures component state (un)marshalling consistent.
+func TestComponentMarshalState(t *testing.T) {
+	// Define a test state
+	state := testComponentState{
+		Value: "Default value",
 	}
-
-	state := FooState{Foo: "Bar"}
-	b64state := MarshalState(state)
-
-	if b64state == "" {
-		t.Errorf("MarshalState returned empty string, expected non-empty string")
-	}
-
-	emptyState := FooState{}
-	UnmarshalState(b64state, &emptyState)
-
-	if emptyState.Foo != state.Foo {
-		t.Errorf("UnmarshalState returned %s, expected %s", emptyState.Foo, state.Foo)
+	// Marshal
+	stateenc := MarshalState(state)
+	// Unmarshal
+	statedec := testComponentState{}
+	UnmarshalState(stateenc, &statedec)
+	// Assert
+	if statedec != state {
+		t.Error("Something wrong with state marshalling")
 	}
 }
 
-func TestMarshalStateError(t *testing.T) {
+// TestComponentMarshalStateErr ensures state marshalling will panic on incorrect value.
+func TestComponentMarshalStateErr(t *testing.T) {
 	// Define recovery
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered in TestMarshalStateError", r)
+			fmt.Println("Recovered in TestComponentMarshalStateErr", r)
 		}
 	}()
-
+	// Trigger panic
 	MarshalState(math.Inf(1))
-
-	t.Error("MarshalState did not panic")
+	// Panic expected
+	t.Error("Expected panic")
 }
 
-func TestUnmarshalDecodingError(t *testing.T) {
+// TestComponentUnmarshalStateErr ensures state unmarshalling will panic on incorrect value.
+func TestComponentUnmarshalStateErr(t *testing.T) {
 	// Define recovery
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered in TestUnmarshalDecodingError", r)
+			fmt.Println("Recovered in TestComponentUnmarshalStateErr", r)
 		}
 	}()
-
+	// Trigger panic
 	UnmarshalState("{\"Foo\":\"Bar\"}", &struct{}{})
-	t.Error("UnmarshalState did not panic")
-}
-
-func TestUnmarshalDeserializeError(t *testing.T) {
-	// Define recovery
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("Recovered in TestUnmarshalDeserializeError", r)
-		}
-	}()
-
-	UnmarshalState("", &struct{}{})
-	t.Error("UnmarshalState did not panic")
+	// Panic expected
+	t.Error("Expected panic")
 }

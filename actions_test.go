@@ -3,306 +3,180 @@ package kyoto
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 )
 
-func TestActionComponent(t *testing.T) {
-	// Define component state
-	type testActionComponentState struct {
-		Foo string
-	}
+// Common test items
 
-	// Create component
-	component := func(ctx *Context) (state testActionComponentState) {
-		// Preload state
-		ActionPreload(ctx, &state)
+type testActionComponentState struct {
+	Value string
+}
 
-		// Execute action
-		executed := Action(ctx, "Baz", func(args ...any) {
-			state.Foo = "Baz"
-		})
+func testActionSetup() {
+	// Create a template file
+	ioutil.WriteFile("action_test.html", []byte(`{{ define "testActionComponent" }}{{ .Value }}{{ end }}`), 0644)
+}
 
-		// Interrupt if executed
-		if executed {
-			return state
-		}
+func testActionCleanup() {
+	// Remove template file
+	os.Remove("action_test.html")
+}
 
-		// Default behavior
-		return state
-	}
-
+func testActionComponent(ctx *Context) (state testActionComponentState) {
+	// Preload action state
+	ActionPreload(ctx, &state)
 	// Handle action
-	HandleAction(component)
-	// Handler action
-	HandlerAction(component)
-}
-
-func TestActionNotExecuted(t *testing.T) {
-	// Define component state
-	type testActionComponentState struct {
-		Foo string
-	}
-
-	// Create component
-	component := func(ctx *Context) (state testActionComponentState) {
-		// Preload state
-		ActionPreload(ctx, &state)
-		// Execute action
-		executed := Action(ctx, "Baz", func(args ...any) {
-			state.Foo = "Baz"
-		})
-
-		// Interrupt if executed
-		if executed {
-			return state
-		}
-
-		// Default behavior
-		return state
-	}
-
-	// Define Page state
-	type testPageState struct {
-		Foo *ComponentF[testActionComponentState]
-	}
-
-	// Create Page
-	page := func(ctx *Context) (state testPageState) {
-		state.Foo = Use(ctx, component)
-		return state
-	}
-
-	page(&Context{
-		Request:        &http.Request{},
-		ResponseWriter: httptest.NewRecorder(),
-		Action: ActionParameters{
-			Component: "",
-			Action:    "",
-			Args:      []any{},
-		},
+	handled := Action(ctx, "TestAction", func(args ...any) {
+		state.Value = "Alternative value"
 	})
+	// Interrupt on handle
+	if handled {
+		return
+	}
+	// Default behavior
+	state.Value = "Default value"
+	// Return
+	return
 }
 
+// TestAction ensures action call is working, not throws non-200 code and returns correct result.
 func TestAction(t *testing.T) {
-	// Define component state
-	type testActionComponentState struct {
-		Bar string
-	}
-
-	// Create component
-	component := func(ctx *Context) (state testActionComponentState) {
-		// Preload action
-		ActionPreload(ctx, &state)
-		// Execute action
-		executed := Action(ctx, "Baz", func(args ...any) {
-			state.Bar = "Baz"
-		})
-		// Interrupt if executed
-		if executed {
-			return state
-		}
-		// Default behavior
-		state.Bar = "Bar"
-		return state
-	}
+	// Setup
+	testActionSetup()
+	defer testActionCleanup()
 	// Prepare request
-	wstate := testActionComponentState{Bar: "Bar"}
+	wstate := testActionComponentState{Value: "Default value"}
 	reqb := bytes.Buffer{}
 	reqw := multipart.NewWriter(&reqb)
 	reqw.WriteField("State", MarshalState(wstate))
 	reqw.WriteField("Args", "[]")
-	reqw.WriteField("Component", "component")
-	reqw.WriteField("Action", "Baz")
 	reqw.Close()
-	request, _ := http.NewRequest("POST", "/internal/actions/component/Baz", &reqb)
+	request, _ := http.NewRequest("POST", "/internal/actions/testActionComponent/TestAction", &reqb)
 	request.Header.Set("Content-Type", reqw.FormDataContentType())
 	// Make a request to the handler
 	recorder := httptest.NewRecorder()
-	handler := HandlerAction(component)
+	handler := HandlerAction(testActionComponent)
 	handler(recorder, request)
 	// Check response results
 	if recorder.Code != 200 {
 		t.Error("Expected 200, got", recorder.Code)
 	}
-	if recorder.Body.String() != `Baz` {
-		t.Error("Expected `Baz`, got", recorder.Body.String())
+	if recorder.Body.String() != `Alternative value` {
+		t.Errorf("Expected `Alternative value`, got `%s`", recorder.Body.String())
 	}
 }
 
-func TestActionEmptyStateError(t *testing.T) {
+// TestActionErrState ensures action will panic on empty state.
+func TestActionErrState(t *testing.T) {
 	// Define recovery
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered in TestActionEmptyStateError")
+			fmt.Println("Recovered in TestActionErrState")
 		}
 	}()
-
-	// Define component state
-	type testActionComponentState struct {
-		Bar string
-	}
-
-	// Create component
-	component := func(ctx *Context) (state testActionComponentState) {
-		// Preload action
-		ActionPreload(ctx, &state)
-		// Execute action
-		executed := Action(ctx, "Baz", func(args ...any) {
-			state.Bar = "Baz"
-		})
-		// Interrupt if executed
-		if executed {
-			return state
-		}
-		// Default behavior
-		state.Bar = "Bar"
-		return state
-	}
+	// Setup
+	testActionSetup()
+	defer testActionCleanup()
 	// Prepare request
 	reqb := bytes.Buffer{}
 	reqw := multipart.NewWriter(&reqb)
 	reqw.WriteField("Args", "[]")
-	reqw.WriteField("Component", "component")
-	reqw.WriteField("Action", "Baz")
 	reqw.Close()
-	request, _ := http.NewRequest("POST", "/internal/actions/component/Baz", &reqb)
+	request, _ := http.NewRequest("POST", "/internal/actions/testActionComponent/TestAction", &reqb)
 	request.Header.Set("Content-Type", reqw.FormDataContentType())
 	// Make a request to the handler
 	recorder := httptest.NewRecorder()
-	handler := HandlerAction(component)
+	handler := HandlerAction(testActionComponent)
 	handler(recorder, request)
-
+	// Panic expected
 	t.Error("Expected panic, got", recorder.Code)
 }
 
-func TestActionEmptyArgsError(t *testing.T) {
+// TestActionErrArgs ensures action will panic on empty args ([] when no arguments).
+func TestActionErrArgs(t *testing.T) {
 	// Define recovery
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered in TestActionEmptyArgsError")
+			fmt.Println("Recovered in TestActionErrArgs")
 		}
 	}()
-
-	// Define component state
-	type testActionComponentState struct {
-		Bar string
-	}
-
-	// Create component
-	component := func(ctx *Context) (state testActionComponentState) {
-		// Preload action
-		ActionPreload(ctx, &state)
-		// Execute action
-		executed := Action(ctx, "Baz", func(args ...any) {
-			state.Bar = "Baz"
-		})
-		// Interrupt if executed
-		if executed {
-			return state
-		}
-		// Default behavior
-		state.Bar = "Bar"
-		return state
-	}
+	// Setup
+	testActionSetup()
+	defer testActionCleanup()
 	// Prepare request
-	wstate := testActionComponentState{Bar: "Bar"}
+	wstate := testActionComponentState{Value: "Default value"}
 	reqb := bytes.Buffer{}
 	reqw := multipart.NewWriter(&reqb)
 	reqw.WriteField("State", MarshalState(wstate))
-	reqw.WriteField("Component", "component")
-	reqw.WriteField("Action", "Baz")
 	reqw.Close()
-	request, _ := http.NewRequest("POST", "/internal/actions/component/Baz", &reqb)
+	request, _ := http.NewRequest("POST", "/internal/actions/testActionComponent/TestAction", &reqb)
 	request.Header.Set("Content-Type", reqw.FormDataContentType())
 	// Make a request to the handler
 	recorder := httptest.NewRecorder()
-	handler := HandlerAction(component)
+	handler := HandlerAction(testActionComponent)
 	handler(recorder, request)
-
+	// Panic expected
 	t.Error("Expected panic, got", recorder.Code)
 }
 
-func TestActionWrongArgsError(t *testing.T) {
+// TestActionErrArgsCorrupted ensures action will panic on corrupted args.
+func TestActionErrArgsCorrupted(t *testing.T) {
 	// Define recovery
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("Recovered in TestActionWrongArgsError")
 		}
 	}()
-
-	// Define component state
-	type testActionComponentState struct {
-		Bar string
-	}
-
-	// Create component
-	component := func(ctx *Context) (state testActionComponentState) {
-		// Preload action
-		ActionPreload(ctx, &state)
-		// Execute action
-		executed := Action(ctx, "Baz", func(args ...any) {
-			state.Bar = "Baz"
-		})
-		// Interrupt if executed
-		if executed {
-			return state
-		}
-		// Default behavior
-		state.Bar = "Bar"
-		return state
-	}
+	// Setup
+	testActionSetup()
+	defer testActionCleanup()
 	// Prepare request
-	wstate := testActionComponentState{Bar: "Bar"}
+	wstate := testActionComponentState{Value: "Default value"}
 	reqb := bytes.Buffer{}
 	reqw := multipart.NewWriter(&reqb)
 	reqw.WriteField("State", MarshalState(wstate))
 	reqw.WriteField("Args", "Baz")
-	reqw.WriteField("Component", "component")
-	reqw.WriteField("Action", "Baz")
 	reqw.Close()
-	request, _ := http.NewRequest("POST", "/internal/actions/component/Baz", &reqb)
+	request, _ := http.NewRequest("POST", "/internal/actions/testActionComponent/TestAction", &reqb)
 	request.Header.Set("Content-Type", reqw.FormDataContentType())
 	// Make a request to the handler
 	recorder := httptest.NewRecorder()
-	handler := HandlerAction(component)
+	handler := HandlerAction(testActionComponent)
 	handler(recorder, request)
-
+	// Panic expected
 	t.Error("Expected panic, got", recorder.Code)
 }
 
+// TestActionFuncState ensures state template function writes correct html attribute.
 func TestActionFuncState(t *testing.T) {
-	// Define component state
-	type componentState struct {
-		Bar string
-	}
-
-	state := componentState{Bar: "Bar"}
-
+	// Define a test state
+	state := testActionComponentState{Value: "Default value"}
+	// Compose into html attribute
 	htmlattr := string(actionFuncState(state))
-
 	// Check state key
 	if !strings.Contains(htmlattr, "state") {
 		t.Error("Expected state key, got", htmlattr)
 	}
-
 	// Check state value
 	if !strings.Contains(htmlattr, MarshalState(state)) {
 		t.Error("Expected state value, got", htmlattr)
 	}
 }
 
+// TestActionFuncClient ensures client template function correctly writes JS client.
 func TestActionFuncClient(t *testing.T) {
+	// Get client
 	client := actionFuncClient()
-
 	// Check action client
 	if !strings.Contains(string(client), ActionClient) {
 		t.Error("Expected client, got", string(client))
 	}
-
 	// Check ssapath
 	if !strings.Contains(string(client), ActionConf.Path) {
 		t.Error("Expected path, got", string(client))
