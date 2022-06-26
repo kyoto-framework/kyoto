@@ -35,6 +35,10 @@ func testActionComponent(ctx *Context) (state testActionComponentState) {
 	handled := Action(ctx, "TestAction", func(args ...any) {
 		state.Value = "Alternative value"
 	})
+	// Handle action that must not to be called
+	Action(ctx, "BuzzAction", func(args ...any) {
+		state.Value = "Buzz value"
+	})
 	// Interrupt on handle
 	if handled {
 		return
@@ -43,6 +47,12 @@ func testActionComponent(ctx *Context) (state testActionComponentState) {
 	state.Value = "Default value"
 	// Return
 	return
+}
+
+// TestActionHandler ensures HandleAction and HandlerAction not panics on call.
+func TestActionHandler(t *testing.T) {
+	HandleAction(testActionComponent)
+	HandlerAction(testActionComponent)
 }
 
 // TestAction ensures action call is working, not throws non-200 code and returns correct result.
