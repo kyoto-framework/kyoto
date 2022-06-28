@@ -21,6 +21,16 @@ type Component[T any] func(*Context) T
 // Under the hood it wraps zen.Future[T].
 type ComponentF[T any] zen.Future[T]
 
+// MarshalJSON implements future marshalling.
+func (f *ComponentF[T]) MarshalJSON() ([]byte, error) {
+	return (*zen.Future[T])(f).MarshalJSON()
+}
+
+// MarshalJSON implements future unmarshalling.
+func (f *ComponentF[T]) UnmarshalJSON(data []byte) error {
+	return (*zen.Future[T])(f).UnmarshalJSON(data)
+}
+
 // awaitable is an interface to call an await without relying on generics.
 type awaitable interface {
 	await() any
