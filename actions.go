@@ -170,7 +170,7 @@ func actionFuncState(state any) template.HTMLAttr {
 
 func actionFuncClient() template.HTML {
 	builder := strings.Builder{}
-	builder.WriteString(fmt.Sprintf("<script>const ssapath = \"%s\"</script>", ActionConf.Path))
+	builder.WriteString(fmt.Sprintf("<script>const actionpath = \"%s\"</script>", ActionConf.Path))
 	builder.WriteString(ActionClient)
 	return template.HTML(builder.String())
 }

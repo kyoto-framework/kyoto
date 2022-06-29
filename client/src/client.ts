@@ -1,13 +1,13 @@
 import morphdom from 'morphdom';
 
-// Internals
-
+// LocateParameters determines arguments for a components' root node search.
 interface LocateParameters {
     starter: HTMLElement
     depth?: number  // parent call with $
     id?: string  // direct call with <id>:<action>
 }
 
+// MorphDomOptions provides a way to extend morph with own methods and configurations.
 interface MorphDomOptions {
     getNodeKey?: (node: Node) => any;
     onBeforeNodeAdded?: (node: Node) => Node;
@@ -20,13 +20,15 @@ interface MorphDomOptions {
     childrenOnly?: boolean;
 }
 
-function _LocateRoot(parameters: LocateParameters): HTMLElement {
-    let root: HTMLElement = parameters.starter
+
+// _root helps to find components' root node .
+function _root(p: LocateParameters): HTMLElement {
+    let root: HTMLElement = p.starter
     // Direct call case
-    if (parameters.id) {
-        let element = document.getElementById(parameters.id)
+    if (p.id) {
+        let element = document.getElementById(p.id)
         if (!element) {
-            throw new Error(`Error while locating root with id: can't find direct with ${parameters}`)
+            throw new Error(`Error while locating root with id: can't find direct with ${p}`)
         }
         root = element
     } else {
@@ -36,12 +38,12 @@ function _LocateRoot(parameters: LocateParameters): HTMLElement {
         while (true) {
             // Handle error case
             if (!root.parentElement) {
-                throw new Error(`Error while locating root: can't find parent with ${parameters}`)
+                throw new Error(`Error while locating root: can't find parent with ${p}`)
             }
             if (!root.getAttribute('state')) { // Not a component, get parent
                 root = root.parentElement
             } else { // Found a component
-                if (parameters.depth && dcount != parameters.depth) { // Parent call case
+                if (p.depth && dcount != p.depth) { // Parent call case
                     root = root.parentElement
                     dcount++
                 } else { // Exit clause
@@ -53,18 +55,24 @@ function _LocateRoot(parameters: LocateParameters): HTMLElement {
     return root
 }
 
-function _NameCleanup(action: string): string {
+// _caname (simlpification of "clear action name") removes directives for locate parameters
+// and returns a clear action name.
+function _caname(action: string) {
+    // If root id was provided
     if (action.includes(':')) {
         action = action.split(':')[1]
     }
+    // If parent sign was provided
     if (action.includes('$')) {
         action = action.replaceAll('$', '')
     }
     return action
 }
 
-// Updates display parameter for component DOM elements according to provided config
-function _TriggerLoaders(root: HTMLElement) {
+// _troncalldisplay (simplification of "trigger on call display")
+// updates display parameter for component DOM elements according to provided config.
+// Default config will be passed as a ready for use markup, so we don't need to provide a reverse function.
+function _troncalldisplay(root: HTMLElement) {
     // Find loader elements
     // Need escape for escaping (for payload wrapper)
     let loader = root.querySelectorAll('[ssa\\\\:oncall\\\\.display]')
@@ -78,18 +86,20 @@ function _TriggerLoaders(root: HTMLElement) {
     });
 }
 
-// Finds elements with onload attribute and executes provided action (without arguments)
-export function _OnLoad() {
+// _tronload (simplification of "trigger on load")
+// finds elements with onload attribute and executes provided action (without arguments).
+function _tronload() {
     document.querySelectorAll('[ssa\\\\:onload]').forEach(element => {
         let action = element.getAttribute('ssa:onload')
         if (action && action != "") {
             Action(element as HTMLElement, action)
         }
-    });
+    })
 }
 
-// Find elements with poll attribute and executes provided action with interval
-export function _Poll() {
+// _trpoll (simplification of "trigger poll")
+// Find elements with poll attribute and executes provided action with interval.
+export function _trpoll() {
     document.querySelectorAll('[ssa\\\\:poll]').forEach(element => {
         let action = element.getAttribute('ssa:poll') || ''
         let interval = element.getAttribute('ssa:poll.interval')
@@ -102,8 +112,9 @@ export function _Poll() {
     });
 }
 
-// Find elements with onintersect attribute and executes provided action on intersection
-export function _OnIntersect() {
+// _tronintersect (simplification of "trigger on intersect")
+// Find elements with onintersect attribute and executes provided action on intersection.
+function _tronintersect() {
     document.querySelectorAll('[ssa\\\\:onintersect]').forEach(element => {
         let action = element.getAttribute('ssa:onintersect') || ''
         let threshold = element.getAttribute('ssa:onintersect.threshold') || '1.0'
@@ -120,7 +131,9 @@ export function _OnIntersect() {
     });
 }
 
-function _Morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions) {
+// _morph provides a way to morph one DOM node into another,
+// without touching similar existing nodes.
+function _morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions) {
     let afterMorphIgnore = new Array()
     let newOptions: MorphDomOptions = {}
     if (options) {
@@ -150,7 +163,7 @@ function _Morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions
     morphdom(fromNode, toNode, newOptions)
     if (afterMorphIgnore.length > 0) {
         afterMorphIgnore.forEach(el => {
-            _Morph(el.fromEl, el.toEl, {
+            _morph(el.fromEl, el.toEl, {
                 childrenOnly: true
             })
         })
@@ -158,24 +171,23 @@ function _Morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions
 }
 
 
-// Public
-
-export async function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise<void> {
+// Action finds a component root and calls a component action with given arguments.
+async function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise<void> {
     // Determine component root
-    let root = _LocateRoot({
+    let root = _root({
         starter: self,
         depth: action.split('').filter(x => x === '$').length,
         id: action.includes(':') ? action.split(':')[0] : undefined,
     })
-    // Set loading state
-    _TriggerLoaders(root)
+    // Trigger on call things
+    _troncalldisplay(root)
     // Build URL
-    let url = ssapath // Base
+    let url = actionpath // Base
     if (!url.endsWith('/')) {
         url += '/'
     }
     url += `${root.getAttribute('name')}`  // Component name
-    url += `/${_NameCleanup(action)}` // Action name
+    url += `/${_caname(action)}` // Action name
     // Make request
     const payload = new FormData()
     payload.set('State', root.getAttribute('state') as string)
@@ -208,7 +220,7 @@ export async function Action(self: HTMLElement, action: string, ...args: Array<a
         }
         // Morph by default
         try {
-            _Morph(root, value)
+            _morph(root, value)
         } catch (e: any) {
             console.log('Fallback from morphdom to root.outerHTML due to error', e)
             root.outerHTML = value
@@ -216,9 +228,9 @@ export async function Action(self: HTMLElement, action: string, ...args: Array<a
     }
 }
 
-export function Bind(self: HTMLElement, field: string) {
+function Bind(self: HTMLElement, field: string) {
     // Find component root
-    let root = _LocateRoot({
+    let root = _root({
         starter: self,
         depth: field.split('').filter(x => x === '$').length,
         id: field.includes(':') ? field.split(':')[0] : undefined,
@@ -235,11 +247,11 @@ export function Bind(self: HTMLElement, field: string) {
     root.setAttribute('state', btoa(state))
 }
 
-export function FormSubmit(self: HTMLElement, e: Event) {
+function FormSubmit(self: HTMLElement, e: Event) {
     // Prevent default submit
     e.preventDefault()
     // Find component root
-    let root = _LocateRoot({
+    let root = _root({
         starter: self
     })
     // Check state
@@ -267,21 +279,20 @@ export function FormSubmit(self: HTMLElement, e: Event) {
 // Export to global
 
 declare global {
-    const ssapath: string
+    const actionpath: string
     interface Window {
-        
-        _LocaleRoot: any
+        _root: any
         Action: any
         Bind: any
         FormSubmit: any
     }
 }
 
-window._LocaleRoot = _LocateRoot
+window._root = _root
 window.Action = Action
 window.Bind = Bind
 window.FormSubmit = FormSubmit
 
-document.addEventListener('DOMContentLoaded', _OnLoad)
-document.addEventListener('DOMContentLoaded', _OnIntersect)
-document.addEventListener('DOMContentLoaded', _Poll)
+document.addEventListener('DOMContentLoaded', _tronload)
+document.addEventListener('DOMContentLoaded', _tronintersect)
+document.addEventListener('DOMContentLoaded', _trpoll)
