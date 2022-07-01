@@ -17,7 +17,7 @@
 			"html/template"
 			"encoding/json"
 
-			"github.com/kyoto-framework/kyoto"
+			"git.sr.ht/~kyoto-framework/kyoto"
 		)
 
 		// This example demonstrates main advantage of kyoto library - asynchronous lifecycle.

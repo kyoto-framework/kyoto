@@ -9,13 +9,13 @@
 </p>
 
 <p align="center">
-    <a href="https://goreportcard.com/report/github.com/kyoto-framework/kyoto">
-        <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
+    <a href="https://goreportcard.com/report/git.sr.ht/~kyoto-framework/kyoto">
+        <img src="https://goreportcard.com/badge/git.sr.ht/~kyoto-framework/kyoto">
     </a>
     <a href="https://codecov.io/gh/kyoto-framework/kyoto">
         <img src="https://codecov.io/gh/kyoto-framework/kyoto/branch/master/graph/badge.svg?token=XVLKT20DP8">
-    </a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">
-        <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
+    </a href="https://pkg.go.dev/git.sr.ht/~kyoto-framework/kyoto">
+        <img src="https://pkg.go.dev/badge/git.sr.ht/~kyoto-framework/kyoto.svg">
     </a>
     <a href="https://opencollective.com/kyoto-framework">
         <img src="https://img.shields.io/opencollective/all/kyoto-framework?label=backers%20%26%20sponsors">
@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-    <a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">Documentation</a>&nbsp;&bull; <a href="#team">Team</a>&nbsp;&bull; <a href="#contact">Contact</a>&nbsp;&bull; <a href="#support-us">Support us</a>
+    <a href="https://pkg.go.dev/git.sr.ht/~kyoto-framework/kyoto">Documentation</a>&nbsp;&bull; <a href="#team">Team</a>&nbsp;&bull; <a href="#contact">Contact</a>&nbsp;&bull; <a href="#support-us">Support us</a>
 </p>
 
 ## Motivation
