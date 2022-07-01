@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/kyoto-framework/zen"
+	"git.sr.ht/~kyoto-framework/zen"
 )
 
 // ****************
