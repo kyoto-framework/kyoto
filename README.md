@@ -21,7 +21,7 @@
         <img src="https://img.shields.io/opencollective/all/kyoto-framework?label=backers%20%26%20sponsors">
     </a>
     <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
-    <img src="https://profile-counter.glitch.me/kyoto-framework/count.svg">
+    <img src="https://visitor-badge.glitch.me/badge?page_id=kyoto-framework&left_color=grey&right_color=green">
 </p>
 
 <p align="center">
