@@ -14,7 +14,8 @@
     </a>
     <a href="https://codecov.io/gh/kyoto-framework/kyoto">
         <img src="https://codecov.io/gh/kyoto-framework/kyoto/branch/master/graph/badge.svg?token=XVLKT20DP8">
-    </a href="https://pkg.go.dev/git.sr.ht/~kyoto-framework/kyoto">
+    </a>
+    <a href="https://pkg.go.dev/git.sr.ht/~kyoto-framework/kyoto">
         <img src="https://pkg.go.dev/badge/git.sr.ht/~kyoto-framework/kyoto.svg">
     </a>
     <a href="https://opencollective.com/kyoto-framework">
@@ -25,7 +26,7 @@
 </p>
 
 <p align="center">
-    <a href="https://pkg.go.dev/git.sr.ht/~kyoto-framework/kyoto">Documentation</a>&nbsp;&bull; <a href="#team">Team</a>&nbsp;&bull; <a href="#contact">Contact</a>&nbsp;&bull; <a href="#support-us">Support us</a>
+    <a href="https://pkg.go.dev/git.sr.ht/~kyoto-framework/kyoto">Documentation</a>&nbsp;&bull; <a href="#team">Team</a>&nbsp;&bull; <a href="#who-uses">Who uses?</a>&nbsp;&bull; <a href="#support-us">Support us</a>
 </p>
 
 ## Motivation
@@ -41,7 +42,10 @@ Library tries to simplify this process.
 - Built-in dynamics like Hotwire or Laravel Livewire
 - Using a familiar built-in `html/template`
 - Full control over project setup (minimal dependencies)
-- 0kb JS payload without actions client (~8kb when including a client)
+- 0kb JS payload without actions client (~12kb when including a client)
+- Minimalistic utility-first package to simplify work with Go
+- Internationalizing helper
+- Cache control helper package (with a CDN page caching setup guide)
 
 ## Reasons to opt out
 
@@ -52,13 +56,23 @@ Library tries to simplify this process.
 
 ## Team
 
-- Yurii Zinets: [github](https://github.com/yuriizinets)
-- Viktor Korniichuk: [github](https://github.com/RowdyHcs)
+- Yurii Zinets: [email](mailto:yurii.zinets@icloud.com), [telegram](https://t.me/yuriizinets)
+- Viktor Korniichuk: [email](mailto:rowdyhcs@gmail.com), [telegram](https://t.me/dinoarmless)
 
-## Contact
+## Who uses?
 
-Email: info@kyoto.codes or yurii.zinets@icloud.com  
-Telegram: [@yuriizinets](https://t.me/yuriizinets)
+### Broker One
+
+**Website**: [https://mybrokerone.com](https://mybrokerone.com)
+
+The first version of the site was developed with Vue and suffered from large payload and low performance.
+After discussion, it was decided to migrate to Go with a built-in `html/template` due to existing libraries infrastructure inside of the project.  
+Despite the good performance result, the code was badly structured and it was very uncomfortable to work in existing paradigm.  
+On the basis of these problems, kyoto was born. Now, this library lies in the core of the platform.
+
+### Using the library in your project?
+
+Please tell us about your story! We would love to talk about your usage experience.
 
 ## Support us
 
