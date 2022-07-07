@@ -7,7 +7,7 @@ sources:
   - https://git.sr.ht/~kyoto-framework/kyoto
 tasks:
   - taskfile: |
-      GOBIN=/usr/bin/ go install github.com/go-task/task/v3/cmd/task@latest
+      GOBIN=/usr/local/bin/ go install github.com/go-task/task/v3/cmd/task@latest
   - test: |
       cd kyoto
       task test
