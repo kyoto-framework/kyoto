@@ -1,13 +1,15 @@
 image: alpine/latest
 packages:
   - go
-  - task
+  - git
+  - curl
 sources:
   - https://git.sr.ht/~kyoto-framework/kyoto
 tasks:
+  - taskfile: |
+      GOBIN=/bin/ go install github.com/go-task/task/v3/cmd/task@latest
   - test: |
       cd kyoto
-      ls
       task test
   - coverage: |
       cd kyoto
