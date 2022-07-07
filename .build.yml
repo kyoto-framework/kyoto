@@ -2,10 +2,15 @@ image: alpine/latest
 packages:
   - go
   - task
+sources:
+  - https://git.sr.ht/~kyoto-framework/kyoto
 tasks:
   - test: |
+      cd kyoto
       task test
   - coverage: |
+      cd kyoto
       task test:cov:report -- coverage.txt
   - codecov: |
+      cd kyoto
       bash <(curl -s https://codecov.io/bash)
