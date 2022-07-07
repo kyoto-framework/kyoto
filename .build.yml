@@ -1,0 +1,14 @@
+image: alpine/latest
+packages:
+  - go
+  - git
+  - curl
+tasks:
+  - task: |
+      go install github.com/go-task/task/v3/cmd/task@latest
+  - test: |
+      task test
+  - coverage: |
+      task test:cov:report -- coverage.txt
+  - codecov: |
+      bash <(curl -s https://codecov.io/bash)
