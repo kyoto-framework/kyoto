@@ -6,8 +6,12 @@ sources:
   - https://git.sr.ht/~kyoto-framework/kyoto
 tasks:
   - test: |
-      cd kyoto && task test
+      cd kyoto
+      ls
+      task test
   - coverage: |
-      cd kyoto && task test:cov:report -- coverage.txt
+      cd kyoto
+      task test:cov:report -- coverage.txt
   - codecov: |
-      cd kyoto && bash <(curl -s https://codecov.io/bash)
+      cd kyoto
+      bash <(curl -s https://codecov.io/bash)
