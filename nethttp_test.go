@@ -129,5 +129,5 @@ func TestServeError(t *testing.T) {
 	Serve("/")
 
 	// Error if not panicked
-	t.Error("Expected error not occured")
+	t.Error("Expected error not occurred")
 }

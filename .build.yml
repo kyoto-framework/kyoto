@@ -12,9 +12,3 @@ tasks:
   - test: |
       cd kyoto
       /home/build/task test
-  - coverage: |
-      cd kyoto
-      /home/build/task test:cov:report -- coverage.txt
-  - codecov: |
-      cd kyoto
-      curl https://codecov.io/bash | bash

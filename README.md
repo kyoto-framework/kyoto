@@ -12,9 +12,6 @@
     <a href="https://goreportcard.com/report/git.sr.ht/~kyoto-framework/kyoto">
         <img src="https://goreportcard.com/badge/git.sr.ht/~kyoto-framework/kyoto">
     </a>
-    <a href="https://codecov.io/gh/kyoto-framework/kyoto">
-        <img src="https://codecov.io/gh/kyoto-framework/kyoto/branch/master/graph/badge.svg?token=XVLKT20DP8">
-    </a>
     <a href="https://pkg.go.dev/git.sr.ht/~kyoto-framework/kyoto">
         <img src="https://pkg.go.dev/badge/git.sr.ht/~kyoto-framework/kyoto.svg">
     </a>
