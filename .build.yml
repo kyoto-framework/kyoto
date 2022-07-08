@@ -3,6 +3,7 @@ packages:
   - go
   - git
   - curl
+  - bash
 sources:
   - https://git.sr.ht/~kyoto-framework/kyoto
 tasks:
@@ -16,4 +17,4 @@ tasks:
       /home/build/task test:cov:report -- coverage.txt
   - codecov: |
       cd kyoto
-      bash <(curl -s https://codecov.io/bash)
+      curl https://codecov.io/bash | bash
