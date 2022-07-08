@@ -202,7 +202,7 @@ func HandleAction[T any](component Component[T]) {
 func HandlerAction[T any](component Component[T]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "plain/html")
+		w.Header().Set("Content-Type", "text/html")
 		w.Header().Set("Transfer-Encoding", "chunked")
 		w.Header().Set("Cache-Control", "no-store")
 		// Extract action parameters
