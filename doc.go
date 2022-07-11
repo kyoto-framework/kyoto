@@ -14,7 +14,7 @@
 		package main
 
 		import (
-			"html/template"
+			"net/http"
 			"encoding/json"
 
 			"git.sr.ht/~kyoto-framework/kyoto"
@@ -31,7 +31,7 @@
 		// Let's assume markup of this component is stored in 'component.uuid.html'
 		//
 		// {{ define "CUUID" }}
-		//  <div>UUID: {{ state.UUID }}</div>
+		//  <div>UUID: {{ .UUID }}</div>
 		// {{ end }}
 		func CUUID(ctx *kyoto.Context) (state CUUIDState) {
 			// Fetch uuid data
@@ -40,11 +40,13 @@
 			json.NewDecoder(resp.Body).Decode(&data)
 			// Set state
 			state.UUID = data["uuid"]
+			// Return
+			return
 		}
 
 		type PIndexState struct {
 			UUID1 *kyoto.ComponentF[CUUIDState]
-			UUID1 *kyoto.ComponentF[CUUIDState]
+			UUID2 *kyoto.ComponentF[CUUIDState]
 		}
 
 		// Let's assume markup of this page is stored in 'page.index.html'
@@ -64,10 +66,12 @@
 		// </html>
 		func PIndex(ctx *kyoto.Context) (state PIndexState) {
 			// Define rendering
-			render.Template(ctx, "page.index.html")
+			kyoto.Template(ctx, "page.index.html")
 			// Attach components
 			state.UUID1 = kyoto.Use(ctx, CUUID)
 			state.UUID2 = kyoto.Use(ctx, CUUID)
+			// Return
+			return
 		}
 
 		func main() {
