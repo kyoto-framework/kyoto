@@ -230,11 +230,11 @@
 		//
 		//	{{ define "CUUID" }}
 		//	<div {{ state . }} name="CUUID">
-		//		<div>UUID: {{ state.UUID }}</div>
+		//		<div>UUID: {{ .UUID }}</div>
 		//		<button onclick="Action(this, 'Reload')">Reload</button>
 		//	</div>
 		//	{{ end }}
-		func CUUID(ctx *kyoto.Component) (state CUUIDState) {
+		func CUUID(ctx *kyoto.Context) (state CUUIDState) {
 			// Define uuid loader
 			uuid := func() string {
 				resp, _ := http.Get("http://httpbin.org/uuid")
@@ -255,6 +255,8 @@
 			}
 			// Default loading behavior
 			state.UUID = uuid()
+			// Return
+			return
 		}
 
 		type PIndexState struct {
@@ -273,8 +275,8 @@
 		//		<title>Example</title>
 		//	</head>
 		//	<body>
-		//		{{ template "CUUID" .UUID1 }}
-		//		{{ template "CUUID" .UUID2 }}
+		//		{{ template "CUUID" await .UUID1 }}
+		//		{{ template "CUUID" await .UUID2 }}
 		//		{{ client }}
 		//	</body>
 		//	</html>
@@ -284,6 +286,8 @@
 			// Attach components
 			state.UUID1 = kyoto.Use(ctx, CUUID)
 			state.UUID2 = kyoto.Use(ctx, CUUID)
+			// Return
+			return
 		}
 
 		func main() {
