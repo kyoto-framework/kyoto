@@ -23,7 +23,7 @@ import (
 //		}
 //
 func HandlePage[T any](pattern string, page Component[T]) {
-	log.Printf("Registering page '%s': '%s'", ComponentName(page), pattern)
+	log.Printf("Registering page '%s':\t'%s'", ComponentName(page), pattern)
 	http.HandleFunc(pattern, HandlerPage(page))
 }
 
