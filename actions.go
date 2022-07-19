@@ -188,7 +188,7 @@ func actionFuncClient() template.HTML {
 //	kyoto.handleAction(CompBar("")) // Register a component which accepts arguments and returns wrapped function
 func HandleAction[T any](component Component[T]) {
 	pattern := ActionConf.Path + ComponentName(component) + "/"
-	log.Printf("Registering '%s' component action handler under '%s'", ComponentName(component), pattern)
+	log.Printf("Registering component action handler '%s': '%s'", ComponentName(component), pattern)
 	http.HandleFunc(pattern, HandlerAction(component))
 }
 
