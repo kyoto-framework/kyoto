@@ -77,8 +77,8 @@ func TestAction(t *testing.T) {
 	if recorder.Code != 200 {
 		t.Error("Expected 200, got", recorder.Code)
 	}
-	if recorder.Body.String() != `Alternative value` {
-		t.Errorf("Expected `Alternative value`, got `%s`", recorder.Body.String())
+	if recorder.Body.String() != `Alternative value`+ActionConf.Terminator {
+		t.Errorf("Expected `Alternative value`+ActionConf.Terminator, got `%s`", recorder.Body.String())
 	}
 }
 
