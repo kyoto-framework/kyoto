@@ -17,13 +17,15 @@ import (
 
 // ActionConfiguration holds a global actions configuration.
 type ActionConfiguration struct {
-	Path string // Configure a path prefix for action calls
+	Path       string // Configure a path prefix for action calls
+	Terminator string // Configure a terminator sequence which responsible for chunk separation
 }
 
 // ActionConf is a global configuration that will be used during actions handling.
 // See ActionConfiguration for more details.
 var ActionConf = ActionConfiguration{
-	Path: "/internal/actions/",
+	Path:       "/internal/actions/",
+	Terminator: "=!EOC!=", // EOC (End Of Component)
 }
 
 // ****************
@@ -152,6 +154,9 @@ func ActionFlush(c *Context, state any) {
 	if err := tmpl.Execute(buf, state); err != nil {
 		panic(err)
 	}
+	// Append terminator sequence
+	// Details: https://todo.sr.ht/~kyoto-framework/kyoto-framework/10
+	buf.Write([]byte(ActionConf.Terminator))
 	// Write to stream
 	if _, err := fmt.Fprint(c.ResponseWriter, buf.String()); err != nil {
 		panic(err)
@@ -170,7 +175,7 @@ func actionFuncState(state any) template.HTMLAttr {
 
 func actionFuncClient() template.HTML {
 	builder := strings.Builder{}
-	builder.WriteString(fmt.Sprintf("<script>const actionpath = \"%s\"</script>", ActionConf.Path))
+	builder.WriteString(fmt.Sprintf("<script>const actionpath = \"%s\"; const actionterminator = \"%s\"</script>", ActionConf.Path, ActionConf.Terminator))
 	builder.WriteString(ActionClient)
 	return template.HTML(builder.String())
 }

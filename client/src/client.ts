@@ -172,60 +172,98 @@ function _morph(fromNode: Node, toNode: Node | string, options?: MorphDomOptions
 
 
 // Action finds a component root and calls a component action with given arguments.
-async function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise<void> {
-    // Determine component root
-    let root = _root({
-        starter: self,
-        depth: action.split('').filter(x => x === '$').length,
-        id: action.includes(':') ? action.split(':')[0] : undefined,
+function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise<void> {
+    return new Promise((resolve, reject) => {
+        // Determine component root
+        let root = _root({
+            starter: self,
+            depth: action.split('').filter(x => x === '$').length,
+            id: action.includes(':') ? action.split(':')[0] : undefined,
+        })
+        // Trigger on call things
+        _troncalldisplay(root)
+        // Build URL
+        let url = actionpath // Base
+        if (!url.endsWith('/')) {
+            url += '/'
+        }
+        url += `${root.getAttribute('name')}`  // Component name
+        url += `/${_caname(action)}` // Action name
+        // Prepare payload
+        const payload = new FormData()
+        payload.set('State', root.getAttribute('state') as string)
+        payload.set('Args', JSON.stringify(args))
+        // Use XHR to load chunks.
+        // Each chunk is a new component layout update.
+        // Using XHR due to lack of support TextDecoderStream by Firefox.
+        // https://todo.sr.ht/~kyoto-framework/kyoto-framework/9
+        // Also, we are using buffer & terminator sequence to ensure integrity.
+        // Somehow chunk becomes splitted sometimes which leads to broken render.
+        // https://todo.sr.ht/~kyoto-framework/kyoto-framework/10
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true)
+        // Will be used as cursor
+        let lastindex = 0
+        // Layout buffer
+        let buf = ''
+        // Progress callback
+        xhr.onprogress = function() {
+            // Determine current index
+            let currindex = xhr.responseText.length;
+            // If we are in the end, exit
+            if (lastindex == currindex) return; 
+            // Get chunk
+            const chunk = this.responseText.substring(lastindex, currindex)
+            // Handle redirect
+            if (chunk.startsWith('ssa:redirect=')) {
+                window.location.href = chunk.replace('ssa:redirect=', '')
+                return
+            }
+            // Add to buffer
+            buf += chunk
+            // If buffer ends with terminator sequence, remove it and render
+            if (buf.endsWith(actionterminator)) {
+                // Remove terminator
+                buf = buf.slice(0, -(actionterminator.length))
+                // Determine render mode (morph by default)
+                const rmode = root.getAttribute('ssa:render.mode') || 'morph'
+                // Render
+                switch (rmode) {
+                    case 'replace':
+                        root.outerHTML = buf
+                        break;
+                    case 'morph':
+                        try {
+                            _morph(root, buf)
+                        } catch (e: any) {
+                            console.log('Fallback from "morphdom" to "replace" due to an error:', e)
+                            root.outerHTML = buf
+                        }
+                        break
+                    default:
+                        console.log('Render mode is not supported, fallback to "replace"')
+                        root.outerHTML = buf
+                        break;
+                }
+                // Cleanup buffer
+                buf = ''
+            }
+            // Increment last index
+            lastindex = currindex
+        }
+        // Complete callback
+        xhr.onload = function() {
+            resolve()
+        }
+        xhr.onerror = function() {
+            reject()
+        }
+        xhr.onabort = function() {
+            reject()
+        }
+        // Send request
+        xhr.send(payload)
     })
-    // Trigger on call things
-    _troncalldisplay(root)
-    // Build URL
-    let url = actionpath // Base
-    if (!url.endsWith('/')) {
-        url += '/'
-    }
-    url += `${root.getAttribute('name')}`  // Component name
-    url += `/${_caname(action)}` // Action name
-    // Make request
-    const payload = new FormData()
-    payload.set('State', root.getAttribute('state') as string)
-    payload.set('Args', JSON.stringify(args))
-    const response = await fetch(url, {
-        method: 'POST',
-        body: payload,
-    })
-    // Extract stream reader
-    const reader = response.body?.pipeThrough(new TextDecoderStream()).getReader()
-    if (!reader) {
-        return
-    }
-    // Read responses
-    while (true) {
-        // Extract value and status
-        const { value, done } = await reader.read()
-        if (done) {
-            break
-        }
-        // Handle redirect
-        if (value.startsWith('ssa:redirect=')) {
-            window.location.href = value.replace('ssa:redirect=', '')
-            continue
-        }
-        // Handle replace
-        if (root.getAttribute('ssa:render.mode') == 'replace') {
-            root.outerHTML = value
-            continue
-        }
-        // Morph by default
-        try {
-            _morph(root, value)
-        } catch (e: any) {
-            console.log('Fallback from morphdom to root.outerHTML due to error', e)
-            root.outerHTML = value
-        }
-    }
 }
 
 function Bind(self: HTMLElement, field: string) {
@@ -280,6 +318,7 @@ function FormSubmit(self: HTMLElement, e: Event) {
 
 declare global {
     const actionpath: string
+    const actionterminator: string
     interface Window {
         _root: any
         Action: any
