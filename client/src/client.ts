@@ -282,7 +282,7 @@ function Bind(self: HTMLElement, field: string) {
     // Set value
     state[field] = (self as HTMLInputElement).value
     // Set state
-    root.setAttribute('state', btoa(state))
+    root.setAttribute('state', btoa(JSON.stringify(state)))
 }
 
 function FormSubmit(self: HTMLElement, e: Event) {
