@@ -191,10 +191,10 @@ func actionFuncClient() template.HTML {
 //
 //	kyoto.HandleAction(CompFoo) // Register a usual component
 //	kyoto.handleAction(CompBar("")) // Register a component which accepts arguments and returns wrapped function
-func HandleAction[T any](component Component[T]) {
+func HandleAction[T any](component Component[T], ctx ...*Context) {
 	pattern := ActionConf.Path + ComponentName(component) + "/"
 	log.Printf("Registering component action handler '%s':\t'%s'", ComponentName(component), pattern)
-	http.HandleFunc(pattern, HandlerAction(component))
+	http.HandleFunc(pattern, HandlerAction(component, ctx...))
 }
 
 // HandlerAction returns a http.HandlerFunc that handles an action request for a specified component.
@@ -204,25 +204,28 @@ func HandleAction[T any](component Component[T]) {
 // Example:
 //
 //	http.HandleFunc("/internal/actions/Foo/", kyoto.HandlerAction(Foo))
-func HandlerAction[T any](component Component[T]) func(w http.ResponseWriter, r *http.Request) {
+func HandlerAction[T any](component Component[T], _ctx ...*Context) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		w.Header().Set("Content-Type", "text/html")
 		w.Header().Set("Transfer-Encoding", "chunked")
 		w.Header().Set("Cache-Control", "no-store")
 		// Extract action parameters
-		a := ActionParameters{}
-		if err := a.Parse(r); err != nil {
+		action := ActionParameters{}
+		if err := action.Parse(r); err != nil {
 			panic(err)
 		}
-		// Prepare context
-		ctx := &Context{
-			ResponseWriter: w,
-			Request:        r,
-			Action:         a,
+		// Initialize context
+		ctx := &Context{}
+		if len(_ctx) > 0 {
+			ctx = _ctx[0]
 		}
+		// Set context parameters
+		ctx.Request = r
+		ctx.ResponseWriter = w
+		ctx.Action = action
 		// Prepare template
-		TemplateInline(ctx, fmt.Sprintf(`{{ template "%s" . }}`, a.Component))
+		TemplateInline(ctx, fmt.Sprintf(`{{ template "%s" . }}`, action.Component))
 		// Trigger building
 		state := component(ctx)
 		// Trigger flush

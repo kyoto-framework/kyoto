@@ -13,7 +13,8 @@ type Context struct {
 	Request        *http.Request
 
 	// Rendering
-	Template *template.Template
+	Template     *template.Template
+	TemplateConf *TemplateConfiguration
 
 	// Action
 	Action ActionParameters

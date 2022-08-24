@@ -3,6 +3,8 @@ package kyoto
 import (
 	"embed"
 	"html/template"
+
+	"git.sr.ht/~kyoto-framework/zen"
 )
 
 // ****************
@@ -71,17 +73,19 @@ func ComposeFuncMap(fmaps ...template.FuncMap) template.FuncMap {
 //		}
 //
 func Template(c *Context, name string) {
+	// Determine template configuration (global or context)
+	tmplconf := zen.Or(c.TemplateConf, &TemplateConf)
 	// Base
 	tmpl := template.New(name)
 	// Template functions
-	if TemplateConf.FuncMap != nil {
-		tmpl = tmpl.Funcs(*TemplateConf.FuncMap)
+	if tmplconf.FuncMap != nil {
+		tmpl = tmpl.Funcs(*tmplconf.FuncMap)
 	}
 	// Template parsing
-	if TemplateConf.ParseFS != nil && TemplateConf.ParseGlob != "" {
-		tmpl = template.Must(tmpl.ParseFS(TemplateConf.ParseFS, TemplateConf.ParseGlob))
-	} else if TemplateConf.ParseGlob != "" {
-		tmpl = template.Must(tmpl.ParseGlob(TemplateConf.ParseGlob))
+	if tmplconf.ParseFS != nil && tmplconf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseFS(tmplconf.ParseFS, tmplconf.ParseGlob))
+	} else if tmplconf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseGlob(tmplconf.ParseGlob))
 	}
 	// Assign
 	c.Template = tmpl
@@ -101,17 +105,19 @@ func Template(c *Context, name string) {
 //		}
 //
 func TemplateInline(c *Context, tmplsrc string) {
+	// Determine template configuration (global or context)
+	tmplconf := zen.Or(c.TemplateConf, &TemplateConf)
 	// Base
 	tmpl := template.New("inline")
 	// Template functions
-	if TemplateConf.FuncMap != nil {
-		tmpl = tmpl.Funcs(*TemplateConf.FuncMap)
+	if tmplconf.FuncMap != nil {
+		tmpl = tmpl.Funcs(*tmplconf.FuncMap)
 	}
 	// Template parsing
-	if TemplateConf.ParseFS != nil && TemplateConf.ParseGlob != "" {
-		tmpl = template.Must(tmpl.ParseFS(TemplateConf.ParseFS, TemplateConf.ParseGlob))
-	} else if TemplateConf.ParseGlob != "" {
-		tmpl = template.Must(tmpl.ParseGlob(TemplateConf.ParseGlob))
+	if tmplconf.ParseFS != nil && tmplconf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseFS(tmplconf.ParseFS, tmplconf.ParseGlob))
+	} else if tmplconf.ParseGlob != "" {
+		tmpl = template.Must(tmpl.ParseGlob(tmplconf.ParseGlob))
 	}
 	tmpl = template.Must(tmpl.Parse(tmplsrc))
 	// Assign
