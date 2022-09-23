@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"time"
 
 	"git.sr.ht/~kyoto-framework/zen"
 )
@@ -81,7 +82,10 @@ func Use[T any](c *Context, component Component[T]) *ComponentF[T] {
 //
 func Await(component any) any {
 	if component, implements := component.(awaitable); implements {
-		return component.await()
+		measure := time.Now()
+		data := component.await()
+		logf("await\t%v: %v", reflect.TypeOf(component), time.Since(measure))
+		return data
 	} else {
 		panic("calling await for a non-awaitable object")
 	}
