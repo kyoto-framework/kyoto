@@ -84,7 +84,7 @@ func Await(component any) any {
 	if component, implements := component.(awaitable); implements {
 		measure := time.Now()
 		data := component.await()
-		logf("await\t%v: %v", reflect.TypeOf(component), time.Since(measure))
+		logf("kyoto.log.await\t%v: %v", reflect.TypeOf(component), time.Since(measure))
 		return data
 	} else {
 		panic("calling await for a non-awaitable object")

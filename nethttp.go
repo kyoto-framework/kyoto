@@ -51,7 +51,7 @@ func HandlerPage[T any](page Component[T]) http.HandlerFunc {
 		// Trigger building
 		measure := time.Now()
 		state := page(ctx)
-		logf("page\t%v: %v", reflect.TypeOf(page), time.Since(measure))
+		logf("kyoto.log.page\t%v: %v", reflect.TypeOf(page), time.Since(measure))
 		// Render
 		if err := ctx.Template.Execute(w, state); err != nil {
 			panic(err)
