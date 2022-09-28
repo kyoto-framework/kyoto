@@ -16,14 +16,13 @@ import (
 //
 // Example:
 //
-//		func PageFoo(ctx *kyoto.Context) (state PageFooState) { ... }
+//	func PageFoo(ctx *kyoto.Context) (state PageFooState) { ... }
 //
-//		func main() {
-//			...
-//			kyoto.HandlePage("/foo", PageFoo)
-//			...
-//		}
-//
+//	func main() {
+//		...
+//		kyoto.HandlePage("/foo", PageFoo)
+//		...
+//	}
 func HandlePage[T any](pattern string, page Component[T]) {
 	log.Printf("Registering page '%s':\t'%s'", ComponentName(page), pattern)
 	http.HandleFunc(pattern, HandlerPage(page))
@@ -33,14 +32,13 @@ func HandlePage[T any](pattern string, page Component[T]) {
 //
 // Example:
 //
-//		func PageFoo(ctx *kyoto.Context) (state PageFooState) { ... }
+//	func PageFoo(ctx *kyoto.Context) (state PageFooState) { ... }
 //
-//		func main() {
-//			...
-//			http.HandleFunc("/foo", kyoto.HandlerPage(PageFoo))
-//			...
-//		}
-//
+//	func main() {
+//		...
+//		http.HandleFunc("/foo", kyoto.HandlerPage(PageFoo))
+//		...
+//	}
 func HandlerPage[T any](page Component[T]) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Initialize context
@@ -51,11 +49,12 @@ func HandlerPage[T any](page Component[T]) http.HandlerFunc {
 		// Trigger building
 		measure := time.Now()
 		state := page(ctx)
-		logf("kyoto.log.page\t%v: %v", reflect.TypeOf(page), time.Since(measure))
 		// Render
 		if err := ctx.Template.Execute(w, state); err != nil {
 			panic(err)
 		}
+		// Log
+		logf("kyoto.log.page\t%v: %v", reflect.TypeOf(page), time.Since(measure))
 	}
 }
 
@@ -68,11 +67,10 @@ func HandlerPage[T any](page Component[T]) http.HandlerFunc {
 //
 // Example:
 //
-//		func main() {
-//			...
-//			kyoto.Serve(":8000")
-//		}
-//
+//	func main() {
+//		...
+//		kyoto.Serve(":8000")
+//	}
 func Serve(addr string) {
 	log.Println("Starting server on", addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
