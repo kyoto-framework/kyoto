@@ -165,6 +165,33 @@ func ActionFlush(c *Context, state any) {
 	flusher.Flush()
 }
 
+// ActionRedirect is a function to trigger redirect during action handling.
+//
+// Example:
+//
+//	func CompFoo(ctx *kyoto.Context) (state CompFooState) {
+//		...
+//		// Handle example action
+//		kyoto.Action(ctx, "Bar", func(args ...any) {
+//			// Redirect to the home page
+//			kyoto.ActionRedirect(ctx, "/")
+//		})
+//		...
+//	}
+func ActionRedirect(c *Context, location string) {
+	// Initialize flusher
+	flusher := c.ResponseWriter.(http.Flusher)
+	// Create command
+	cmd := fmt.Sprintf("ssa:redirect=%s", location)
+	// Append terminator sequence and write to stream
+	// Details: https://todo.sr.ht/~kyoto-framework/kyoto-framework/10
+	if _, err := fmt.Fprint(c.ResponseWriter, cmd + ActionConf.Terminator); err != nil {
+		panic(err)
+	}
+	// Flush
+	flusher.Flush()
+}
+
 // ****************
 // Action template functions
 // ****************

@@ -28,7 +28,7 @@ func (f *ComponentF[T]) MarshalJSON() ([]byte, error) {
 	return (*zen.Future[T])(f).MarshalJSON()
 }
 
-// MarshalJSON implements future unmarshalling.
+// UnmarshalJSON implements future unmarshalling.
 func (f *ComponentF[T]) UnmarshalJSON(data []byte) error {
 	return (*zen.Future[T])(f).UnmarshalJSON(data)
 }

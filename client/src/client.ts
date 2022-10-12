@@ -214,17 +214,17 @@ function Action(self: HTMLElement, action: string, ...args: Array<any>): Promise
             if (lastindex == currindex) return; 
             // Get chunk
             const chunk = this.responseText.substring(lastindex, currindex)
-            // Handle redirect
-            if (chunk.startsWith('ssa:redirect=')) {
-                window.location.href = chunk.replace('ssa:redirect=', '')
-                return
-            }
             // Add to buffer
             buf += chunk
             // If buffer ends with terminator sequence, remove it and render
             if (buf.endsWith(actionterminator)) {
                 // Remove terminator
                 buf = buf.slice(0, -(actionterminator.length))
+                // Handle redirect
+                if (buf.startsWith('ssa:redirect=')) {
+                    window.location.href = buf.replace('ssa:redirect=', '')
+                    return
+                }
                 // Determine render mode (morph by default)
                 const rmode = root.getAttribute('ssa:render.mode') || 'morph'
                 // Render
