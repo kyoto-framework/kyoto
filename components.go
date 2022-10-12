@@ -3,6 +3,7 @@ package kyoto
 import (
 	"encoding/base64"
 	"encoding/json"
+	"net/url"
 	"reflect"
 	"runtime"
 	"strings"
@@ -135,6 +136,8 @@ func MarshalState(state any) string {
 	if err != nil {
 		panic("Error while marshaling component state: " + err.Error())
 	}
+	// Encode to URI representation
+	statebts = []byte(url.PathEscape(string(statebts)))
 	// Encode to base64
 	stateb64 := base64.StdEncoding.EncodeToString(statebts)
 	// Return
@@ -149,8 +152,13 @@ func UnmarshalState(state string, target any) {
 	if err != nil {
 		panic("Error while decoding component state. " + err.Error())
 	}
+	// Decode state from URI representation
+	stateune, err := url.PathUnescape(string(statebts))
+	if err != nil {
+		panic("Error while unescaping component state. " + err.Error())
+	}
 	// Deserialize component state from json
-	err = json.Unmarshal(statebts, target)
+	err = json.Unmarshal([]byte(stateune), target)
 	if err != nil {
 		panic("Error while deserializing component state. " + err.Error())
 	}
