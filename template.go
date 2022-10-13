@@ -15,7 +15,7 @@ import (
 type TemplateConfiguration struct {
 	ParseGlob string
 	ParseFS   *embed.FS
-	FuncMap   *template.FuncMap
+	FuncMap   template.FuncMap
 }
 
 // FuncMap holds a library predefined template functions.
@@ -30,7 +30,7 @@ var FuncMap = template.FuncMap{
 // Feel free to modify it as needed.
 var TemplateConf = TemplateConfiguration{
 	ParseGlob: "*.html",
-	FuncMap:   &FuncMap,
+	FuncMap:   FuncMap,
 }
 
 // ComposeFuncMap is a function for composing multiple FuncMap instances into one.
@@ -78,9 +78,7 @@ func Template(c *Context, name string) {
 	// Base
 	tmpl := template.New(name)
 	// Template functions
-	if tmplconf.FuncMap != nil {
-		tmpl = tmpl.Funcs(*tmplconf.FuncMap)
-	}
+	tmpl = tmpl.Funcs(tmplconf.FuncMap)
 	// Template parsing
 	if tmplconf.ParseFS != nil && tmplconf.ParseGlob != "" {
 		tmpl = template.Must(tmpl.ParseFS(tmplconf.ParseFS, tmplconf.ParseGlob))
@@ -110,9 +108,7 @@ func TemplateInline(c *Context, tmplsrc string) {
 	// Base
 	tmpl := template.New("inline")
 	// Template functions
-	if tmplconf.FuncMap != nil {
-		tmpl = tmpl.Funcs(*tmplconf.FuncMap)
-	}
+	tmpl = tmpl.Funcs(tmplconf.FuncMap)
 	// Template parsing
 	if tmplconf.ParseFS != nil && tmplconf.ParseGlob != "" {
 		tmpl = template.Must(tmpl.ParseFS(tmplconf.ParseFS, tmplconf.ParseGlob))
