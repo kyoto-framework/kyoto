@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -40,6 +39,7 @@ type ActionParameters struct {
 	Args      []any
 
 	processed bool
+	redirected bool
 }
 
 // Parse extracts action data from a provided request.
@@ -144,11 +144,18 @@ func ActionPreload[T any](c *Context, state T) {
 //		})
 //		...
 // }
-func ActionFlush(c *Context, state any) {
+func ActionFlush(ctx *Context, state any) {
+	// Exit if redirected.
+	// ActionFlush must not to be triggered after redirection,
+	// but still adding this for safety purposes.
+	// (f.e. manual ActionFlush call after redirect without return)
+	if ctx.Action.redirected {
+		return
+	}
 	// Initialize flusher
-	flusher := c.ResponseWriter.(http.Flusher)
+	flusher := ctx.ResponseWriter.(http.Flusher)
 	// Clone prepared template
-	tmpl, _ := c.Template.Clone()
+	tmpl, _ := ctx.Template.Clone()
 	// Render template into buffer
 	buf := &bytes.Buffer{}
 	if err := tmpl.Execute(buf, state); err != nil {
@@ -158,7 +165,7 @@ func ActionFlush(c *Context, state any) {
 	// Details: https://todo.sr.ht/~kyoto-framework/kyoto-framework/10
 	buf.Write([]byte(ActionConf.Terminator))
 	// Write to stream
-	if _, err := fmt.Fprint(c.ResponseWriter, buf.String()); err != nil {
+	if _, err := fmt.Fprint(ctx.ResponseWriter, buf.String()); err != nil {
 		panic(err)
 	}
 	// Flush
@@ -178,16 +185,18 @@ func ActionFlush(c *Context, state any) {
 //		})
 //		...
 //	}
-func ActionRedirect(c *Context, location string) {
+func ActionRedirect(ctx *Context, location string) {
 	// Initialize flusher
-	flusher := c.ResponseWriter.(http.Flusher)
+	flusher := ctx.ResponseWriter.(http.Flusher)
 	// Create command
 	cmd := fmt.Sprintf("ssa:redirect=%s", location)
 	// Append terminator sequence and write to stream
 	// Details: https://todo.sr.ht/~kyoto-framework/kyoto-framework/10
-	if _, err := fmt.Fprint(c.ResponseWriter, cmd + ActionConf.Terminator); err != nil {
+	if _, err := fmt.Fprint(ctx.ResponseWriter, cmd + ActionConf.Terminator); err != nil {
 		panic(err)
 	}
+	// Set redirected flag
+	ctx.Action.redirected = true
 	// Flush
 	flusher.Flush()
 }
@@ -212,15 +221,15 @@ func actionFuncClient() template.HTML {
 // ****************
 
 // HandleAction registers a component action handler with a predefined pattern in the DefaultServeMux.
-// It's a wrapper around http.HandlePage, but accepts a component instead of usual http.HandlerFunc.
+// It's a wrapper around http.HandleFunc, but accepts a component instead of usual http.HandlerFunc.
 //
 // Example:
 //
 //	kyoto.HandleAction(CompFoo) // Register a usual component
-//	kyoto.handleAction(CompBar("")) // Register a component which accepts arguments and returns wrapped function
+//	kyoto.HandleAction(CompBar("")) // Register a component which accepts arguments and returns wrapped function
 func HandleAction[T any](component Component[T], ctx ...*Context) {
 	pattern := ActionConf.Path + ComponentName(component) + "/"
-	log.Printf("Registering component action handler '%s':\t'%s'", ComponentName(component), pattern)
+	logf("Registering component action handler '%s':\t'%s'", ComponentName(component), pattern)
 	http.HandleFunc(pattern, HandlerAction(component, ctx...))
 }
 
@@ -255,7 +264,9 @@ func HandlerAction[T any](component Component[T], _ctx ...*Context) func(w http.
 		TemplateInline(ctx, fmt.Sprintf(`{{ template "%s" . }}`, action.Component))
 		// Trigger building
 		state := component(ctx)
-		// Trigger flush
-		ActionFlush(ctx, state)
+		// Trigger flush (if not redirected)
+		if !ctx.Action.redirected {
+			ActionFlush(ctx, state)
+		}
 	}
 }
