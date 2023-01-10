@@ -23,7 +23,10 @@
 </p>
 
 <p align="center">
-    <a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">Documentation</a>&nbsp;&bull; <a href="#team">Team</a>&nbsp;&bull; <a href="#who-uses">Who uses?</a>&nbsp;&bull; <a href="#support-us">Support us</a>
+    <a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">Documentation</a>&nbsp;&bull;
+    <a href="#quick-start">Quick start</a>&nbsp;&bull;
+    <a href="#who-uses">Who uses?</a>&nbsp;&bull;
+    <a href="#support-us">Support us</a>
 </p>
 
 ## Motivation
@@ -50,6 +53,17 @@ Library tries to simplify this process.
 - You want to develop SPA/PWA
 - You're just feeling OK with JS frameworks
 - Not situable for a frontend with a lot of client-side logic
+
+## Quick start
+
+If you want to start straight from the example, use a starter project.  
+
+```bash
+$ git clone https://github.com/kyoto-framework/start <project-name>
+```
+
+If you want to start from scratch, we have a minimal working [example](https://pkg.go.dev/github.com/kyoto-framework/kyoto/v2#hdr-Quick_start) to start with.
+
 
 ## Team
 
