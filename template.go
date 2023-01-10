@@ -4,7 +4,7 @@ import (
 	"embed"
 	"html/template"
 
-	"git.sr.ht/~kyoto-framework/zen"
+	"github.com/kyoto-framework/zen/v2"
 )
 
 // ****************
@@ -37,14 +37,13 @@ var TemplateConf = TemplateConfiguration{
 //
 // Example:
 //
-//		func MyFuncMap() template.FuncMap {
-//			return kyoto.ComposeFuncMap(
-//				funcmap1,
-//				funcmap2,
-//				...
-//			)
-//		}
-//
+//	func MyFuncMap() template.FuncMap {
+//		return kyoto.ComposeFuncMap(
+//			funcmap1,
+//			funcmap2,
+//			...
+//		)
+//	}
 func ComposeFuncMap(fmaps ...template.FuncMap) template.FuncMap {
 	var result = template.FuncMap{}
 	for _, fmap := range fmaps {
@@ -65,13 +64,12 @@ func ComposeFuncMap(fmaps ...template.FuncMap) template.FuncMap {
 //
 // Example:
 //
-//		func PageFoo(ctx *kyoto.Context) (state PageFooState) {
-//			// By default uses kyoto.FuncMap
-//			// and parses everything in the current directory with a .ParseGlob("*.html")
-//			kyoto.Template(ctx, "page.foo.html")
-//			...
-//		}
-//
+//	func PageFoo(ctx *kyoto.Context) (state PageFooState) {
+//		// By default uses kyoto.FuncMap
+//		// and parses everything in the current directory with a .ParseGlob("*.html")
+//		kyoto.Template(ctx, "page.foo.html")
+//		...
+//	}
 func Template(c *Context, name string) {
 	// Determine template configuration (global or context)
 	tmplconf := zen.Or(c.TemplateConf, &TemplateConf)
@@ -95,13 +93,12 @@ func Template(c *Context, name string) {
 //
 // Example:
 //
-//		func PageFoo(ctx *kyoto.Context) (state PageFooState) {
-//			// By default uses kyoto.FuncMap
-//			// and parses everything in the current directory with a .ParseGlob("*.html")
-//			kyoto.TemplateInline(ctx, `<html>...</html>`)
-//			...
-//		}
-//
+//	func PageFoo(ctx *kyoto.Context) (state PageFooState) {
+//		// By default uses kyoto.FuncMap
+//		// and parses everything in the current directory with a .ParseGlob("*.html")
+//		kyoto.TemplateInline(ctx, `<html>...</html>`)
+//		...
+//	}
 func TemplateInline(c *Context, tmplsrc string) {
 	// Determine template configuration (global or context)
 	tmplconf := zen.Or(c.TemplateConf, &TemplateConf)
@@ -125,12 +122,11 @@ func TemplateInline(c *Context, tmplsrc string) {
 //
 // Example:
 //
-//		func PageFoo(ctx *kyoto.Context) (state PageFooState) {
-//			tmpl := MyTemplateBuilder("page.foo.html") // *template.Template
-//			kyoto.TemplateRaw(ctx, tmpl)
-//			...
-//		}
-//
+//	func PageFoo(ctx *kyoto.Context) (state PageFooState) {
+//		tmpl := MyTemplateBuilder("page.foo.html") // *template.Template
+//		kyoto.TemplateRaw(ctx, tmpl)
+//		...
+//	}
 func TemplateRaw(c *Context, tmpl *template.Template) {
 	c.Template = tmpl
 }

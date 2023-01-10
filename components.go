@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"git.sr.ht/~kyoto-framework/zen"
+	"github.com/kyoto-framework/zen/v2"
 )
 
 // ****************
@@ -53,15 +53,15 @@ func (c *ComponentF[T]) await() (val any) {
 //
 // Example:
 //
-//		func CompBar(ctx *kyoto.Context) (state CompBarState) {
-//			...
-//		}
+//	func CompBar(ctx *kyoto.Context) (state CompBarState) {
+//		...
+//	}
 //
-//		func PageFoo(ctx *kyoto.Context) (state PageFooState) {
-//			...
-//			state.Bar = kyoto.Use(ctx, CompBar)  // Awaitable *kyoto.ComponentF[CompBarState]
-//			...
-//		}
+//	func PageFoo(ctx *kyoto.Context) (state PageFooState) {
+//		...
+//		state.Bar = kyoto.Use(ctx, CompBar)  // Awaitable *kyoto.ComponentF[CompBarState]
+//		...
+//	}
 func Use[T any](c *Context, component Component[T]) *ComponentF[T] {
 	return (*ComponentF[T])(zen.Async(func() (T, error) {
 		return component(c), nil
@@ -73,14 +73,13 @@ func Use[T any](c *Context, component Component[T]) *ComponentF[T] {
 //
 // Template example:
 //
-//		{{ template "CompBar" await .Bar }}
+//	{{ template "CompBar" await .Bar }}
 //
 // Go example:
 //
-//		barf = kyoto.Use(ctx, CompBar) // Awaitable *kyoto.ComponentF[CompBarState]
-//		...
-//		bar = kyoto.Await(barf) // CompBarState
-//
+//	barf = kyoto.Use(ctx, CompBar) // Awaitable *kyoto.ComponentF[CompBarState]
+//	...
+//	bar = kyoto.Await(barf) // CompBarState
 func Await(component any) any {
 	if component, implements := component.(awaitable); implements {
 		measure := time.Now()
@@ -101,14 +100,13 @@ func Await(component any) any {
 //
 // Example:
 //
-//		func CompBar(ctx *kyoto.Context) (state CompBarState) {
-//			...
-//		}
+//	func CompBar(ctx *kyoto.Context) (state CompBarState) {
+//		...
+//	}
 //
-//		func main() {
-//			fmt.Println(kyoto.ComponentName(CompBar)) // "CompBar"
-//		}
-//
+//	func main() {
+//		fmt.Println(kyoto.ComponentName(CompBar)) // "CompBar"
+//	}
 func ComponentName(component any) string {
 	funcpath := runtime.FuncForPC(reflect.ValueOf(component).Pointer()).Name()
 	tokens := strings.Split(funcpath, ".")
@@ -124,12 +122,11 @@ func ComponentName(component any) string {
 //
 // Template example:
 //
-//		{{ state . }}
+//	{{ state . }}
 //
 // Go example:
 //
-//		compStateEnc := kyoto.MarshalState(compState)
-//
+//	compStateEnc := kyoto.MarshalState(compState)
 func MarshalState(state any) string {
 	// Serialize component state into json
 	statebts, err := json.Marshal(state)

@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"git.sr.ht/~kyoto-framework/zen"
+	"github.com/kyoto-framework/zen/v2"
 )
 
 // Common test items
