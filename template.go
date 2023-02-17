@@ -4,7 +4,7 @@ import (
 	"embed"
 	"html/template"
 
-	"github.com/kyoto-framework/zen/v2"
+	"github.com/kyoto-framework/zen/v3/logic"
 )
 
 // ****************
@@ -72,7 +72,7 @@ func ComposeFuncMap(fmaps ...template.FuncMap) template.FuncMap {
 //	}
 func Template(c *Context, name string) {
 	// Determine template configuration (global or context)
-	tmplconf := zen.Or(c.TemplateConf, &TemplateConf)
+	tmplconf := logic.Or(c.TemplateConf, &TemplateConf)
 	// Base
 	tmpl := template.New(name)
 	// Template functions
@@ -101,7 +101,7 @@ func Template(c *Context, name string) {
 //	}
 func TemplateInline(c *Context, tmplsrc string) {
 	// Determine template configuration (global or context)
-	tmplconf := zen.Or(c.TemplateConf, &TemplateConf)
+	tmplconf := logic.Or(c.TemplateConf, &TemplateConf)
 	// Base
 	tmpl := template.New("inline")
 	// Template functions

@@ -3,7 +3,6 @@ package kyoto
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -20,7 +19,7 @@ type testActionComponentState struct {
 
 func testActionSetup() {
 	// Create a template file
-	ioutil.WriteFile("action_test.html", []byte(`{{ define "testActionComponent" }}{{ .Value }}{{ end }}`), 0644)
+	os.WriteFile("action_test.html", []byte(`{{ define "testActionComponent" }}{{ .Value }}{{ end }}`), 0644)
 }
 
 func testActionCleanup() {

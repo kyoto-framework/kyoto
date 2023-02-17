@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kyoto-framework/zen/v2"
+	"github.com/kyoto-framework/zen/v3/httpx"
 )
 
 // Common test items
@@ -67,7 +67,7 @@ func TestPageHandler(t *testing.T) {
 
 	// Check response body
 	defer res.Body.Close()
-	if body := zen.Response(res).Text(); body != "<html>This is a value</html>" {
+	if body := httpx.Response(res).Text(); body != "<html>This is a value</html>" {
 		t.Error("Expected <html>This is a value</html>, got", body)
 	}
 }
@@ -93,7 +93,7 @@ func TestHandlePage(t *testing.T) {
 
 	// Check response body
 	defer res.Body.Close()
-	if body := zen.Response(res).Text(); body != "<html>This is a value</html>" {
+	if body := httpx.Response(res).Text(); body != "<html>This is a value</html>" {
 		t.Error("Expected <html>This is a value</html>, got", body)
 	}
 }

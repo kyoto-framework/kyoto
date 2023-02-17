@@ -1,6 +1,2 @@
-github.com/kyoto-framework/zen/v2 v2.0.0 h1:Z9n+uKSNOOgUMndrMKZKZnlY4XU+6TMkZNRpgJj289c=
-github.com/kyoto-framework/zen/v2 v2.0.0/go.mod h1:JylDYKVwunXK/cWTNb1Cnp0tvZdmxQTOkDrhYGXG+FE=
-golang.org/x/exp v0.0.0-20220328175248-053ad81199eb h1:pC9Okm6BVmxEw76PUu0XUbOTQ92JX11hfvqTjAV3qxM=
-golang.org/x/exp v0.0.0-20220328175248-053ad81199eb/go.mod h1:lgLbSvA5ygNOMpwM/9anMpWVlVJ7Z+cHWq/eFuinpGE=
-golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
-golang.org/x/text v0.3.7/go.mod h1:u+2+/6zg+i71rQMx5EYifcz6MCKuco9NR6JIITiCfzQ=
+github.com/kyoto-framework/zen/v3 v3.0.0-rc h1:UMEOIrFq4tLFBLH7T9SfZOJNKDzQPMqEceRjPUUoKiU=
+github.com/kyoto-framework/zen/v3 v3.0.0-rc/go.mod h1:zzdz7pK6wZEjeKbBk7kxbxaLkTcnsfFAFIW6ys9NxNU=

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kyoto-framework/zen/v2"
+	"github.com/kyoto-framework/zen/v3/async"
 )
 
 // ****************
@@ -21,16 +21,16 @@ type Component[T any] func(*Context) T
 
 // ComponentF represents a future for a component work result.
 // Under the hood it wraps zen.Future[T].
-type ComponentF[T any] zen.Future[T]
+type ComponentF[T any] async.Future[T]
 
 // MarshalJSON implements future marshalling.
 func (f *ComponentF[T]) MarshalJSON() ([]byte, error) {
-	return (*zen.Future[T])(f).MarshalJSON()
+	return (*async.Future[T])(f).MarshalJSON()
 }
 
 // UnmarshalJSON implements future unmarshalling.
 func (f *ComponentF[T]) UnmarshalJSON(data []byte) error {
-	return (*zen.Future[T])(f).UnmarshalJSON(data)
+	return (*async.Future[T])(f).UnmarshalJSON(data)
 }
 
 // awaitable is an interface to call an await without relying on generics.
@@ -41,7 +41,7 @@ type awaitable interface {
 // await is a method to implement awaitable interface
 // and utilize zen.Await in a non-generic way.
 func (c *ComponentF[T]) await() (val any) {
-	val, err := zen.Await((*zen.Future[T])(c))
+	val, err := async.Await((*async.Future[T])(c))
 	if err != nil {
 		panic(err)
 	}
@@ -63,7 +63,7 @@ func (c *ComponentF[T]) await() (val any) {
 //		...
 //	}
 func Use[T any](c *Context, component Component[T]) *ComponentF[T] {
-	return (*ComponentF[T])(zen.Async(func() (T, error) {
+	return (*ComponentF[T])(async.New(func() (T, error) {
 		return component(c), nil
 	}))
 }

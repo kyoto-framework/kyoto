@@ -1,10 +1,8 @@
 /*
 Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
 
-# Motivation
-
 Creating asynchronous and dynamic layout parts is a complex problem for larger projects using `html/template`.
-Library tries to simplify this process.
+This library tries to simplify overall setup and process.
 
 # Quick start
 
@@ -81,10 +79,13 @@ Then, we will dig into details, step by step, how it works.
 		kyoto.Serve(":8080")
 	}
 
-# Handling requests
+# Routing
 
-Kyoto provides a simple net/http handlers and function wrappers
-to handle pages rendering and serving.
+Kyoto provides a set of simple net/http handlers, handler builders and function wrappers
+to provide serving, pages rendering, component actions, etc.
+Anyway, this is not an ultimative solution for any case.
+If you ever need to wrap/extend existing functionality,
+library encourages this.
 
 See functions inside of nethttp.go file for details and advanced usage.
 
@@ -97,7 +98,7 @@ Example:
 		kyoto.Serve(":8000")
 	}
 
-# Components
+# Pages and components
 
 Kyoto provides a way to define components.
 It's a very common approach for modern libraries to manage frontend parts.
@@ -159,7 +160,7 @@ Example:
 		...
 	}
 
-# Template
+# Templates
 
 Kyoto provides a set of parameters and functions
 to provide a comfortable template building process.
@@ -313,7 +314,7 @@ This handler will be executed when a client calls an action with a corresponding
 It's highly recommended to keep components' state as small as possible.
 It will be transmitted on each action call.
 
-# Action triggering
+# Actions - Triggering
 
 Kyoto have multiple ways to trigger actions.
 Now we will check them one by one.
@@ -352,7 +353,7 @@ You can use this trigger with ssa:poll and ssa:poll.interval HTML attributes.
 This one attribute allows you to trigger an action when an element is visible on the screen.
 May be useful for lazy loading.
 
-# Action flow control
+# Actions - Flow control
 
 Kyoto provides a way to control action flow.
 For now, it's possible to control display style on component call
@@ -373,7 +374,7 @@ A small note. Don't forget to set a default display for loading elements like sp
 You can push multiple component UI updates during a single action call.
 Just call kyoto.ActionFlush(ctx, state) to initiate an update.
 
-# Action rendering options
+# Actions - Rendering options
 
 Kyoto provides a way to control action rendering.
 
