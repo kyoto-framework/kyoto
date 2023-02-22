@@ -1,2 +1,4 @@
 github.com/kyoto-framework/zen/v3 v3.0.0-rc h1:UMEOIrFq4tLFBLH7T9SfZOJNKDzQPMqEceRjPUUoKiU=
 github.com/kyoto-framework/zen/v3 v3.0.0-rc/go.mod h1:zzdz7pK6wZEjeKbBk7kxbxaLkTcnsfFAFIW6ys9NxNU=
+github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230222093058-0279ff893400 h1:w8FqyKaKI/BfbQcWnXSOFxH/66FZbGi2AEcKLidd5xs=
+github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230222093058-0279ff893400/go.mod h1:zzdz7pK6wZEjeKbBk7kxbxaLkTcnsfFAFIW6ys9NxNU=

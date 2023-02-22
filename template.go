@@ -5,6 +5,8 @@ import (
 	"html/template"
 
 	"github.com/kyoto-framework/zen/v3/logic"
+	"github.com/kyoto-framework/zen/v3/mapx"
+	"github.com/kyoto-framework/zen/v3/slice"
 )
 
 // ****************
@@ -33,25 +35,11 @@ var TemplateConf = TemplateConfiguration{
 	FuncMap:   FuncMap,
 }
 
-// ComposeFuncMap is a function for composing multiple FuncMap instances into one.
-//
-// Example:
-//
-//	func MyFuncMap() template.FuncMap {
-//		return kyoto.ComposeFuncMap(
-//			funcmap1,
-//			funcmap2,
-//			...
-//		)
-//	}
+// Deprecated: use mapx.Merge from zen library instead.
 func ComposeFuncMap(fmaps ...template.FuncMap) template.FuncMap {
-	var result = template.FuncMap{}
-	for _, fmap := range fmaps {
-		for k, v := range fmap {
-			result[k] = v
-		}
-	}
-	return result
+	return mapx.Merge(slice.Map(fmaps, func(fmap template.FuncMap) map[string]any {
+		return map[string]any(fmap)
+	})...)
 }
 
 // ****************
