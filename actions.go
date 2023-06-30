@@ -38,7 +38,7 @@ type ActionParameters struct {
 	State     string
 	Args      []any
 
-	processed bool
+	processed  bool
 	redirected bool
 }
 
@@ -89,7 +89,6 @@ func (p *ActionParameters) Parse(r *http.Request) error {
 //		// Default non-action behavior
 //		// ...
 //	}
-//
 func Action(c *Context, name string, action func(args ...any)) bool {
 	// This will allow to avoid recursive action call
 	// while attaching recursive component
@@ -129,21 +128,21 @@ func ActionPreload[T any](c *Context, state T) {
 //
 // Example:
 //
-//	func CompFoo(ctx *kyoto.Context) (state CompFooState) {
-//		...
-//		// Handle example action
-//		kyoto.Action(ctx, "Bar", func(args ...any) {
-//			// Do something with a state
-//			state.Content = "Bar"
-//			// Push updated UI to the client
-//			kyoto.ActionFlush(ctx, state)
-//			// Do something else with a state
-//			state.Content = "Baz"
-//			// Push updated UI to the client
-//			kyoto.ActionFlush(ctx, state)
-//		})
-//		...
-// }
+//		func CompFoo(ctx *kyoto.Context) (state CompFooState) {
+//			...
+//			// Handle example action
+//			kyoto.Action(ctx, "Bar", func(args ...any) {
+//				// Do something with a state
+//				state.Content = "Bar"
+//				// Push updated UI to the client
+//				kyoto.ActionFlush(ctx, state)
+//				// Do something else with a state
+//				state.Content = "Baz"
+//				// Push updated UI to the client
+//				kyoto.ActionFlush(ctx, state)
+//			})
+//			...
+//	}
 func ActionFlush(ctx *Context, state any) {
 	// Exit if redirected.
 	// ActionFlush must not to be triggered after redirection,
@@ -192,7 +191,7 @@ func ActionRedirect(ctx *Context, location string) {
 	cmd := fmt.Sprintf("ssa:redirect=%s", location)
 	// Append terminator sequence and write to stream
 	// Details: https://todo.sr.ht/~kyoto-framework/kyoto-framework/10
-	if _, err := fmt.Fprint(ctx.ResponseWriter, cmd + ActionConf.Terminator); err != nil {
+	if _, err := fmt.Fprint(ctx.ResponseWriter, cmd+ActionConf.Terminator); err != nil {
 		panic(err)
 	}
 	// Set redirected flag
@@ -260,8 +259,13 @@ func HandlerAction[T any](component Component[T], _ctx ...*Context) func(w http.
 		ctx.Request = r
 		ctx.ResponseWriter = w
 		ctx.Action = action
-		// Prepare template
-		TemplateInline(ctx, fmt.Sprintf(`{{ template "%s" . }}`, action.Component))
+		// Initialize template if not ready yet.
+		// Otherwise, prepare existing one.
+		if ctx.Template == nil {
+			TemplateInline(ctx, fmt.Sprintf(`{{ template "%s" . }}`, action.Component))
+		} else {
+			ctx.Template, _ = ctx.Template.Parse(fmt.Sprintf(`{{ template "%s" . }}`, action.Component))
+		}
 		// Trigger building
 		state := component(ctx)
 		// Trigger flush (if not redirected)
