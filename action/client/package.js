@@ -5,14 +5,14 @@ var data;
 try {
   data = fs.readFileSync("dist/client.js", "utf8");
   data =
-    'package kyoto\n\nvar ActionClient = "<script>' +
+    'package action\n\nvar client = "<script>' +
     data.toString().replaceAll('"', '\\"').split("\n").join("") +
     '</script>"\n';
 } catch (err) {
   console.error(err);
 }
 try {
-  fs.writeFileSync("../actions.client.go", data);
+  fs.writeFileSync("../client.go", data);
 } catch (err) {
   console.error(err);
 }

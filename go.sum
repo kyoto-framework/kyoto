@@ -1,4 +1,4 @@
-github.com/kyoto-framework/zen/v3 v3.0.0-rc h1:UMEOIrFq4tLFBLH7T9SfZOJNKDzQPMqEceRjPUUoKiU=
-github.com/kyoto-framework/zen/v3 v3.0.0-rc/go.mod h1:zzdz7pK6wZEjeKbBk7kxbxaLkTcnsfFAFIW6ys9NxNU=
-github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230222093058-0279ff893400 h1:w8FqyKaKI/BfbQcWnXSOFxH/66FZbGi2AEcKLidd5xs=
-github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230222093058-0279ff893400/go.mod h1:zzdz7pK6wZEjeKbBk7kxbxaLkTcnsfFAFIW6ys9NxNU=
+github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230515224229-bcea79de79fb h1:+WCbvZDb5SD9WK6bfE2N/rdlGptvqzM+dsIBw4EMTUs=
+github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230515224229-bcea79de79fb/go.mod h1:zzdz7pK6wZEjeKbBk7kxbxaLkTcnsfFAFIW6ys9NxNU=
+golang.org/x/exp v0.0.0-20220328175248-053ad81199eb h1:pC9Okm6BVmxEw76PUu0XUbOTQ92JX11hfvqTjAV3qxM=
+golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
