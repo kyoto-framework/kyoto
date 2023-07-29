@@ -53,5 +53,19 @@ Markup is also not included here (it's just a well-known `html/template`).
 For details, please check project's website on https://kyoto.codes.
 Also, you may check the library index to explore available sub-packages
 and https://pkg.go.dev/ for Go'ish documentation style.
+
+# Quick start
+
+You have at least 2 options to bootstrap your project.
+You can start instantly with a starter project,
+or create the project on your own step-by-step.
+
+You can use this command to create your project with a starter:
+
+	git clone https://kyoto.codes/new <your-new-project>
+
+If you want to deal with boilerplate on your own,
+or integrate kyoto into existing project,
+you can proceed to the simple starter example bellow.
 */
 package kyoto

@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"io"
 
-	"github.com/kyoto-framework/kyoto/v3/component"
+	"go.kyoto.codes/v3/component"
 )
 
 // Template is a html/template renderer.

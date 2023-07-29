@@ -3,7 +3,7 @@ package action
 import (
 	"net/http"
 
-	"github.com/kyoto-framework/kyoto/v3/component"
+	"go.kyoto.codes/v3/component"
 )
 
 // Handler is a http.HandlerFunc that have to be registered in your project

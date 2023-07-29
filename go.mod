@@ -1,4 +1,4 @@
-module github.com/kyoto-framework/kyoto/v3
+module go.kyoto.codes/v3
 
 go 1.20
 

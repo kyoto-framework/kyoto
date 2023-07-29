@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/kyoto-framework/kyoto/v3/component"
+	"go.kyoto.codes/v3/component"
 )
 
 // context extracts action parameters

@@ -4,10 +4,10 @@ import (
 	"html/template"
 	"strings"
 
-	"github.com/kyoto-framework/kyoto/v3/action"
-	"github.com/kyoto-framework/kyoto/v3/component"
 	"github.com/kyoto-framework/zen/v3/errorsx"
 	"github.com/kyoto-framework/zen/v3/mapx"
+	"go.kyoto.codes/v3/action"
+	"go.kyoto.codes/v3/component"
 )
 
 // FuncMap holds a library predefined template functions.

@@ -3,7 +3,7 @@ package action
 import (
 	"errors"
 
-	"github.com/kyoto-framework/kyoto/v3/component"
+	"go.kyoto.codes/v3/component"
 )
 
 // State allows to extract component state from action.

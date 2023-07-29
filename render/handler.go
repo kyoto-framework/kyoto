@@ -3,7 +3,7 @@ package render
 import (
 	"net/http"
 
-	"github.com/kyoto-framework/kyoto/v3/component"
+	"go.kyoto.codes/v3/component"
 )
 
 // Handler builds a http.HandlerFunc that renders provided component.

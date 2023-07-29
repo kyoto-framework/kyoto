@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/kyoto-framework/kyoto/v3/component"
+	"go.kyoto.codes/v3/component"
 )
 
 // We're duplicating this from render package to avoid cycle import.
