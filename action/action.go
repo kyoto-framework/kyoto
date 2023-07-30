@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/kyoto-framework/zen/v3/errorsx"
+	"go.kyoto.codes/zen/v3/errorsx"
 )
 
 // Action parameters and state,

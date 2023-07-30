@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"net/url"
 
-	"github.com/kyoto-framework/zen/v3/errorsx"
-	"github.com/kyoto-framework/zen/v3/jsonx"
+	"go.kyoto.codes/zen/v3/errorsx"
+	"go.kyoto.codes/zen/v3/jsonx"
 )
 
 // Universal is a universal component state implementation.

@@ -1,8 +1,8 @@
 package component
 
 import (
-	"github.com/kyoto-framework/zen/v3/async"
-	"github.com/kyoto-framework/zen/v3/errorsx"
+	"go.kyoto.codes/zen/v3/async"
+	"go.kyoto.codes/zen/v3/errorsx"
 )
 
 // Use allows you to use your components in asynchronous way.

@@ -1,4 +1,2 @@
-github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230515224229-bcea79de79fb h1:+WCbvZDb5SD9WK6bfE2N/rdlGptvqzM+dsIBw4EMTUs=
-github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230515224229-bcea79de79fb/go.mod h1:zzdz7pK6wZEjeKbBk7kxbxaLkTcnsfFAFIW6ys9NxNU=
-golang.org/x/exp v0.0.0-20220328175248-053ad81199eb h1:pC9Okm6BVmxEw76PUu0XUbOTQ92JX11hfvqTjAV3qxM=
-golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
+go.kyoto.codes/zen/v3 v3.0.0 h1:USERmDZJlJYrMnTK/2e8b0JCa5X9AXCC4iULwD/+SB4=
+go.kyoto.codes/zen/v3 v3.0.0/go.mod h1:mL1cTOqQ9EgZ1QeItYltjO4MPQakLXz/Xeu+dd/LO1g=

@@ -52,7 +52,7 @@ Markup is also not included here (it's just a well-known `html/template`).
 
 For details, please check project's website on https://kyoto.codes.
 Also, you may check the library index to explore available sub-packages
-and https://pkg.go.dev/ for Go'ish documentation style.
+and https://pkg.go.dev for Go'ish documentation style.
 
 # Quick start
 
