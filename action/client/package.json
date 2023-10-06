@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "client:build": "esbuild --bundle --minify --outfile=dist/client.js src/index.ts",
-    "client:pack": "node package.js",
-    "client": "npm run client:build && npm run client:pack"
+    "client:package": "node package.js dist/client.js ../client.go action",
+    "build": "npm run client:build && npm run client:package"
   },
   "keywords": [],
   "author": "",

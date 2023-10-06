@@ -14,6 +14,8 @@ type Context struct {
 	Store
 }
 
+// Initialize a new context, that will be passed through the components.
+// Uses MapStore as a store by default.
 func NewContext(w http.ResponseWriter, r *http.Request) *Context {
 	return &Context{
 		ResponseWriter: w,
@@ -22,6 +24,7 @@ func NewContext(w http.ResponseWriter, r *http.Request) *Context {
 	}
 }
 
+// Store allows you to store own data inside of the context.
 type Store interface {
 	Get(key string) any
 	Set(key string, value any)

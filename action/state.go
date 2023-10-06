@@ -19,10 +19,12 @@ func State(ctx *component.Context, state component.State) error {
 	}
 	// Extract action
 	action := ctx.Store.Get("Action").(Action)
-	// Pass, if action not recognized
+	// Pass, if component not recognized
 	if action.Component == "" {
-		return nil
+		return errors.New("component not recognized")
 	}
 	// Unmarshal state
-	return state.Unmarshal(action.State, state)
+	state.Unmarshal(action.State, state)
+	// Return
+	return nil
 }

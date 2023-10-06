@@ -3,7 +3,6 @@ package component
 import (
 	"fmt"
 	"html/template"
-	"strings"
 )
 
 // FuncMap holds a library predefined template functions.
@@ -11,19 +10,15 @@ import (
 var FuncMap = template.FuncMap{
 	// Marshal allows to marshal state to string.
 	"marshal": func(state State) string {
-		return state.Marshal(state)
+		return state.Marshal()
 	},
 	// Component composes HTML attributes for component state and identification.
 	// Allows to avoid explicit component declaration syntax.
 	"component": func(state State) template.HTMLAttr {
-		builder := strings.Builder{}
-		// Add state
-		builder.WriteString(fmt.Sprintf(`state="%s"`, state.Marshal(state)))
-		// Add name
-		if state, ok := state.(interface{ GetName() string }); ok {
-			builder.WriteString(fmt.Sprintf(` name="%s"`, state.GetName()))
-		}
-		// Return
-		return template.HTMLAttr(builder.String())
+		return template.HTMLAttr(
+			fmt.Sprintf(`component="%s" state="%s"`,
+				state.GetName(),
+				state.Marshal()),
+		)
 	},
 }

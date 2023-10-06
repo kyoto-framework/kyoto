@@ -6,8 +6,11 @@ export interface Locate {
     id?: string // direct call with #.<id>.<action>
 }
 
-// Root allows to find the root element of the current component.
-// Takes start node and searches for a root within parent nodes.
+/**
+ * Root allows to find the root element of the current component.
+ * Takes start node as an argument and searches for a root within parent nodes,
+ * based on component name attribute.
+*/
 export function root(l: Locate): HTMLElement {
     // First, let's define root.
     let root: HTMLElement | null = null
@@ -30,7 +33,7 @@ export function root(l: Locate): HTMLElement {
                 break
             }
             // Handle cursor is not a component case.
-            if (!cursor.getAttribute('state')) {
+            if (!cursor.getAttribute('component')) {
                 cursor = cursor.parentElement
                 continue
             }

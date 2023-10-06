@@ -16,12 +16,8 @@ func Use(ctx *Context, component Component) Future {
 	return func() State {
 		// Await for state.
 		state := errorsx.Must(ftr.Await())
-		// If state implements name setter, set it.
-		// We can't use render.Renderer interface here
-		// because of recursive import.
-		if state, ok := state.(interface{ SetName(string) }); ok {
-			state.SetName(component.GetName())
-		}
+		// Set component name.
+		state.SetName(component.GetName())
 		// Return state.
 		return state
 	}

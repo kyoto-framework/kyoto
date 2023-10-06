@@ -1,5 +1,6 @@
-import { root, Locate } from "./root";
-import { morph, MorphOptions } from "./morph";
+import { root } from './root'
+import { morph } from './morph'
+import { Redirect, Display, Render } from './selectors'
 
 
 interface Action {
@@ -21,6 +22,10 @@ export async function action(self: HTMLElement, action: string, ...args: any[]) 
         depth: _action.depth,
         id: _action.id
     })
+    // If it's disposable component, break with error
+    if (_root.getAttribute('state') === 'disposable') {
+      throw new Error(`you're trying to call an action on disposable component, but shouldn't (use another component type)`)
+    }
     // Trigger action display
     actionDisplay(_root)
     // Build action url
@@ -57,29 +62,40 @@ export async function action(self: HTMLElement, action: string, ...args: any[]) 
             // Remove terminator
             buffer = buffer.slice(0, -(actionterminator.length))
             // Handle redirect
-            if (buffer.startsWith('action:redirect=')) {
-                window.location.href = buffer.replace('action:redirect=', '')
+            if (buffer.startsWith(Redirect.redirect)) {
+                window.location.href = buffer.replace(`${Redirect.redirect}=`, '')
                 return
             }
             // Determine render mode (morph by default)
-            const mode = _root.getAttribute('action:render.mode') || 'morph'
+            let mode = _root.getAttribute(Render.render) || 'morph'
+            if (_root.getAttribute(Render.renderReplace) !== null) {
+                mode = 'replace'
+            }
+            if (_root.getAttribute(Render.renderMorph) !== null) {
+                mode = 'morph'
+            }
             // Render
             switch (mode) {
                 case 'replace':
                     _root.outerHTML = buffer
-                    break;
+                    break
                 case 'morph':
                     try {
                         morph(_root, buffer)
                     } catch (e: any) {
-                        console.log('Fallback from "morphdom" to "replace" due to an error:', e)
+                        console.warn('fallback from "morph" to "replace" due to an error:', e)
                         _root.outerHTML = buffer
                     }
                     break
                 default:
-                    console.log('Render mode is not supported, fallback to "replace"')
-                    _root.outerHTML = buffer
-                    break;
+                    console.warn('render mode is not supported, fallback to "morph"')
+                    try {
+                        morph(_root, buffer)
+                    } catch (e: any) {
+                        console.warn('fallback from "morph" to "replace" due to an error:', e)
+                        _root.outerHTML = buffer
+                    }
+                    break
             }
             // Cleanup buffer
             buffer = ''
@@ -120,11 +136,10 @@ function actionParse(action: string): Action {
 // Default display will be passed as a ready for use markup, so we don't need to provide a reset function.
 function actionDisplay(root: HTMLElement) {
     // Find all elements with action display attribute
-    let attr = `action\\\\:display`
-    let elements = root.querySelectorAll(`[${attr}]`)
+    let elements = root.querySelectorAll(`[${Display.display}]`)
     elements.forEach(element => {
         // Get display attribute value
-        let display = element.getAttribute(attr)
+        let display = element.getAttribute(Display.display)
         // Set display value, if not empty
         if (display) {
             (element as HTMLElement).style.display = display

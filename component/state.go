@@ -7,9 +7,9 @@ package component
 type State interface {
 	// Marshal state into string representation.
 	// It's required for injecting state into DOM.
-	Marshal(state any) string
+	Marshal() string
 	// Unmarshal state from string representation.
-	Unmarshal(str string, state any) error
+	Unmarshal(str string)
 
 	// We can't extract component name without
 	// having original Component function,

@@ -1,18 +1,20 @@
-const fs = require("fs");
+const fs = require('fs')
 
-var data;
+// Read arguments
+const args = {
+    r: process.argv[2],
+    w: process.argv[3],
+    pkg: process.argv[4],
+}
 
-try {
-  data = fs.readFileSync("dist/client.js", "utf8");
-  data =
-    'package action\n\nvar client = "<script>' +
-    data.toString().replaceAll('"', '\\"').split("\n").join("") +
-    '</script>"\n';
-} catch (err) {
-  console.error(err);
-}
-try {
-  fs.writeFileSync("../client.go", data);
-} catch (err) {
-  console.error(err);
-}
+// Read client file
+const client = fs.readFileSync(args.r, 'utf-8')
+
+// Pack client into Go package file
+const package = `package ${args.pkg}
+
+var client = \`${client.replaceAll('`', '` + "`" + `')}\`
+`
+
+// Write result
+fs.writeFileSync(args.w, package)

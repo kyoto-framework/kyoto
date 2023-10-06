@@ -4,4 +4,4 @@ cache
 tests
 
 # Probably will not be included (at least for now)
-example
+example*

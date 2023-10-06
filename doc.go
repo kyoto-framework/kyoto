@@ -56,16 +56,16 @@ and https://pkg.go.dev for Go'ish documentation style.
 
 # Quick start
 
-You have at least 2 options to bootstrap your project.
-You can start instantly with a starter project,
-or create the project on your own step-by-step.
+We don't want you to deal with boilerplate code on your own,
+so you can proceed with our simple starter project.
 
-You can use this command to create your project with a starter:
+	git clone https://kyoto.codes/new <your-new-project> && rm -r <your-new-project>/.git
 
-	git clone https://kyoto.codes/new <your-new-project>
-
-If you want to deal with boilerplate on your own,
-or integrate kyoto into existing project,
-you can proceed to the simple starter example bellow.
+Anyway, if you want a bare-minimum,
+single file example right now,
+we're also providing a code snippet below.
+It includes a page with multiple expensive to load components with dynamic behavior (actions).
+It's documented in detail,
+but not includes all the existing features of library.
 */
 package kyoto

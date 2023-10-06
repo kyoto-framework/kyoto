@@ -2,8 +2,9 @@ package action
 
 import (
 	"fmt"
-	"go.kyoto.codes/v3/component"
 	"net/http"
+
+	"go.kyoto.codes/v3/component"
 )
 
 // Redirect is a function to trigger redirect during action handling.
