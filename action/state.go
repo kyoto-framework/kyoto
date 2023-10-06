@@ -24,7 +24,7 @@ func State(ctx *component.Context, state component.State) error {
 		return errors.New("component not recognized")
 	}
 	// Unmarshal state
-	state.Unmarshal(action.State, state)
+	state.Unmarshal(action.State)
 	// Return
 	return nil
 }

@@ -1,14 +1,13 @@
 package component
 
-//
 type Disposable struct {
 	Name
 }
 
-func (*Disposable) Marshal(state any) string {
+func (*Disposable) Marshal() string {
 	return "disposable"
 }
 
-func (*Disposable) Unmarshal(str string, state any) {
+func (*Disposable) Unmarshal(str string) {
 	return
 }
