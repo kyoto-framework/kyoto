@@ -43,7 +43,7 @@ func (s *Server) cleanup() {
 		// If creation/modification date is out of timeout bounds,
 		// remove that file.
 		if time.Since(errorsx.Must(file.Info()).ModTime()) > s.timeout() {
-			errorsx.Must(0, os.Remove(file.Name()))
+			errorsx.Must(0, os.Remove(path.Join(s.path(), file.Name())))
 		}
 	}
 }
