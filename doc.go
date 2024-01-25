@@ -7,7 +7,7 @@ and hassle-free dynamic layout updates.
 These issues are common for frontends written with Go.
 
 The library provides you with primitives for pages and components creation,
-state and rendering management, dynamic layout updates (with client configuration),
+state and rendering management, dynamic layout updates (with external packages integration),
 utility functions and asynchronous components out of the box.
 Still, it bundles with minimal dependencies
 and tries to utilize built-ins as much as possible.
@@ -152,23 +152,19 @@ It's easy to do with wrapping component with additional function.
 		}
 	}
 
-# Pages
+# Routing
 
-Pages are just top-level components, where you can configure rendering and page related stuff.
+This library doesn't provide you with routing out of the box.
+You can use any router you want, built-in one is not a bad option for basic needs.
 
 	package main
 
-	type PageState struct {
-		component.Disposable // Pages are not supposed to be updated with actions
-		rendering.Template   // Rendering is configured with rendering.Template
+	...
 
-		Bar component.Future // component.Future is a future object, that resolves to component state
-	}
-
-	func Page(ctx *component.Context) component.State {
-		state := &PageState{}
-		state.Component = component.Use(ctx, Component())
-		return state
+	func main() {
+		mux := http.NewServeMux()
+		mux.HandleFunc("/", rendering.Handler(Page))
+		http.ListenAndServe(":8080", mux)
 	}
 
 # Rendering
@@ -191,26 +187,19 @@ Please, don't use this approach heavily now, as it affects rendering performance
 
 	<div>{{ render .Component }}</div>
 
-# Routing
-
-This library doesn't provide you with routing out of the box.
-You can use any router you want, built-in one is not a bad option for basic needs.
-
-	package main
-
-	...
-
-	func main() {
-		mux := http.NewServeMux()
-		mux.HandleFunc("/", rendering.Handler(Page))
-		http.ListenAndServe(":8080", mux)
-	}
-
-# Actions
+# HTMX
 
 ...
 
-# Limitations
+# HTMX Setup
+
+...
+
+# HTMX Usage
+
+...
+
+# HTMX State
 
 ...
 */
