@@ -1,10 +1,10 @@
-package render
+package rendering
 
 import (
+	"go.kyoto.codes/v3/htmx"
 	"html/template"
 	"strings"
 
-	"go.kyoto.codes/v3/action"
 	"go.kyoto.codes/v3/component"
 	"go.kyoto.codes/zen/v3/errorsx"
 	"go.kyoto.codes/zen/v3/mapx"
@@ -32,9 +32,9 @@ var FuncMap = template.FuncMap{
 	},
 }
 
-// FuncMapAll holds all funcmaps of kyoto library.
+// FuncMapAll holds all funcmap instances of kyoto library.
 var FuncMapAll = mapx.Merge(
 	FuncMap,
-	action.FuncMap,
+	htmx.FuncMap,
 	component.FuncMap,
 )

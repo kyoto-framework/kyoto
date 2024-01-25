@@ -1,7 +1,10 @@
 
 # Just not yet
 cache
-tests
 
 # Probably will not be included (at least for now)
-example*
+htmx-test
+
+# Cache
+.idea
+.vscode

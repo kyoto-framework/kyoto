@@ -1,4 +1,4 @@
-package render
+package rendering
 
 import (
 	"net/http"
@@ -17,7 +17,7 @@ func Handler(c component.Component) http.HandlerFunc {
 		state.SetName(c.GetName())
 		// Ensure state implements render
 		if _, ok := state.(Renderer); !ok {
-			panic("The page does not implement rendering")
+			panic("The component does not implement rendering")
 		}
 		// Render
 		if err := state.(Renderer).Render(state, ctx.ResponseWriter); err != nil {

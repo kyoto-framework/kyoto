@@ -58,13 +58,13 @@ func (s *Server) Marshal() string {
 	return filepath.Base(tmp.Name())
 }
 
-// Marshal decodes state with json from temporary file in `Path` directory.
-// Fires up a clean up goroutine in the end.
+// Unmarshal decodes state with json from temporary file in `Path` directory.
+// Fires up a cleanup goroutine in the end.
 func (s *Server) Unmarshal(str string) {
 	// Open tmp file
 	tmp := errorsx.Must(os.OpenFile(path.Join(s.path(), str), os.O_RDONLY, 0777))
 	// Decode
 	errorsx.Must(0, json.NewDecoder(tmp).Decode(s))
-	// Fire up clean up
+	// Fire up cleanup
 	go s.cleanup()
 }

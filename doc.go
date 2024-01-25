@@ -1,5 +1,5 @@
 /*
-Kyoto is a library for creating fast, server side frontend avoiding vanilla templating downsides.
+Package kyoto was made for creating fast, server side frontend avoiding vanilla templating downsides.
 
 It tries to address complexities in frontend domain like
 responsibility separation, components structure, asynchronous load
@@ -152,15 +152,65 @@ It's easy to do with wrapping component with additional function.
 		}
 	}
 
+# Pages
+
+Pages are just top-level components, where you can configure rendering and page related stuff.
+
+	package main
+
+	type PageState struct {
+		component.Disposable // Pages are not supposed to be updated with actions
+		rendering.Template   // Rendering is configured with rendering.Template
+
+		Bar component.Future // component.Future is a future object, that resolves to component state
+	}
+
+	func Page(ctx *component.Context) component.State {
+		state := &PageState{}
+		state.Component = component.Use(ctx, Component())
+		return state
+	}
+
 # Rendering
 
-...
+Rendering might be tricky, but we're trying to make it as simple as possible.
+By default, we're using `html/template` as a rendering engine.
+It's a well-known built-in package, so you don't have to learn anything new.
+
+Out of the box we're parsing all templates in root directory with `*.html` glob.
+You can change this behavior with `TEMPLATE_GLOB` global variable.
+
+For rendering a component, use built-in `template` function.
+Provide a resolved future object (actually state) as a template argument.
+
+	<div>{{ template "component" call .Component }}</div>
+
+As an alternative, you can include also `rendering.Template` entry into your component definition.
+In this way you can use `render` function to simplify your code.
+Please, don't use this approach heavily now, as it affects rendering performance.
+
+	<div>{{ render .Component }}</div>
 
 # Routing
 
-...
+This library doesn't provide you with routing out of the box.
+You can use any router you want, built-in one is not a bad option for basic needs.
+
+	package main
+
+	...
+
+	func main() {
+		mux := http.NewServeMux()
+		mux.HandleFunc("/", rendering.Handler(Page))
+		http.ListenAndServe(":8080", mux)
+	}
 
 # Actions
+
+...
+
+# Limitations
 
 ...
 */
