@@ -1,99 +1,54 @@
+
 <p align="center">
-    <img width="200" src="https://raw.githubusercontent.com/kyoto-framework/kyoto/master/logo.svg" />
+    <img width="200" src="logo.svg" />
 </p>
 
 <h1 align="center">kyoto</h1>
 
 <p align="center">
-    Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
+    Go server side frontend framework
 </p>
 
-<p align="center">
-    <a href="https://goreportcard.com/report/github.com/kyoto-framework/kyoto">
-        <img src="https://goreportcard.com/badge/github.com/kyoto-framework/kyoto">
-    </a>
-    <a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">
-        <img src="https://pkg.go.dev/badge/github.com/kyoto-framework/kyoto.svg">
-    </a>
-    <a href="https://opencollective.com/kyoto-framework">
-        <img src="https://img.shields.io/opencollective/all/kyoto-framework?label=backers%20%26%20sponsors">
-    </a>
-    <img src="https://img.shields.io/github/license/kyoto-framework/kyoto">
-    <img src="https://visitor-badge.glitch.me/badge?page_id=kyoto-framework&left_color=grey&right_color=green">
-</p>
-
-<p align="center">
-    <a href="https://pkg.go.dev/github.com/kyoto-framework/kyoto">Documentation</a>&nbsp;&bull;
-    <a href="#quick-start">Quick start</a>&nbsp;&bull;
-    <a href="#who-uses">Who uses?</a>&nbsp;&bull;
-    <a href="#support-us">Support us</a>
-</p>
-
-## Motivation
-
-Creating asynchronous and dynamic layout parts is a complex problem for larger projects using `html/template`.
-Library tries to simplify this process.
-
-## What kyoto proposes?
-
-- Organize code into configurable and standalone components structure
-- Get rid of spaghetti inside of handlers
-- Simple asynchronous lifecycle
-- Built-in dynamics like Hotwire or Laravel Livewire
-- Using a familiar built-in `html/template`
-- Full control over project setup (minimal dependencies)
-- 0kb JS payload without actions client (~12kb when including a client)
-- Minimalistic utility-first package to simplify work with Go
-- Internationalizing helper
-- Cache control helper package (with a CDN page caching setup guide)
-
-## Reasons to opt out
-
-- API may change drastically between major versions
-- You want to develop SPA/PWA
-- You're just feeling OK with JS frameworks
-- Not situable for a frontend with a lot of client-side logic
-
-## Quick start
-
-If you want to start straight from the example, use a starter project.  
-
-```bash
-$ git clone https://github.com/kyoto-framework/start <project-name>
+```go
+import "go.kyoto.codes/v3"
 ```
 
-If you want to start from scratch, we have a minimal working [example](https://pkg.go.dev/github.com/kyoto-framework/kyoto/v2#hdr-Quick_start) to start with.
+Kyoto is a library for creating fast, server side frontend avoiding vanilla templating downsides.
 
+It tries to address complexities in frontend domain like responsibility separation, components structure, asynchronous load and hassle\-free dynamic layout updates. These issues are common for frontends written with Go.
 
-## Team
+The library provides you with primitives for pages and components creation, state and rendering management, dynamic layout updates \(with client configuration\), utility functions and asynchronous components out of the box. Still, it bundles with minimal dependencies and tries to utilize built\-ins as much as possible.
 
-- Yurii Zinets: [email](mailto:yurii.zinets@icloud.com), [telegram](https://t.me/yuriizinets)
-- Viktor Korniichuk: [email](mailto:rowdyhcs@gmail.com), [telegram](https://t.me/dinoarmless)
+You would probably want to opt out from this library in few cases, like, if you're not ready for drastic API changes between major version, you want to develop SPA/PWA and/or complex client\-side logic, or you're just feeling OK with your current setup. Please, don't compare kyoto with a popular JS libraries like React, Vue or Svelte. I know you will have such a desire, but most likely you will be wrong. Use cases and underlying principles are just too different.
 
-## Who uses?
+If you want to get an idea of what a typical static component would look like, here's some sample code. It's very ascetic and simplistic, as we don't want to overload you with implementation details. Markup is also not included here \(it's just a well\-known \`html/template\`\).
 
-### Broker One
+```go
+// State is declared separately from component itself
+type ComponentState struct {
+	// We're providing component with some abilities here
+	component.Universal // This component uses universal state, that can be (un)marshalled with both server and client
 
-**Website**: [https://mybrokerone.com](https://mybrokerone.com)
+	// Actual component state is just struct fields
+	Foo string
+	Bar string
+}
 
-The first version of the site was developed with Vue and suffered from large payload and low performance.
-After discussion, it was decided to migrate to Go with a built-in `html/template` due to existing libraries infrastructure inside of the project.  
-Despite the good performance result, the code was badly structured and it was very uncomfortable to work in existing paradigm.  
-On the basis of these problems, kyoto was born. Now, this library lies in the core of the platform.
+// Component is a function, that returns configured state.
+// To be able to provide additional arguments to the component on initialization,
+// you have to wrap component with additional function that will handle args and return actual component.
+// Until then, you may keep component declaration as-is.
+func Component(ctx *component.Context) component.State {
+	// Initialize state here.
+	// As far as component.Universal provided in declaration,
+	// we're implementing component.State interface.
+	state := &ComponentState{}
+	// Do whatever you want with a state
+	state.Foo = "foo"
+	state.Bar = "bar"
+	// Done
+	return state
+}
+```
 
-### Using the library in your project?
-
-Please tell us about your story! We would love to talk about your usage experience.
-
-## Support us
-
-Any project support is appreciated! Providing a feedback, pull requests, new ideas, whatever. Also, donations and sponsoring will help us to keep high updates frequency. Just send us a quick email or a message on contacts provided above.
-
-If you have an option to donate us with a crypto, we have some addresses.
-
-Bitcoin: `bc1qgxe4u799f8pdyzk65sqpq28xj0yc6g05ckhvkk`  
-Ethereum: `0xEB2f24e830223bE081264e0c81fb5FD4DDD2B7B0`
-
-Also, we have a page on open collective for backers support.
-
-Open Collective: [https://opencollective.com/kyoto-framework](https://opencollective.com/kyoto-framework)
+For details, please check project's website on https://kyoto.codes. Also, you may check the library index to explore available sub\-packages and https://pkg.go.dev for Go'ish documentation style.

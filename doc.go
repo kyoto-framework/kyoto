@@ -1,387 +1,295 @@
 /*
-Extensible Go library for creating fast, SSR-first frontend avoiding vanilla templating downsides.
+Package kyoto was made for creating fast, server side frontend avoiding vanilla templating downsides.
 
-Creating asynchronous and dynamic layout parts is a complex problem for larger projects using `html/template`.
-This library tries to simplify overall setup and process.
+It tries to address complexities in frontend domain like
+responsibility separation, components structure, asynchronous load
+and hassle-free dynamic layout updates.
+These issues are common for frontends written with Go.
+
+The library provides you with primitives for pages and components creation,
+state and rendering management, dynamic layout updates (with external packages integration),
+utility functions and asynchronous components out of the box.
+Still, it bundles with minimal dependencies
+and tries to utilize built-ins as much as possible.
+
+You would probably want to opt out from this library in few cases, like,
+if you're not ready for drastic API changes between major version,
+you want to develop SPA/PWA and/or complex client-side logic,
+or you're just feeling OK with your current setup.
+Please, don't compare kyoto with a popular JS libraries like React, Vue or Svelte.
+I know you will have such a desire, but most likely you will be wrong.
+Use cases and underlying principles are just too different.
+
+If you want to get an idea of what a typical static component would look like, here's some sample code.
+It's very ascetic and simplistic, as we don't want to overload you with implementation details.
+Markup is also not included here (it's just a well-known `html/template`).
+
+	// State is declared separately from component itself
+	type ComponentState struct {
+		// We're providing component with some abilities here
+		component.Universal // This component uses universal state, that can be (un)marshalled with both server and client
+
+		// Actual component state is just struct fields
+		Foo string
+		Bar string
+	}
+
+	// Component is a function, that returns configured state.
+	// To be able to provide additional arguments to the component on initialization,
+	// you have to wrap component with additional function that will handle args and return actual component.
+	// Until then, you may keep component declaration as-is.
+	func Component(ctx *component.Context) component.State {
+		// Initialize state here.
+		// As far as component.Universal provided in declaration,
+		// we're implementing component.State interface.
+		state := &ComponentState{}
+		// Do whatever you want with a state
+		state.Foo = "foo"
+		state.Bar = "bar"
+		// Done
+		return state
+	}
+
+For details, please check project's website on https://kyoto.codes.
+Also, you may check the library index to explore available sub-packages
+and https://pkg.go.dev for Go'ish documentation style.
 
 # Quick start
 
-Let's go straight into a simple example.
-Then, we will dig into details, step by step, how it works.
+We don't want you to deal with boilerplate code on your own,
+so you can proceed with our simple starter project.
+
+	$ git clone https://kyoto.codes/new <your-new-project>
+	$ rm -r <your-new-project>/.git
+
+Feel free to use it as an example for your own setup.
+
+# Components
+
+Components is a common approach for modern libraries to manage frontend parts.
+Kyoto's components are trying to be mostly independent (but configurable) part of the project.
+
+To create component, it would be enough to implement component.Component.
+It's a function, a context receiver which returns a component state.
+State is an implementation of component.State,
+which is easy to implement with nesting one of the state implementations (options will be described later).
 
 	package main
 
-	import (
-		"net/http"
-		"encoding/json"
-
-		"github.com/kyoto-framework/kyoto/v2"
-	)
-
-	// This example demonstrates main advantage of kyoto library - asynchronous lifecycle.
-	// Multiple UUIDs will be fetched from httpbin in asynchronous way, without explicitly touching goroutines
-	// and synchronization tools like sync.WaitGroup.
-
-	type CUUIDState struct {
-		UUID string
+	type ComponentState struct {
+		component.Disposable // You're providing component with some abilities here
 	}
 
-	// Let's assume markup of this component is stored in 'component.uuid.html'
-	//
-	// {{ define "CUUID" }}
-	//  <div>UUID: {{ .UUID }}</div>
-	// {{ end }}
-	func CUUID(ctx *kyoto.Context) (state CUUIDState) {
-		// Fetch uuid data
-		resp, _ := http.Get("http://httpbin.org/uuid")
-		data := map[string]string{}
-		json.NewDecoder(resp.Body).Decode(&data)
-		// Set state
-		state.UUID = data["uuid"]
-		// Return
-		return
+	func Component(ctx *component.Context) component.State {
+		state := &ComponentState{}
+		return state
 	}
 
-	type PIndexState struct {
-		UUID1 *kyoto.ComponentF[CUUIDState]
-		UUID2 *kyoto.ComponentF[CUUIDState]
-	}
+	...
 
-	// Let's assume markup of this page is stored in 'page.index.html'
-	//
-	// <!DOCTYPE html>
-	// <html lang="en">
-	// <head>
-	// 	<meta charset="UTF-8">
-	// 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	// 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	// 	<title>Example</title>
-	// </head>
-	// <body>
-	// 	{{ template "CUUID" await .UUID1 }}
-	// 	{{ template "CUUID" await .UUID2 }}
-	// </body>
-	// </html>
-	func PIndex(ctx *kyoto.Context) (state PIndexState) {
-		// Define rendering
-		kyoto.Template(ctx, "page.index.html")
-		// Attach components
-		state.UUID1 = kyoto.Use(ctx, CUUID)
-		state.UUID2 = kyoto.Use(ctx, CUUID)
-		// Return
-		return
-	}
-
-	func main() {
-		// Register page
-		kyoto.HandlePage("/", PIndex)
-		// Serve
-		kyoto.Serve(":8080")
-	}
-
-# Routing
-
-Kyoto provides a set of simple net/http handlers, handler builders and function wrappers
-to provide serving, pages rendering, component actions, etc.
-Anyway, this is not an ultimative solution for any case.
-If you ever need to wrap/extend existing functionality,
-library encourages this.
-
-See functions inside of nethttp.go file for details and advanced usage.
-
-Example:
-
-	func main() {
-		kyoto.HandlePage("/foo", PageFoo)
-		kyoto.HandlePage("/bar", PageBar)
-
-		kyoto.Serve(":8000")
-	}
-
-# Pages and components
-
-Kyoto provides a way to define components.
-It's a very common approach for modern libraries to manage frontend parts.
-In kyoto each component is a context receiver, which returns it's state.
 Each component becomes a part of the page or top-level component,
-which executes component asynchronously and gets a state future object.
+which executes component function asynchronously and gets a state future object.
 In that way your components are executing in a non-blocking way.
 
 Pages are just top-level components, where you can configure rendering and page related stuff.
 
-Example:
+# Components with state
 
-	// Component is a context receiver, that returns it's state.
-	// State can be whatever you want (simple type, struct, slice, map, etc).
-	func CUUID(ctx *kyoto.Context) (state CUUIDState) {
-		// Fetch uuid data
-		resp, _ := http.Get("http://httpbin.org/uuid")
-		data := map[string]string{}
-		json.NewDecoder(resp.Body).Decode(&data)
-		// Set state
-		state.UUID = data["uuid"]
+Stateful components are pretty similar to stateless ones,
+but they are actually implementing marshal/unmarshal interface instead of mocking it.
+
+You have multiple state options to choose from: universal or server.
+
+Universal state is a state, that can be marshalled and unmarshalled both on server and client.
+It's a common state option without functionality limitations.
+On the other hand, the whole state must be sent and received,
+which applies some limitations on the state size.
+
+	package main
+
+	type ComponentState struct {
+		component.Universal // This state allows you to operate with data on both server and client
 	}
 
-	// Page is just a top-level component, which attaches components and defines rendering
-	func PExample(ctx *kyoto.Context) (state PExampleState) {
-		// Define rendering
-		kyoto.Template(ctx, "page.example.html")
-		// Attach components
-		state.UUID1 = kyoto.Use(ctx, CUUID)
-		state.UUID2 = kyoto.Use(ctx, CUUID)
+	func Component(ctx *component.Context) component.State {
+		state := &ComponentState{}
+		return state
 	}
 
-As an option, you can wrap component with another function to accept additional paramenters from top-level page/component.
+Server state can be marshalled and unmarshalled only on server.
+It's a good option for components, that are not supposed to be updated on client side (f.e. no inputs).
+Also, it's a good option for components with lots of state data.
 
-Example:
+	package main
 
-	func CUUID(hburl string) kyoto.Component[CUUIDState] {
-		return func(ctx *kyoto.Context) (state CUUIDState) {
-			// Fetch uuid data
-			resp, _ := http.Get(hburl)
-			data := map[string]string{}
-			json.NewDecoder(resp.Body).Decode(&data)
-			// Set state
-			state.UUID = data["uuid"]
+	type ComponentState struct {
+		component.Server // This state allows you to operate with data on server only
+	}
+
+	func Component(ctx *component.Context) component.State {
+		state := &ComponentState{}
+		return state
+	}
+
+# Components with arguments
+
+Sometimes you may want to pass some arguments to the component.
+It's easy to do with wrapping component with additional function.
+
+	package main
+
+	type ComponentState struct {
+		component.Universal
+
+		Data string
+	}
+
+	func Component(data string) component.Component {
+		return func(ctx *component.Context) component.State {
+			state := &ComponentState{}
+			state.Data = data // We are passing arg to the component state, but it's not a requirement.
+			return state
 		}
 	}
 
-# Context
+# Routing
 
-Kyoto provides a context,
-which holds common objects like http.ResponseWriter, *http.Request, etc.
+This library doesn't provide you with routing out of the box.
+You can use any router you want, built-in one is not a bad option for basic needs.
 
-See kyoto.Context for details.
-
-Example:
-
-	func Component(ctx *kyoto.Context) (state ComponentState) {
-		log.Println(ctx.Request.UserAgent())
-		...
-	}
-
-# Templates
-
-Kyoto provides a set of parameters and functions
-to provide a comfortable template building process.
-You can configure template building parameters with
-kyoto.TemplateConf configuration.
-
-See template.go for available functions
-and kyoto.TemplateConfiguration for configuration details.
-
-Example:
-
-	func Page(ctx *kyoto.Context) (state PageState) {
-		// By default it will:
-		// - use kyoto.FuncMap as a FuncMap
-		// - parse everything in the current directory with a .ParseGlob("*.html")
-		// - render a template with a given name
-		kyoto.Template(ctx, "page.index.html")
-		...
-	}
-
-# Actions
-
-Kyoto provides a way to simplify building dynamic UIs.
-For this purpose it has a feature named actions.
-Logic is pretty simple.
-Client calls an action (sends a request to the server).
-Action is executing on server side and
-server is sending updated component markup to the client
-which will be morphed into DOM.
-That's it.
-
-To use actions, you need to go through a few steps.
-You'll need to include a client into page (JS functions for communication)
-and register an actions handler for a needed component.
-
-Let's start from including a client.
-
-	<html>
-		<head>
-			...
-		</head>
-		<body>
-			...
-			{{ client }}
-		</body>
-	</html>
-
-Then, let's register an actions handler for a needed component.
-
-	func main() {
-		...
-		kyoto.HandleAction(Component)
-		...
-	}
-
-That's all!
-Now we ready to use actions to provide a dynamic UI.
-
-Example:
+	package main
 
 	...
 
-	type CUUIDState struct {
-		UUID string
+	func main() {
+		mux := http.NewServeMux()
+		mux.HandleFunc("/", rendering.Handler(Page))
+		http.ListenAndServe(":8080", mux)
 	}
 
-	// Let's assume markup of this component is stored in 'component.uuid.html'
-	//
-	//	{{ define "CUUID" }}
-	//	<div {{ state . }} name="CUUID">
-	//		<div>UUID: {{ .UUID }}</div>
-	//		<button onclick="Action(this, 'Reload')">Reload</button>
-	//	</div>
-	//	{{ end }}
-	func CUUID(ctx *kyoto.Context) (state CUUIDState) {
-		// Define uuid loader
-		uuid := func() string {
-			resp, _ := http.Get("http://httpbin.org/uuid")
-			data := map[string]string{}
-			json.NewDecoder(resp.Body).Decode(&data)
-			return data["uuid"]
-		}
-		// Handle action
-		handled := kyoto.Action(ctx, "Reload", func(args ...any) {
-			// We will just set a new uuid and will print a log
-			// It's not makes a lot of sense now, but it's just a demonstration example
-			state.UUID = uuid()
-			log.Println("New uuid was issued:", state.UUID)
-		})
-		// Prevent further execution if action handled
-		if handled {
-			return
-		}
-		// Default loading behavior
-		state.UUID = uuid()
-		// Return
-		return
-	}
+# Rendering
 
-	type PIndexState struct {
-		UUID1 *kyoto.ComponentF[CUUIDState]
-		UUID2 *kyoto.ComponentF[CUUIDState]
-	}
+Rendering might be tricky, but we're trying to make it as simple as possible.
+By default, we're using `html/template` as a rendering engine.
+It's a well-known built-in package, so you don't have to learn anything new.
 
-	// Let's assume markup of this page is stored in 'page.index.html'
-	//
-	//	<!DOCTYPE html>
-	//	<html lang="en">
-	//	<head>
-	//		<meta charset="UTF-8">
-	//		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	//		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	//		<title>Example</title>
-	//	</head>
-	//	<body>
-	//		{{ template "CUUID" await .UUID1 }}
-	//		{{ template "CUUID" await .UUID2 }}
-	//		{{ client }}
-	//	</body>
-	//	</html>
-	func PIndex(ctx *kyoto.Context) (state PIndexState) {
-		// Define rendering
-		kyoto.Template(ctx, "page.index.html")
-		// Attach components
-		state.UUID1 = kyoto.Use(ctx, CUUID)
-		state.UUID2 = kyoto.Use(ctx, CUUID)
-		// Return
-		return
-	}
+Out of the box we're parsing all templates in root directory with `*.html` glob.
+You can change this behavior with `TEMPLATE_GLOB` global variable.
+
+For rendering a component, use built-in `template` function.
+Provide a resolved future object (actually state) as a template argument.
+
+	<div>{{ template "component" call .Component }}</div>
+
+As an alternative, you can also include `rendering.Template` entry into your component definition.
+In this way you can use `render` function to simplify your code.
+Please, don't use this approach heavily now, as it affects rendering performance.
+
+	<div>{{ render .Component }}</div>
+
+# HTMX
+
+HTMX is a frontend library, that allows you to update your page layout dynamically.
+It perfectly fits into kyoto, which focuses on components and server side rendering.
+Thanks to the component structure, there is no need to define separate rendering logic specially for HTMX.
+
+# HTMX Setup
+
+Please, check https://htmx.org/docs/#installing for installation instructions.
+In addition to this, you must register HTMX handlers for your dynamic components.
+
+	package main
+
+	...
 
 	func main() {
-		kyoto.HandlePage("/", PIndex)
-		kyoto.HandleAction(CUUID)
-		kyoto.Serve(":8000")
+		mux := http.NewServeMux()
+		mux.HandleFunc("/", rendering.Handler(Page))
+
+		mux.HandleFunc("/htmx/component", rendering.Handler(Component))
+
+		http.ListenAndServe(":8080", mux)
 	}
 
-In this example you can see provided modifications to the quick start example.
+# HTMX Usage
 
-First, we've added a state and name into our components' markup.
-In this way we are saving our components' state between actions and find a component root.
-Unfortunately, we have to manually provide a component name for now,
-we haven't found a way to provide it dynamically.
+This is a basic example of HTMX usage.
+Please, check https://htmx.org/docs/ for more details.
 
-Second, we've added a reload button with onclick function call.
-We're using a function Action provided by a client.
-Action triggering will be described in details later.
+In this example we're defining a form component, that is updating itself on submit.
 
-Third, we've added an action handler inside of our component.
-This handler will be executed when a client calls an action with a corresponding name.
+	{{ define "Component" }}
+	<form hx-post="/htmx/component" hx-target="this" hx-swap="outerHTML">
+		<input type="text" name="foo" value="{{ .Foo }}">
+		<input type="text" name="bar" value="{{ .Bar }}">
+		<button type="submit">Submit</button>
+	</form>
+	{{ end }}
 
-It's highly recommended to keep components' state as small as possible.
-It will be transmitted on each action call.
+And this is how you can define a component, that will handle this request.
 
-# Actions - Triggering
+	package main
 
-Kyoto have multiple ways to trigger actions.
-Now we will check them one by one.
+	type ComponentState struct {
+		component.Disposable // We're not using any stored state here, so we're using disposable
+		rendering.Template   // We're using template rendering for this component, just like in pages
 
-	Action(this, "<action>", <args...>)
+		Foo string
+		Bar string
+	}
 
-This is the simplest way to trigger an action.
-It's just a function call with a referer (usually 'this', f.e. button) as a first argument (used to determine root),
-action name as a second argument and arguments as a rest.
-Arguments must to be JSON serializable.
+	func Component(ctx *component.Context) component.State {
+		// Initialize state
+		state := &ComponentState{}
+		// We're getting request data from context and passing it to the state
+		if ctx.Request.Method == http.MethodPost {
+			ctx.Request.ParseForm()
+			state.Foo = ctx.Request.FormValue("foo")
+			state.Bar = ctx.Request.FormValue("bar")
+		}
+		// Done
+		return state
+	}
 
-It's possible to trigger an action of another component.
-If you want to call an action of parent component, use $ prefix in action name.
-If you want to call an action of component by id, use <id:action> as an action name.
+# HTMX State
 
-	FormSubmit(this, event)
+Sometimes it might be useful to have a component state,
+which will persist between requests and will be stored without any actual usage in the client side presentation.
 
-This is a specific action which is triggered when a form is submitted.
-Usually called in onsubmit="..." attribute of a form.
-You'll need to implement 'Submit' action to handle this trigger.
+	<form hx-post="/htmx/component" hx-target="this" hx-swap="outerHTML">
+		{{ hxstate . }}
+		<div>Cursor: {{ .Cursor }}</div>
+		<button type="submit">Submit</button>
+	</form>
 
-	ssa:onload="<action>"
+This function injects a hidden input field with a serialized state.
+Let's check how it works on the server side.
 
-This is a special HTML attribute which will trigger an action on page load.
-This may be useful for components' lazy loading.
+	package main
 
-	ssa:poll="<action>"
-	ssa:poll.interval="<interval>"
+	type ComponentState struct {
+		component.Universal // We're using server state here
+		rendering.Template  // We're using template rendering for this component, just like in pages
 
-With this special HTML attributes you can trigger an action with interval.
-Useful for components that must to be updated over time (f.e. charts, stats, etc).
-You can use this trigger with ssa:poll and ssa:poll.interval HTML attributes.
+		Cursor string
+	}
 
-	ssa:onintersect="<action>"
+	func Component(ctx *component.Context) component.State {
+		// Initialize state
+		state := &ComponentState{}
+		// Unmarshal state on post request
+		if ctx.Request.Method == http.MethodPost {
+			ctx.Request.ParseForm()
+			state.Unmarshal(ctx.Request.FormValue("hx-state"))
+		}
+		// Initialize cursor if it's empty
+		if state.Cursor == "" {
+			state.Cursor = "..."
+		}
+		// Done
+		return state
+	}
 
-This one attribute allows you to trigger an action when an element is visible on the screen.
-May be useful for lazy loading.
-
-# Actions - Flow control
-
-Kyoto provides a way to control action flow.
-For now, it's possible to control display style on component call
-and push multiple UI updates to the client during a single action.
-
-	ssa:oncall.display="<display>"
-
-Because kyoto makes a roundtrip to the server every time an action is triggered on the page,
-there are cases where the page may not react immediately to a user event (like a click).
-That's why the library provides a way to easily control display attributes on action call.
-You can use this HTML attribute to control display during action call.
-At the end of an action the layout will be restored.
-
-A small note. Don't forget to set a default display for loading elements like spinners and loaders.
-
-	kyoto.ActionFlush(ctx, state)
-
-You can push multiple component UI updates during a single action call.
-Just call kyoto.ActionFlush(ctx, state) to initiate an update.
-
-# Actions - Rendering options
-
-Kyoto provides a way to control action rendering.
-
-	ssa:render.mode="replace"
-
-Now there is at least 2 rendering options after an action call: morph (default) and replace.
-Morph will try to morph received markup to the current one with morphdom library.
-In case of an error, or explicit "replace" mode, markup will be replaced with x.outerHTML = '...'.
+As a result, we have a component with a persistent state between requests.
 */
 package kyoto

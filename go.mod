@@ -1,5 +1,5 @@
-module github.com/kyoto-framework/kyoto/v2
+module go.kyoto.codes/v3
 
-go 1.18
+go 1.20
 
-require github.com/kyoto-framework/zen/v3 v3.0.0-rc2.0.20230222093058-0279ff893400
+require go.kyoto.codes/zen/v3 v3.0.0

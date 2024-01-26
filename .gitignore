@@ -1,0 +1,10 @@
+
+# Just not yet
+cache
+
+# Probably will not be included (at least for now)
+htmx-test
+
+# Cache
+.idea
+.vscode
