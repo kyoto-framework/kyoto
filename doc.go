@@ -67,7 +67,7 @@ Feel free to use it as an example for your own setup.
 # Components
 
 Components is a common approach for modern libraries to manage frontend parts.
-Kyoto components are trying to be mostly independent (but configurable) part of the project.
+Kyoto's components are trying to be mostly independent (but configurable) part of the project.
 
 To create component, it would be enough to implement component.Component.
 It's a function, a context receiver which returns a component state.
@@ -96,13 +96,13 @@ Pages are just top-level components, where you can configure rendering and page 
 # Components with state
 
 Stateful components are pretty similar to stateless ones,
-but they are actualy implementing marshal/unmarshal interface instead of mocking it.
+but they are actually implementing marshal/unmarshal interface instead of mocking it.
 
 You have multiple state options to choose from: universal or server.
 
 Universal state is a state, that can be marshalled and unmarshalled both on server and client.
 It's a common state option without functionality limitations.
-On the other hand, the whole state must to be sent and received,
+On the other hand, the whole state must be sent and received,
 which applies some limitations on the state size.
 
 	package main
