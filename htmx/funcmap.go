@@ -6,7 +6,10 @@ import (
 	"html/template"
 )
 
+// FuncMap holds a library predefined template functions.
+// You have to include it in your template building to use kyoto properly.
 var FuncMap = template.FuncMap{
+	// hxstate returns a hidden input with the state marshaled as a value.
 	"hxstate": func(state any) template.HTML {
 		_state := state.(component.State)
 		return template.HTML(fmt.Sprintf(
