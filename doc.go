@@ -181,7 +181,7 @@ Provide a resolved future object (actually state) as a template argument.
 
 	<div>{{ template "component" call .Component }}</div>
 
-As an alternative, you can include also `rendering.Template` entry into your component definition.
+As an alternative, you can also include `rendering.Template` entry into your component definition.
 In this way you can use `render` function to simplify your code.
 Please, don't use this approach heavily now, as it affects rendering performance.
 
@@ -189,18 +189,107 @@ Please, don't use this approach heavily now, as it affects rendering performance
 
 # HTMX
 
-...
+HTMX is a frontend library, that allows you to update your page layout dynamically.
+It perfectly fits into kyoto, which focuses on components and server side rendering.
+Thanks to the component structure, there is no need to define separate rendering logic specially for HTMX.
 
 # HTMX Setup
 
-...
+Please, check https://htmx.org/docs/#installing for installation instructions.
+In addition to this, you must register HTMX handlers for your dynamic components.
+
+	package main
+
+	...
+
+	func main() {
+		mux := http.NewServeMux()
+		mux.HandleFunc("/", rendering.Handler(Page))
+
+		mux.HandleFunc("/htmx/component", rendering.Handler(Component))
+
+		http.ListenAndServe(":8080", mux)
+	}
 
 # HTMX Usage
 
-...
+This is a basic example of HTMX usage.
+Please, check https://htmx.org/docs/ for more details.
+
+In this example we're defining a form component, that is updating itself on submit.
+
+	{{ define "Component" }}
+	<form hx-post="/htmx/component" hx-target="this" hx-swap="outerHTML">
+		<input type="text" name="foo" value="{{ .Foo }}">
+		<input type="text" name="bar" value="{{ .Bar }}">
+		<button type="submit">Submit</button>
+	</form>
+	{{ end }}
+
+And this is how you can define a component, that will handle this request.
+
+	package main
+
+	type ComponentState struct {
+		component.Disposable // We're not using any stored state here, so we're using disposable
+		rendering.Template   // We're using template rendering for this component, just like in pages
+
+		Foo string
+		Bar string
+	}
+
+	func Component(ctx *component.Context) component.State {
+		// Initialize state
+		state := &ComponentState{}
+		// We're getting request data from context and passing it to the state
+		if ctx.Request.Method == http.MethodPost {
+			ctx.Request.ParseForm()
+			state.Foo = ctx.Request.FormValue("foo")
+			state.Bar = ctx.Request.FormValue("bar")
+		}
+		// Done
+		return state
+	}
 
 # HTMX State
 
-...
+Sometimes it might be useful to have a component state,
+which will persist between requests and will be stored without any actual usage in the client side presentation.
+
+	<form hx-post="/htmx/component" hx-target="this" hx-swap="outerHTML">
+		{{ hxstate . }}
+		<div>Cursor: {{ .Cursor }}</div>
+		<button type="submit">Submit</button>
+	</form>
+
+This function injects a hidden input field with a serialized state.
+Let's check how it works on the server side.
+
+	package main
+
+	type ComponentState struct {
+		component.Universal // We're using server state here
+		rendering.Template  // We're using template rendering for this component, just like in pages
+
+		Cursor string
+	}
+
+	func Component(ctx *component.Context) component.State {
+		// Initialize state
+		state := &ComponentState{}
+		// Unmarshal state on post request
+		if ctx.Request.Method == http.MethodPost {
+			ctx.Request.ParseForm()
+			state.Unmarshal(ctx.Request.FormValue("hx-state"))
+		}
+		// Initialize cursor if it's empty
+		if state.Cursor == "" {
+			state.Cursor = "..."
+		}
+		// Done
+		return state
+	}
+
+As a result, we have a component with a persistent state between requests.
 */
 package kyoto
