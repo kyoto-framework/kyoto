@@ -59,8 +59,8 @@ and https://pkg.go.dev for Go'ish documentation style.
 We don't want you to deal with boilerplate code on your own,
 so you can proceed with our simple starter project.
 
-	$ git clone https://kyoto.codes/new <your-new-project>
-	$ rm -r <your-new-project>/.git
+	git clone https://github.com/kyoto-framework/new <your-new-project>
+	rm -r <your-new-project>/.git
 
 Feel free to use it as an example for your own setup.
 
@@ -152,6 +152,24 @@ It's easy to do with wrapping component with additional function.
 		}
 	}
 
+# Context
+
+You have an access to the context inside the component.
+It includes request and response objects, as well as some other useful stuff like store.
+
+	package main
+
+	...
+
+	func Component(ctx *component.Context) component.State {
+		...
+		ctx.Request // http.Request
+		ctx.Response // http.ResponseWriter
+		ctx.Set("k", "v") // Store arbitrary data in the context
+		v := ctx.Get("k").(string) // Get arbitrary data from the context
+		...
+	}
+
 # Routing
 
 This library doesn't provide you with routing out of the box.
@@ -175,13 +193,52 @@ It's a well-known built-in package, so you don't have to learn anything new.
 
 Out of the box we're parsing all templates in root directory with `*.html` glob.
 You can change this behavior with `TEMPLATE_GLOB` global variable.
+Don't rely on file names while working with template names,
+use `define` entry for each your component.
 
-For rendering a component, use built-in `template` function.
-Provide a resolved future object (actually state) as a template argument.
+To provide your components with ability to be rendered, you have to do some basic steps.
+First, you have to nest one of the rendering implementations into your component state (f.e. `rendering.Template`).
+
+	package main
+
+	type ComponentState struct {
+		component.Disposable
+		rendering.Template // This line allows you to render your component with html/template
+	}
+
+	...
+
+You can customize rendering with providing values to the rendering implementation.
+If you need to modify these values for the entire project,
+we recommend looking at the global settings or creating a builder function for rendering object.
+
+	package main
+
+	...
+
+	func Component(ctx *component.Context) component.State {
+		state := &ComponentState{}
+		state.Template.Name = "CustomName" // Set custom template name
+		...
+	}
+
+By default, render handler will use a component name as a template name.
+So, you have to define a template with the same name as your component
+(not the filename, but "define" entry).
+
+	{{ define "Component" }}
+		...
+	{{ end }}
+
+That's enough to be rendered by `rendering.Handler`.
+
+For rendering a nested component, use built-in `template` function.
+Provide a resolved future object as a template argument in this way.
+Nested components are not obligated to have rendering implementation if you're using them in this way.
 
 	<div>{{ template "component" call .Component }}</div>
 
-As an alternative, you can also include `rendering.Template` entry into your component definition.
+As an alternative, you can nest rendering implementation (e.g. `rendering.Template`) into your nested component.
 In this way you can use `render` function to simplify your code.
 Please, don't use this approach heavily now, as it affects rendering performance.
 

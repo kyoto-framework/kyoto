@@ -2,8 +2,9 @@ package htmx
 
 import (
 	"fmt"
-	"go.kyoto.codes/v3/component"
 	"html/template"
+
+	"go.kyoto.codes/v3/component"
 )
 
 // FuncMap holds a library predefined template functions.
