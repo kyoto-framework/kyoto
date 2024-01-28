@@ -8,12 +8,11 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
     - name: Dispatch workflow
       uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.PAT_TOKEN }}
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'kyoto-framework',
