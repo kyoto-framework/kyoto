@@ -260,11 +260,13 @@ In addition to this, you must register HTMX handlers for your dynamic components
 	...
 
 	func main() {
+		// Initialize mux
 		mux := http.NewServeMux()
+		// Register pages
 		mux.HandleFunc("/", rendering.Handler(Page))
-
+		// Register components
 		mux.HandleFunc("/htmx/component", rendering.Handler(Component))
-
+		// Serve
 		http.ListenAndServe(":8080", mux)
 	}
 
