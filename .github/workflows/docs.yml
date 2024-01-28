@@ -12,7 +12,7 @@ jobs:
     - name: Dispatch workflow
       uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.PAT_TOKEN }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           await github.rest.actions.createWorkflowDispatch({
             owner: 'kyoto-framework',
