@@ -1,0 +1,22 @@
+name: Documentation update
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dispatch workflow
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.PAT_TOKEN }}
+        script: |
+          await github.rest.actions.createWorkflowDispatch({
+            owner: 'kyoto-framework',
+            repo: 'docs.kyoto.codes',
+            workflow_id: 'release.yml',
+            ref: 'main'
+          })
