@@ -110,7 +110,7 @@ func Await(component any) any {
 func ComponentName(component any) string {
 	funcpath := runtime.FuncForPC(reflect.ValueOf(component).Pointer()).Name()
 	tokens := strings.Split(funcpath, ".")
-	if tokens[len(tokens)-1] == "func1" || tokens[len(tokens)-1] == "func2" {
+	if strings.HasPrefix(tokens[len(tokens)-1], "func") {
 		return tokens[len(tokens)-2]
 	} else {
 		return tokens[len(tokens)-1]
