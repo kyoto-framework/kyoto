@@ -14,7 +14,7 @@ type Component func(ctx *Context) State
 func (c Component) GetName() string {
 	functionPath := runtime.FuncForPC(reflect.ValueOf(c).Pointer()).Name()
 	tokens := strings.Split(functionPath, ".")
-	if tokens[len(tokens)-1] == "func1" || tokens[len(tokens)-1] == "func2" {
+	if strings.HasPrefix(tokens[len(tokens)-1], "func") {
 		return tokens[len(tokens)-2]
 	} else {
 		return tokens[len(tokens)-1]
