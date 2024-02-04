@@ -15,6 +15,6 @@ var FuncMap = template.FuncMap{
 		_state := state.(component.State)
 		return template.HTML(fmt.Sprintf(
 			`<input type="hidden" name="hx-state" value="%s">`,
-			_state.Marshal()))
+			_state.Marshal(_state)))
 	},
 }

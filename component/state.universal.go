@@ -16,9 +16,9 @@ type Universal struct {
 	Name
 }
 
-func (u *Universal) Marshal() string {
+func (*Universal) Marshal(src any) string {
 	// Marshal into json
-	stateJson := jsonx.String(u)
+	stateJson := jsonx.String(src)
 	// Encode to URI representation to avoid html breaking
 	stateJsonUri := url.PathEscape(stateJson)
 	// Encode to base64
@@ -27,11 +27,11 @@ func (u *Universal) Marshal() string {
 	return stateJsonUriBase64
 }
 
-func (u *Universal) Unmarshal(str string) {
+func (*Universal) Unmarshal(dst any, str string) {
 	// Decode from base64
 	stateJsonUri := errorsx.Must(base64.StdEncoding.DecodeString(str))
 	// Decode from URI representation
 	stateJson := errorsx.Must(url.PathUnescape(string(stateJsonUri)))
 	// Unmarshal from json
-	errorsx.Must(0, json.Unmarshal([]byte(stateJson), u))
+	errorsx.Must(0, json.Unmarshal([]byte(stateJson), dst))
 }

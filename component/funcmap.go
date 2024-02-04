@@ -9,6 +9,6 @@ import (
 var FuncMap = template.FuncMap{
 	// Marshal allows to marshal state to string.
 	"marshal": func(state State) string {
-		return state.Marshal()
+		return state.Marshal(state)
 	},
 }
