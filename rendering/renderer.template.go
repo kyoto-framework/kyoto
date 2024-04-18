@@ -22,10 +22,15 @@ var (
 type Template struct {
 	Raw  *template.Template `json:"-"` // Raw template will be used instead if provided
 	Name string             // Resolved from component name by default
+	Skip bool               `json:"-"` // false by default
 
 	Glob    string           `json:"-"` // *.html by default
 	EmbedFS *embed.FS        `json:"-"` // nil by default
 	FuncMap template.FuncMap `json:"-"` // render.FuncMap by default
+}
+
+func (t *Template) RenderSkip() bool {
+	return t.Skip
 }
 
 func (t *Template) Render(state component.State, w io.Writer) error {

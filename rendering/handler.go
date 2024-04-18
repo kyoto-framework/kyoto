@@ -13,11 +13,17 @@ func Handler(c component.Component) http.HandlerFunc {
 		ctx := component.NewContext(w, r)
 		// Build page state tree
 		state := c(ctx)
-		// Inject component name
-		state.SetName(c.GetName())
+		// Inject component name, unless it's already set
+		if state.GetName() == "" {
+			state.SetName(c.GetName())
+		}
 		// Ensure state implements render
 		if _, ok := state.(Renderer); !ok {
 			panic("The component does not implement rendering")
+		}
+		// Check if we need to skip rendering
+		if state.(Renderer).RenderSkip() {
+			return
 		}
 		// Render
 		if err := state.(Renderer).Render(state, ctx.ResponseWriter); err != nil {
