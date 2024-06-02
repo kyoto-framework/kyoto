@@ -51,4 +51,7 @@ func Component(ctx *component.Context) component.State {
 }
 ```
 
-For details, please check project's website on https://kyoto.codes. Also, you may check the library index to explore available sub\-packages and https://pkg.go.dev for Go'ish documentation style.
+For details, please check project's website on [kyoto.codes][docs]. Also, you may check the library index to explore available sub\-packages and [pkg.go.dev][pkg] for Go'ish documentation style.
+
+[docs]: https://kyoto.codes/
+[pkg]: https://pkg.go.dev/github.com/kyoto-framework/kyoto
